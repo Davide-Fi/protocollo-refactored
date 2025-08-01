@@ -1,0 +1,77 @@
+import { Button } from "@/components/ui/button";
+
+export default function ResearchSection() {
+  const articles = [
+    {
+      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      category: "NUTRIZIONE",
+      title: "Intermittent Fasting e Longevità Maschile",
+      excerpt: "Nuovi studi dimostrano come il digiuno intermittente possa aumentare l'aspettativa di vita negli uomini del 15-20%.",
+      date: "15 Gen 2024",
+      categoryColor: "scientific-blue"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1593079831268-3df2a9274f27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      category: "INTEGRAZIONE",
+      title: "NAD+ e Prestazioni Cognitive",
+      excerpt: "Ricerca su come i precursori del NAD+ migliorino memoria e focus negli uomini over 40.",
+      date: "12 Gen 2024",
+      categoryColor: "performance-green"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      category: "PREVENZIONE",
+      title: "Biomarcatori Predittivi del Aging",
+      excerpt: "Identificati 12 biomarcatori chiave per predire l'invecchiamento biologico negli uomini.",
+      date: "8 Gen 2024",
+      categoryColor: "yellow-500"
+    }
+  ];
+
+  return (
+    <section id="ricerca" className="py-20 bg-steel-blue/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-black mb-6">
+            Ricerca <span className="text-scientific-blue">Scientifica</span>
+          </h2>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+            Studi e ricerche all'avanguardia sulla longevità maschile e l'ottimizzazione delle prestazioni.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((article, index) => (
+            <article key={index} className="bg-navy-charcoal border border-steel-blue/30 rounded-lg overflow-hidden hover:border-scientific-blue/50 transition-colors">
+              <img 
+                src={article.image} 
+                alt={article.title} 
+                className="w-full h-48 object-cover"
+              />
+              
+              <div className="p-6">
+                <div className={`text-${article.categoryColor} text-sm font-semibold mb-2`}>
+                  {article.category}
+                </div>
+                <h3 className="text-xl font-bold mb-3">{article.title}</h3>
+                <p className="text-slate-400 text-sm mb-4">{article.excerpt}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-500">{article.date}</span>
+                  <button className="text-scientific-blue text-sm font-semibold hover:underline">
+                    Leggi Studio
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        
+        <div className="text-center mt-12">
+          <Button className="bg-scientific-blue hover:bg-scientific-blue/80 text-white px-8 py-3 font-semibold">
+            Vedi Tutte le Ricerche
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}

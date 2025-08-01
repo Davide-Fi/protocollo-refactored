@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(210, 40%, 8%);
+  --foreground: hsl(210, 40%, 96%);
+  --muted: hsl(210, 40%, 18%);
+  --muted-foreground: hsl(210, 40%, 64%);
+  --popover: hsl(210, 40%, 8%);
+  --popover-foreground: hsl(210, 40%, 96%);
+  --card: hsl(210, 40%, 8%);
+  --card-foreground: hsl(210, 40%, 96%);
+  --border: hsl(210, 40%, 18%);
+  --input: hsl(210, 40%, 18%);
+  --primary: hsl(200, 80%, 54%);
+  --primary-foreground: hsl(210, 40%, 96%);
+  --secondary: hsl(210, 40%, 18%);
+  --secondary-foreground: hsl(210, 40%, 96%);
+  --accent: hsl(210, 40%, 18%);
+  --accent-foreground: hsl(210, 40%, 96%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(210, 40%, 96%);
+  --ring: hsl(200, 80%, 54%);
+  --radius: 0.5rem;
+  
+  /* Custom colors for Protocollo */
+  --navy-charcoal: hsl(210, 40%, 8%);
+  --steel-blue: hsl(210, 20%, 25%);
+  --scientific-blue: hsl(200, 80%, 54%);
+  --performance-green: hsl(158, 64%, 52%);
+}
+
+.dark {
+  --background: hsl(210, 40%, 8%);
+  --foreground: hsl(210, 40%, 96%);
+  --muted: hsl(210, 40%, 18%);
+  --muted-foreground: hsl(210, 40%, 64%);
+  --popover: hsl(210, 40%, 8%);
+  --popover-foreground: hsl(210, 40%, 96%);
+  --card: hsl(210, 40%, 8%);
+  --card-foreground: hsl(210, 40%, 96%);
+  --border: hsl(210, 40%, 18%);
+  --input: hsl(210, 40%, 18%);
+  --primary: hsl(200, 80%, 54%);
+  --primary-foreground: hsl(210, 40%, 96%);
+  --secondary: hsl(210, 40%, 18%);
+  --secondary-foreground: hsl(210, 40%, 96%);
+  --accent: hsl(210, 40%, 18%);
+  --accent-foreground: hsl(210, 40%, 96%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(210, 40%, 96%);
+  --ring: hsl(200, 80%, 54%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-color: hsl(210, 40%, 8%);
+    color: hsl(210, 40%, 96%);
+  }
+}
+
+/* Custom utility classes */
+.text-navy-charcoal {
+  color: hsl(210, 40%, 8%);
+}
+
+.bg-navy-charcoal {
+  background-color: hsl(210, 40%, 8%);
+}
+
+.text-steel-blue {
+  color: hsl(210, 20%, 25%);
+}
+
+.bg-steel-blue {
+  background-color: hsl(210, 20%, 25%);
+}
+
+.text-scientific-blue {
+  color: hsl(200, 80%, 54%);
+}
+
+.bg-scientific-blue {
+  background-color: hsl(200, 80%, 54%);
+}
+
+.text-performance-green {
+  color: hsl(158, 64%, 52%);
+}
+
+.bg-performance-green {
+  background-color: hsl(158, 64%, 52%);
+}
+
+.border-steel-blue {
+  border-color: hsl(210, 20%, 25%);
+}
+
+.border-scientific-blue {
+  border-color: hsl(200, 80%, 54%);
+}
+
+.border-performance-green {
+  border-color: hsl(158, 64%, 52%);
+}
+
+/* Hover states */
+.hover\:bg-scientific-blue:hover {
+  background-color: hsl(200, 80%, 44%);
+}
+
+.hover\:bg-performance-green:hover {
+  background-color: hsl(158, 64%, 42%);
+}
+
+.hover\:text-scientific-blue:hover {
+  color: hsl(200, 80%, 54%);
+}
+
+.hover\:border-scientific-blue:hover {
+  border-color: hsl(200, 80%, 54%);
+}
