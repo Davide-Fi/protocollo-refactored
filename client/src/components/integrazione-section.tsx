@@ -80,13 +80,13 @@ export default function IntegrazioneSection() {
           
           <div className="grid grid-cols-2 gap-6">
             <img 
-              src="/attached_assets/generated_images/Man_doing_floor_gym_exercises_d667adc3.png" 
-              alt="Athletic man doing floor exercises at the gym" 
+              src="/attached_assets/generated_images/Italian_athletic_man_floor_gym_exercises_c7d8e5f3.png" 
+              alt="Uomo atletico italiano che fa esercizi a terra in palestra" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
             <img 
-              src="/attached_assets/generated_images/Man_drinking_protein_shake_ce98c1eb.png" 
-              alt="Athletic man drinking protein shake for fitness" 
+              src="/attached_assets/generated_images/Italian_man_drinking_protein_shake_fitness_d8f9a6b4.png" 
+              alt="Uomo atletico italiano che beve frullato proteico per fitness" 
               className="w-full h-auto rounded-lg shadow-xl mt-8"
             />
           </div>
