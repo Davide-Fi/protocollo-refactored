@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 export default function ResearchSection() {
   const articles = [
     {
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      image: "/attached_assets/generated_images/Man_nutrition_research_study_bfa3a28c.png",
       category: "NUTRIZIONE",
       title: "Intermittent Fasting e Longevità Maschile",
       excerpt: "Nuovi studi dimostrano come il digiuno intermittente possa aumentare l'aspettativa di vita negli uomini del 15-20%.",
@@ -11,7 +11,7 @@ export default function ResearchSection() {
       categoryColor: "scientific-blue"
     },
     {
-      image: "https://images.unsplash.com/photo-1593079831268-3df2a9274f27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      image: "/attached_assets/generated_images/Man_taking_supplements_research_a39b46cf.png",
       category: "INTEGRAZIONE",
       title: "NAD+ e Prestazioni Cognitive",
       excerpt: "Ricerca su come i precursori del NAD+ migliorino memoria e focus negli uomini over 40.",
@@ -19,7 +19,7 @@ export default function ResearchSection() {
       categoryColor: "performance-green"
     },
     {
-      image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250",
+      image: "/attached_assets/generated_images/Man_prevention_research_biomarkers_263100cd.png",
       category: "PREVENZIONE",
       title: "Biomarcatori Predittivi del Aging",
       excerpt: "Identificati 12 biomarcatori chiave per predire l'invecchiamento biologico negli uomini.",

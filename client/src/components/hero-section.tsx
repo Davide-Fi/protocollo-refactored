@@ -63,7 +63,7 @@ export default function HeroSection() {
           
           <div className="relative">
             <img 
-              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=900" 
+              src="/attached_assets/generated_images/Professional_athletic_man_portrait_3cf99d85.png" 
               alt="Professional man representing health optimization" 
               className="w-full h-auto rounded-lg shadow-2xl"
             />

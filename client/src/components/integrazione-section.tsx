@@ -80,12 +80,12 @@ export default function IntegrazioneSection() {
           
           <div className="grid grid-cols-2 gap-6">
             <img 
-              src="https://images.unsplash.com/photo-1534368420009-621bfab424a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=500" 
+              src="/attached_assets/generated_images/Man_doing_floor_gym_exercises_d667adc3.png" 
               alt="Athletic man doing floor exercises at the gym" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
             <img 
-              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=500" 
+              src="/attached_assets/generated_images/Man_drinking_protein_shake_ce98c1eb.png" 
               alt="Athletic man drinking protein shake for fitness" 
               className="w-full h-auto rounded-lg shadow-xl mt-8"
             />

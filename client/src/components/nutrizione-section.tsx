@@ -41,7 +41,7 @@ export default function NutrizioneSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <img 
-              src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+              src="/attached_assets/generated_images/Man_eating_healthy_nutrition_a46157e8.png" 
               alt="Professional man eating healthy nutritious meal" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
