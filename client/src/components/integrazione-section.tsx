@@ -18,7 +18,8 @@ export default function IntegrazioneSection() {
       name: "Stack Fondazione",
       description: "Essenziali per iniziare",
       icon: Leaf,
-      price: 129,
+      commitment: "Low",
+      commitmentDesc: "1-2 ore/settimana",
       features: ["Longevity Mix", "Capsule Essenziali", "Olio Extra Vergine"],
       color: "performance-green",
       popular: false
@@ -27,7 +28,8 @@ export default function IntegrazioneSection() {
       name: "Stack Performance",
       description: "Massima ottimizzazione",
       icon: Rocket,
-      price: 249,
+      commitment: "Medio",
+      commitmentDesc: "3-5 ore/settimana",
       features: ["Tutto dello Stack Fondazione", "Antiossidanti Avanzati", "Adattogeni Premium", "Nootropi Cognitivi"],
       color: "scientific-blue",
       popular: true
@@ -36,7 +38,8 @@ export default function IntegrazioneSection() {
       name: "Stack Ultimate",
       description: "Protocollo completo",
       icon: Crown,
-      price: 449,
+      commitment: "All-In",
+      commitmentDesc: "6+ ore/settimana",
       features: ["Tutto dello Stack Performance", "Test Biomarcatori", "Consulenza Personalizzata"],
       color: "yellow-500",
       popular: false
@@ -130,8 +133,9 @@ export default function IntegrazioneSection() {
               </ul>
               
               <div className="text-center">
-                <div className="text-3xl font-bold mb-2">
-                  €{stack.price}<span className="text-lg text-slate-400">/mese</span>
+                <div className="mb-4">
+                  <div className="text-3xl font-bold mb-1">{stack.commitment}</div>
+                  <div className="text-sm text-slate-400">{stack.commitmentDesc}</div>
                 </div>
                 <Button 
                   className={`w-full ${
