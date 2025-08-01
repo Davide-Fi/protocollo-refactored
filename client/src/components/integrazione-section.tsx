@@ -80,8 +80,8 @@ export default function IntegrazioneSection() {
           
           <div className="grid grid-cols-2 gap-6">
             <img 
-              src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=500" 
-              alt="Professional man taking vitamins and supplements" 
+              src="https://images.unsplash.com/photo-1534368420009-621bfab424a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=500" 
+              alt="Athletic man doing floor exercises at the gym" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
             <img 
