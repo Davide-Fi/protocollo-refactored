@@ -1,5 +1,6 @@
 import { Award, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroImage from "@assets/generated_images/Italian_athletic_man_professional_portrait_26460732.png";
 
 export default function HeroSection() {
   const scrollToSection = (sectionId: string) => {
@@ -63,7 +64,7 @@ export default function HeroSection() {
           
           <div className="relative">
             <img 
-              src="/attached_assets/generated_images/Italian_athletic_man_professional_portrait_26460732.png" 
+              src={heroImage} 
               alt="Uomo italiano professionale rappresentante ottimizzazione salute" 
               className="w-full h-auto rounded-lg shadow-2xl"
             />

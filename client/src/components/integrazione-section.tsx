@@ -1,5 +1,7 @@
 import { Brain, Heart, Dumbbell, Shield, Battery, Moon, Leaf, Rocket, Crown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import gymImage from "@assets/generated_images/Italian_athletic_man_floor_gym_exercises_57d662be.png";
+import proteinImage from "@assets/generated_images/Italian_man_drinking_protein_shake_fitness_5a15c126.png";
 
 export default function IntegrazioneSection() {
   const benefits = [
@@ -80,12 +82,12 @@ export default function IntegrazioneSection() {
           
           <div className="grid grid-cols-2 gap-6">
             <img 
-              src="/attached_assets/generated_images/Italian_athletic_man_floor_gym_exercises_57d662be.png" 
+              src={gymImage} 
               alt="Uomo atletico italiano che fa esercizi a terra in palestra" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
             <img 
-              src="/attached_assets/generated_images/Italian_man_drinking_protein_shake_fitness_5a15c126.png" 
+              src={proteinImage} 
               alt="Uomo atletico italiano che beve frullato proteico per fitness" 
               className="w-full h-auto rounded-lg shadow-xl mt-8"
             />
