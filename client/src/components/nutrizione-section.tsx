@@ -41,7 +41,7 @@ export default function NutrizioneSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <img 
-              src="/attached_assets/generated_images/Italian_man_eating_healthy_nutrition_meal_b9e3d4f2.png" 
+              src="/attached_assets/generated_images/Italian_man_eating_healthy_nutrition_meal_771476cc.png" 
               alt="Uomo italiano che mangia pasto nutritivo e salutare" 
               className="w-full h-auto rounded-lg shadow-xl"
             />

@@ -63,7 +63,7 @@ export default function HeroSection() {
           
           <div className="relative">
             <img 
-              src="/attached_assets/generated_images/Italian_athletic_man_professional_portrait_a8f4c2e1.png" 
+              src="/attached_assets/generated_images/Italian_athletic_man_professional_portrait_26460732.png" 
               alt="Uomo italiano professionale rappresentante ottimizzazione salute" 
               className="w-full h-auto rounded-lg shadow-2xl"
             />

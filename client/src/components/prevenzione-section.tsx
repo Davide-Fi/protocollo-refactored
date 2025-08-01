@@ -65,7 +65,7 @@ export default function PreventioneSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
             <img 
-              src="/attached_assets/generated_images/Italian_man_focused_health_optimization_prevention_e9g0h7i5.png" 
+              src="/attached_assets/generated_images/Italian_man_focused_health_optimization_prevention_3d851534.png" 
               alt="Uomo atletico italiano concentrato su ottimizzazione salute e prevenzione" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
