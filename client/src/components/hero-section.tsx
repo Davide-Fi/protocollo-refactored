@@ -21,12 +21,12 @@ export default function HeroSection() {
             </div>
             
             <h1 className="text-5xl lg:text-6xl font-black leading-tight mb-6">
-              Il Protocollo <span className="text-scientific-blue">Definitivo</span> per la Longevità Maschile
+              Il Protocollo <span className="text-scientific-blue">Definitivo</span> per la Longevità
             </h1>
             
             <p className="text-xl text-slate-300 mb-8 leading-relaxed">
               Raggiungi l'eccellenza fisica e mentale con protocolli scientificamente provati. 
-              Unisciti a migliaia di uomini che puntano alla longevità ottimale.
+              Unisciti a migliaia di persone che puntano alla longevità ottimale.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -65,7 +65,7 @@ export default function HeroSection() {
           <div className="relative">
             <img 
               src={heroImage} 
-              alt="Uomo italiano professionale rappresentante ottimizzazione salute" 
+              alt="Persona professionale rappresentante ottimizzazione salute" 
               className="w-full h-auto rounded-lg shadow-2xl"
             />
             

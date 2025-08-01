@@ -86,12 +86,12 @@ export default function IntegrazioneSection() {
           <div className="grid grid-cols-2 gap-6">
             <img 
               src={gymImage} 
-              alt="Uomo atletico italiano che fa esercizi a terra in palestra" 
+              alt="Persona atletica che fa esercizi a terra in palestra" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
             <img 
               src={proteinImage} 
-              alt="Uomo atletico italiano che beve frullato proteico per fitness" 
+              alt="Persona atletica che beve frullato proteico per fitness" 
               className="w-full h-auto rounded-lg shadow-xl mt-8"
             />
           </div>

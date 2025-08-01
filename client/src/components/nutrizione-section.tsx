@@ -43,7 +43,7 @@ export default function NutrizioneSection() {
           <div>
             <img 
               src={nutritionImage} 
-              alt="Uomo italiano che mangia pasto nutritivo e salutare" 
+              alt="Persona che mangia pasto nutritivo e salutare" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
           </div>

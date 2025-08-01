@@ -67,7 +67,7 @@ export default function PreventioneSection() {
           <div>
             <img 
               src={preventionImage} 
-              alt="Uomo atletico italiano concentrato su ottimizzazione salute e prevenzione" 
+              alt="Persona atletica concentrata su ottimizzazione salute e prevenzione" 
               className="w-full h-auto rounded-lg shadow-xl"
             />
           </div>

@@ -21,7 +21,7 @@ export default function Footer() {
               <span className="text-2xl font-bold">Protocollo</span>
             </div>
             <p className="text-slate-400 mb-6">
-              L'ottimizzazione della longevità maschile basata su evidenze scientifiche.
+              Ottimizzazione longevità basata su evidenze scientifiche.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-slate-400 hover:text-scientific-blue transition-colors">

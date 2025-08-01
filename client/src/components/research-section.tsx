@@ -8,8 +8,8 @@ export default function ResearchSection() {
     {
       image: nutritionResearchImage,
       category: "NUTRIZIONE",
-      title: "Intermittent Fasting e Longevità Maschile",
-      excerpt: "Nuovi studi dimostrano come il digiuno intermittente possa aumentare l'aspettativa di vita negli uomini del 15-20%.",
+      title: "Intermittent Fasting e Longevità",
+      excerpt: "Nuovi studi dimostrano come il digiuno intermittente possa aumentare l'aspettativa di vita del 15-20%.",
       date: "15 Gen 2024",
       categoryColor: "scientific-blue"
     },
@@ -17,7 +17,7 @@ export default function ResearchSection() {
       image: supplementsResearchImage,
       category: "INTEGRAZIONE",
       title: "NAD+ e Prestazioni Cognitive",
-      excerpt: "Ricerca su come i precursori del NAD+ migliorino memoria e focus negli uomini over 40.",
+      excerpt: "Ricerca su come i precursori del NAD+ migliorino memoria e focus negli over 40.",
       date: "12 Gen 2024",
       categoryColor: "performance-green"
     },
@@ -25,7 +25,7 @@ export default function ResearchSection() {
       image: preventionResearchImage,
       category: "PREVENZIONE",
       title: "Biomarcatori Predittivi del Aging",
-      excerpt: "Identificati 12 biomarcatori chiave per predire l'invecchiamento biologico negli uomini.",
+      excerpt: "Identificati 12 biomarcatori chiave per predire l'invecchiamento biologico.",
       date: "8 Gen 2024",
       categoryColor: "yellow-500"
     }
