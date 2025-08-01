@@ -61,7 +61,7 @@ export default function NutrizioneSection() {
               </div>
               <div className="flex items-center space-x-3">
                 <CheckCircle className="text-performance-green h-5 w-5" />
-                <span>30+ kg di verdure al mese</span>
+                <span>Target: 35+ kg di verdure al mese</span>
               </div>
               <div className="flex items-center space-x-3">
                 <CheckCircle className="text-performance-green h-5 w-5" />

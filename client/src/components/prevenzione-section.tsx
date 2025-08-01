@@ -25,25 +25,25 @@ export default function PreventioneSection() {
       icon: Moon,
       title: "Protocollo Sonno",
       description: "8+ ore di sonno ottimizzato per il recupero",
-      target: "Target: 85% efficienza"
+      target: "Obiettivo: 92% efficienza"
     },
     {
       icon: Activity,
       title: "Protocollo Fitness",
       description: "Allenamento quotidiano per forza e resistenza",
-      target: "Target: VO2Max 50+"
+      target: "Obiettivo: VO2Max 55+"
     },
     {
       icon: Thermometer,
       title: "Controllo Stress",
       description: "Tecniche per gestire cortisolo e stress cronico",
-      target: "Target: HRV 50+"
+      target: "Obiettivo: HRV 75+"
     },
     {
       icon: Microscope,
       title: "Monitoraggio",
       description: "Test biomarcatori per tracking continuo",
-      target: "Target: 70+ marcatori"
+      target: "Obiettivo: 85+ marcatori"
     }
   ];
 

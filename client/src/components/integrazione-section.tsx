@@ -16,7 +16,7 @@ export default function IntegrazioneSection() {
       name: "Stack Fondazione",
       description: "Essenziali per iniziare",
       icon: Leaf,
-      price: 89,
+      price: 129,
       features: ["Longevity Mix", "Capsule Essenziali", "Olio Extra Vergine"],
       color: "performance-green",
       popular: false
@@ -25,7 +25,7 @@ export default function IntegrazioneSection() {
       name: "Stack Performance",
       description: "Massima ottimizzazione",
       icon: Rocket,
-      price: 149,
+      price: 249,
       features: ["Tutto dello Stack Fondazione", "Antiossidanti Avanzati", "Adattogeni Premium", "Nootropi Cognitivi"],
       color: "scientific-blue",
       popular: true
@@ -34,7 +34,7 @@ export default function IntegrazioneSection() {
       name: "Stack Ultimate",
       description: "Protocollo completo",
       icon: Crown,
-      price: 299,
+      price: 449,
       features: ["Tutto dello Stack Performance", "Test Biomarcatori", "Consulenza Personalizzata"],
       color: "yellow-500",
       popular: false
@@ -60,8 +60,8 @@ export default function IntegrazioneSection() {
           <div>
             <h3 className="text-3xl font-bold mb-6">Stack Ultimate Longevità</h3>
             <p className="text-slate-300 mb-8 text-lg">
-              Combinazione precisa di 40+ composti bioattivi, dosati con precisione scientifica per 
-              massimizzare l'assorbimento e l'efficacia. Ogni ingrediente è testato per purezza e potenza.
+              Obiettivo: combinazione precisa di 50+ composti bioattivi per raggiungere 
+              l'assorbimento ottimale e massima efficacia. Target purezza 99.8% per ogni ingrediente.
             </p>
             
             <div className="grid md:grid-cols-2 gap-4 mb-8">

@@ -3,40 +3,40 @@ import { Dna, Heart, Moon, Activity } from "lucide-react";
 export default function DashboardSection() {
   const metrics = [
     {
-      title: "Età Biologica",
-      value: "28 anni",
-      subtitle: "vs 45 cronologica (-17 anni)",
+      title: "Target Età Biologica",
+      value: "-22 anni",
+      subtitle: "Obiettivo vs cronologica",
       icon: Dna,
       color: "performance-green"
     },
     {
-      title: "VO2 Max",
-      value: "52.1 ml/kg/min",
-      subtitle: "Top 1% per età",
+      title: "Target VO2 Max",
+      value: "55+ ml/kg/min",
+      subtitle: "Puntare al top 0.5%",
       icon: Heart,
       color: "scientific-blue"
     },
     {
-      title: "Efficienza Sonno",
-      value: "89%",
-      subtitle: "8h 23m durata media",
+      title: "Target Sonno",
+      value: "92%",
+      subtitle: "8h 30m efficienza ideale",
       icon: Moon,
       color: "yellow-500"
     },
     {
-      title: "HRV",
-      value: "68 ms",
-      subtitle: "Eccellente recupero",
+      title: "Target HRV",
+      value: "75+ ms",
+      subtitle: "Recupero ottimale",
       icon: Activity,
       color: "performance-green"
     }
   ];
 
   const progress = [
-    { label: "Protocollo Nutrizione", value: 94, color: "performance-green" },
-    { label: "Stack Integrazione", value: 87, color: "scientific-blue" },
-    { label: "Prevenzione", value: 91, color: "yellow-500" },
-    { label: "Fitness", value: 96, color: "performance-green" }
+    { label: "Target Nutrizione", value: 98, color: "performance-green" },
+    { label: "Target Integrazione", value: 95, color: "scientific-blue" },
+    { label: "Target Prevenzione", value: 97, color: "yellow-500" },
+    { label: "Target Fitness", value: 99, color: "performance-green" }
   ];
 
   return (
@@ -91,9 +91,9 @@ export default function DashboardSection() {
               </div>
               
               <div className="mt-8 p-4 bg-scientific-blue/10 rounded-lg border border-scientific-blue/30">
-                <h4 className="font-semibold mb-2">Punteggio Longevità</h4>
-                <div className="text-4xl font-black text-scientific-blue">92/100</div>
-                <div className="text-sm text-slate-400">Eccellente ottimizzazione</div>
+                <h4 className="font-semibold mb-2">Target Longevità</h4>
+                <div className="text-4xl font-black text-scientific-blue">98/100</div>
+                <div className="text-sm text-slate-400">Obiettivo elite</div>
               </div>
             </div>
           </div>
