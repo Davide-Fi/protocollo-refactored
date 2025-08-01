@@ -1,5 +1,6 @@
 import { Award, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 import heroImage from "@assets/generated_images/Italian_athletic_man_professional_portrait_26460732.png";
 
 export default function HeroSection() {
@@ -30,18 +31,19 @@ export default function HeroSection() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <Link href="/il-protocollo">
+                <Button 
+                  className="bg-scientific-blue hover:bg-scientific-blue/80 text-white px-8 py-4 font-bold text-lg w-full sm:w-auto"
+                >
+                  Scopri Il Protocollo
+                </Button>
+              </Link>
               <Button 
                 onClick={() => scrollToSection('nutrizione')}
-                className="bg-scientific-blue hover:bg-scientific-blue/80 text-white px-8 py-4 font-bold text-lg"
-              >
-                Accedi ai Protocolli
-              </Button>
-              <Button 
                 variant="outline"
                 className="border-2 border-slate-600 hover:border-scientific-blue text-slate-300 hover:text-scientific-blue px-8 py-4 font-semibold bg-transparent"
               >
-                <Play className="mr-2 h-4 w-4" />
-                Guarda Demo
+                Accedi ai Protocolli
               </Button>
             </div>
             

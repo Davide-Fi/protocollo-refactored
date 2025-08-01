@@ -1,5 +1,6 @@
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
+import ProtocolloSection from "@/components/protocollo-section";
 import NutrizioneSection from "@/components/nutrizione-section";
 import IntegrazioneSection from "@/components/integrazione-section";
 import PreventioneSection from "@/components/prevenzione-section";
@@ -14,6 +15,7 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
+        <ProtocolloSection />
         <NutrizioneSection />
         <IntegrazioneSection />
         <PreventioneSection />
