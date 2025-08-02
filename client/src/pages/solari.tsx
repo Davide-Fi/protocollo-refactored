@@ -28,7 +28,23 @@ interface SunscreenProduct {
   brand: string;
   productName: string;
   spf: number;
-  filters: string[];
+  // Filter composition as boolean fields
+  tinosorbS: boolean;
+  tinosorbM: boolean;
+  mexorylSX: boolean;
+  mexorylXL: boolean;
+  mexoryl400: boolean;
+  uvinulAPlus: boolean;
+  uvinulT150: boolean;
+  homosalate: boolean;
+  octocrylene: boolean;
+  avobenzone: boolean;
+  ethylhexylSalicylate: boolean;
+  octisalate: boolean;
+  enulizole: boolean;
+  zincOxide: boolean;
+  titaniumDioxide: boolean;
+  // Ratings
   uva1Rating: "excellent" | "good" | "moderate" | "poor";
   uva2Rating: "excellent" | "good" | "moderate" | "poor";
   uvbRating: "excellent" | "good" | "moderate" | "poor";
@@ -40,7 +56,7 @@ interface SunscreenProduct {
 
 const sunscreenFilters: SunscreenFilter[] = [
   {
-    tradeName: "Tinosorb® S",
+    tradeName: "Tinosorb S",
     inciName: "Bis-ethylhexyloxyphenol Methoxyphenyl Triazine",
     uvRange: "290-≈370 nm",
     peakWavelength: "≈ 342 nm",
@@ -54,7 +70,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     longUva1Protection: "moderate"
   },
   {
-    tradeName: "Tinosorb® M",
+    tradeName: "Tinosorb M",
     inciName: "Methylene Bis-Benzotriazolyl Tetramethylbutylphenol",
     uvRange: "280-400 nm plus some visible blue light",
     peakWavelength: "Broad spectrum",
@@ -68,7 +84,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     longUva1Protection: "good"
   },
   {
-    tradeName: "Mexoryl® XL",
+    tradeName: "Mexoryl XL",
     inciName: "Drometrizole trisiloxane",
     uvRange: "UVB + UVA (~303 & 344 nm)",
     peakWavelength: "303 nm (UVB) & 344 nm (UVA)",
@@ -82,7 +98,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     longUva1Protection: "moderate"
   },
   {
-    tradeName: "Mexoryl® SX",
+    tradeName: "Mexoryl SX",
     inciName: "Ecamsule (Terephthalylidene dicamphor sulfonic acid)",
     uvRange: "UVA (max ~343–350 nm)",
     peakWavelength: "343–350 nm",
@@ -96,7 +112,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     longUva1Protection: "good"
   },
   {
-    tradeName: "Mexoryl® 400",
+    tradeName: "Mexoryl 400",
     inciName: "Methoxypropylamino cyclohexenylidene ethoxyethylcyanoacetate (MCE)",
     uvRange: "Long-wave UVA1 (~370–400 nm)",
     peakWavelength: "370–400 nm",
@@ -214,7 +230,21 @@ const sunscreenProducts: SunscreenProduct[] = [
     brand: "La Roche-Posay",
     productName: "Anthelios Ultra Cover SPF 50+",
     spf: 50,
-    filters: ["Ethylhexyl Salicylate", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX", "Mexoryl XL"],
+    tinosorbS: true,
+    tinosorbM: false,
+    mexorylSX: true,
+    mexorylXL: true,
+    mexoryl400: false,
+    uvinulAPlus: false,
+    uvinulT150: true,
+    homosalate: false,
+    octocrylene: false,
+    avobenzone: true,
+    ethylhexylSalicylate: true,
+    octisalate: false,
+    enulizole: false,
+    zincOxide: false,
+    titaniumDioxide: false,
     uva1Rating: "excellent",
     uva2Rating: "excellent", 
     uvbRating: "excellent",
@@ -226,7 +256,21 @@ const sunscreenProducts: SunscreenProduct[] = [
     brand: "Vichy",
     productName: "Capital Soleil SPF 50+",
     spf: 50,
-    filters: ["Homosalate", "Octocrylene", "Ethylhexyl Salicylate", "Enulizole", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX"],
+    tinosorbS: true,
+    tinosorbM: false,
+    mexorylSX: true,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: false,
+    uvinulT150: true,
+    homosalate: true,
+    octocrylene: true,
+    avobenzone: true,
+    ethylhexylSalicylate: true,
+    octisalate: false,
+    enulizole: true,
+    zincOxide: false,
+    titaniumDioxide: false,
     uva1Rating: "excellent",
     uva2Rating: "excellent",
     uvbRating: "excellent", 
@@ -238,7 +282,21 @@ const sunscreenProducts: SunscreenProduct[] = [
     brand: "ISDIN",
     productName: "Fotoprotetor Fusion Water SPF 50",
     spf: 50,
-    filters: ["Tinosorb S", "Uvinul A Plus", "Octisalate"],
+    tinosorbS: true,
+    tinosorbM: false,
+    mexorylSX: false,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: true,
+    uvinulT150: false,
+    homosalate: false,
+    octocrylene: false,
+    avobenzone: false,
+    ethylhexylSalicylate: false,
+    octisalate: true,
+    enulizole: false,
+    zincOxide: false,
+    titaniumDioxide: false,
     uva1Rating: "excellent",
     uva2Rating: "excellent",
     uvbRating: "excellent",
@@ -250,7 +308,21 @@ const sunscreenProducts: SunscreenProduct[] = [
     brand: "Eucerin",
     productName: "Sun Sensitive Protect SPF 30",
     spf: 30,
-    filters: ["Tinosorb S", "Tinosorb M", "Octisalate"],
+    tinosorbS: true,
+    tinosorbM: true,
+    mexorylSX: false,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: false,
+    uvinulT150: false,
+    homosalate: false,
+    octocrylene: false,
+    avobenzone: false,
+    ethylhexylSalicylate: false,
+    octisalate: true,
+    enulizole: false,
+    zincOxide: false,
+    titaniumDioxide: false,
     uva1Rating: "excellent",
     uva2Rating: "excellent",
     uvbRating: "good",
@@ -262,7 +334,21 @@ const sunscreenProducts: SunscreenProduct[] = [
     brand: "Avène",
     productName: "Fluide Mineral Teinté SPF 50+",
     spf: 50,
-    filters: ["Zinc Oxide", "Titanium Dioxide"],
+    tinosorbS: false,
+    tinosorbM: false,
+    mexorylSX: false,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: false,
+    uvinulT150: false,
+    homosalate: false,
+    octocrylene: false,
+    avobenzone: false,
+    ethylhexylSalicylate: false,
+    octisalate: false,
+    enulizole: false,
+    zincOxide: true,
+    titaniumDioxide: true,
     uva1Rating: "good",
     uva2Rating: "excellent",
     uvbRating: "excellent",
@@ -274,7 +360,21 @@ const sunscreenProducts: SunscreenProduct[] = [
     brand: "Heliocare",
     productName: "Advanced Gel SPF 50",
     spf: 50,
-    filters: ["Tinosorb S", "Uvinul A Plus", "Uvinul T150"],
+    tinosorbS: true,
+    tinosorbM: false,
+    mexorylSX: false,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: true,
+    uvinulT150: true,
+    homosalate: false,
+    octocrylene: false,
+    avobenzone: false,
+    ethylhexylSalicylate: false,
+    octisalate: false,
+    enulizole: false,
+    zincOxide: false,
+    titaniumDioxide: false,
     uva1Rating: "excellent",
     uva2Rating: "excellent", 
     uvbRating: "excellent",
@@ -296,94 +396,32 @@ export default function SolariPage() {
   
   // Function to find products containing a specific filter
   const findProductsWithFilter = (filterTradeName: string) => {
-    console.log('=== DEBUGGING FILTER MATCHING ===');
-    console.log('Looking for filter:', filterTradeName);
-    
-    // Find the selected filter object to get both trade name and INCI name
-    const selectedFilterObj = sunscreenFilters.find(f => f.tradeName === filterTradeName);
-    console.log('Selected filter object:', selectedFilterObj);
-    
-    // Helper function to normalize filter names (remove ®, ™, etc.)
-    const normalizeFilterName = (name: string) => {
-      return name.toLowerCase()
-        .replace(/®/g, '')
-        .replace(/™/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
+    // Map filter trade names to product boolean fields
+    const filterMapping: Record<string, keyof SunscreenProduct> = {
+      'Tinosorb S': 'tinosorbS',
+      'Tinosorb M': 'tinosorbM',
+      'Mexoryl SX': 'mexorylSX',
+      'Mexoryl XL': 'mexorylXL',
+      'Mexoryl 400': 'mexoryl400',
+      'Uvinul A Plus': 'uvinulAPlus',
+      'Uvinul T150': 'uvinulT150',
+      'Homosalate': 'homosalate',
+      'Octocrylene': 'octocrylene',
+      'Avobenzone': 'avobenzone',
+      'Ethylhexyl Salicylate': 'ethylhexylSalicylate',
+      'Octisalate': 'octisalate',
+      'Enulizole': 'enulizole',
+      'Zinc Oxide': 'zincOxide',
+      'Titanium Dioxide': 'titaniumDioxide'
     };
     
-    const tradeNameNormalized = normalizeFilterName(filterTradeName);
-    console.log('Normalized filter name:', tradeNameNormalized);
+    const fieldName = filterMapping[filterTradeName];
     
-    const matches = sunscreenProducts.filter(product => {
-      console.log('Checking product:', product.brand, product.productName);
-      console.log('Product filters:', product.filters);
-      
-      const hasMatch = product.filters.some(filter => {
-        const filterNormalized = normalizeFilterName(filter);
-        console.log(`  Comparing "${filterNormalized}" with "${tradeNameNormalized}"`);
-        
-        // Direct name matches (normalized)
-        if (filterNormalized === tradeNameNormalized || 
-            filterNormalized.includes(tradeNameNormalized) ||
-            tradeNameNormalized.includes(filterNormalized)) {
-          console.log('    ✓ Direct match found!');
-          return true;
-        }
-        
-        // Check INCI name matches if available
-        if (selectedFilterObj) {
-          const inciNameNormalized = normalizeFilterName(selectedFilterObj.inciName);
-          if (filterNormalized === inciNameNormalized || 
-              filterNormalized.includes(inciNameNormalized) ||
-              inciNameNormalized.includes(filterNormalized)) {
-            console.log('    ✓ INCI match found!');
-            return true;
-          }
-        }
-        
-        // Special mappings for common filter variations
-        const filterMappings: Record<string, string[]> = {
-          'tinosorb s': ['tinosorb s', 'bis-ethylhexyloxyphenol methoxyphenyl triazine'],
-          'tinosorb m': ['tinosorb m', 'methylene bis-benzotriazolyl tetramethylbutylphenol'],
-          'mexoryl sx': ['mexoryl sx', 'terephthalylidene dicamphor sulfonic acid', 'ecamsule'],
-          'mexoryl xl': ['mexoryl xl', 'drometrizole trisiloxane'],
-          'mexoryl 400': ['mexoryl 400', 'methoxypropylamino cyclohexenylidene ethoxyethylcyanoacetate'],
-          'uvinul a plus': ['uvinul a plus', 'diethylamino hydroxybenzoyl hexyl benzoate'],
-          'uvinul t150': ['uvinul t150', 'ethylhexyl triazone'],
-          'zinc oxide': ['zinc oxide', 'zno'],
-          'titanium dioxide': ['titanium dioxide', 'tio2'],
-          'homosalate': ['homosalate'],
-          'octocrylene': ['octocrylene'],
-          'avobenzone': ['avobenzone', 'butyl methoxydibenzoylmethane'],
-          'octisalate': ['octisalate', 'ethylhexyl salicylate'],
-          'ethylhexyl salicylate': ['ethylhexyl salicylate', 'octisalate'],
-          'enulizole': ['enulizole', 'phenylbenzimidazole sulfonic acid']
-        };
-        
-        // Check if any mapping matches
-        for (const [key, variations] of Object.entries(filterMappings)) {
-          if (tradeNameNormalized.includes(key) || 
-              (selectedFilterObj && normalizeFilterName(selectedFilterObj.inciName).includes(key))) {
-            const hasVariationMatch = variations.some(variation => filterNormalized.includes(variation));
-            if (hasVariationMatch) {
-              console.log('    ✓ Mapping match found!', key, '→', variations);
-              return true;
-            }
-          }
-        }
-        
-        console.log('    ✗ No match');
-        return false;
-      });
-      
-      console.log('Product match result:', hasMatch);
-      return hasMatch;
-    });
+    if (!fieldName) {
+      return [];
+    }
     
-    console.log('Total matches found:', matches.length);
-    console.log('=== END DEBUGGING ===');
-    return matches;
+    return sunscreenProducts.filter(product => product[fieldName] === true);
   };
 
   const handleSort = (column: string) => {
@@ -1148,36 +1186,55 @@ export default function SolariPage() {
                               
                               {/* Filter Composition */}
                               <div className="mb-4">
-                                <p className="text-slate-400 text-xs mb-3 font-medium">Composizione Filtri ({product.filters.length})</p>
-                                <div className="flex flex-wrap gap-2">
-                                  {product.filters.map((filter, idx) => {
-                                    const normalizeFilterName = (name: string) => {
-                                      return name.toLowerCase()
-                                        .replace(/®/g, '')
-                                        .replace(/™/g, '')
-                                        .replace(/\s+/g, ' ')
-                                        .trim();
-                                    };
-                                    
-                                    const isHighlighted = 
-                                      normalizeFilterName(filter) === normalizeFilterName(selectedFilter.tradeName) ||
-                                      normalizeFilterName(filter).includes(normalizeFilterName(selectedFilter.tradeName)) ||
-                                      normalizeFilterName(selectedFilter.tradeName).includes(normalizeFilterName(filter));
-                                    
-                                    return (
-                                      <span 
-                                        key={idx} 
-                                        className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                                          isHighlighted
-                                            ? 'bg-performance-green/20 text-performance-green border border-performance-green/40 ring-1 ring-performance-green/20' 
-                                            : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/40'
-                                        }`}
-                                      >
-                                        {filter}
-                                      </span>
-                                    );
-                                  })}
-                                </div>
+                                {(() => {
+                                  const activeFilters: { name: string; isSelected: boolean }[] = [];
+                                  const filterMapping = [
+                                    { field: 'tinosorbS', name: 'Tinosorb S' },
+                                    { field: 'tinosorbM', name: 'Tinosorb M' },
+                                    { field: 'mexorylSX', name: 'Mexoryl SX' },
+                                    { field: 'mexorylXL', name: 'Mexoryl XL' },
+                                    { field: 'mexoryl400', name: 'Mexoryl 400' },
+                                    { field: 'uvinulAPlus', name: 'Uvinul A Plus' },
+                                    { field: 'uvinulT150', name: 'Uvinul T150' },
+                                    { field: 'homosalate', name: 'Homosalate' },
+                                    { field: 'octocrylene', name: 'Octocrylene' },
+                                    { field: 'avobenzone', name: 'Avobenzone' },
+                                    { field: 'ethylhexylSalicylate', name: 'Ethylhexyl Salicylate' },
+                                    { field: 'octisalate', name: 'Octisalate' },
+                                    { field: 'enulizole', name: 'Enulizole' },
+                                    { field: 'zincOxide', name: 'Zinc Oxide' },
+                                    { field: 'titaniumDioxide', name: 'Titanium Dioxide' }
+                                  ] as const;
+                                  
+                                  filterMapping.forEach(({ field, name }) => {
+                                    if (product[field]) {
+                                      activeFilters.push({
+                                        name,
+                                        isSelected: name === selectedFilter.tradeName
+                                      });
+                                    }
+                                  });
+                                  
+                                  return (
+                                    <>
+                                      <p className="text-slate-400 text-xs mb-3 font-medium">Composizione Filtri ({activeFilters.length})</p>
+                                      <div className="flex flex-wrap gap-2">
+                                        {activeFilters.map((filter, idx) => (
+                                          <span 
+                                            key={idx} 
+                                            className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+                                              filter.isSelected
+                                                ? 'bg-performance-green/20 text-performance-green border border-performance-green/40 ring-1 ring-performance-green/20' 
+                                                : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/40'
+                                            }`}
+                                          >
+                                            {filter.name}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </>
+                                  );
+                                })()}
                               </div>
 
                               {/* Product Description */}
