@@ -1,6 +1,6 @@
 # Overview
 
-This is a full-stack web application for "Protocollo", a longevity optimization platform focused on male health. The application provides scientifically-backed protocols for nutrition, supplementation, prevention, and performance tracking. It features a dark-themed landing page with sections for different health protocols, a newsletter subscription system, and consultation request functionality.
+This is a full-stack web application for "Protocollo", a longevity optimization platform focused on male health. The application provides scientifically-backed protocols for nutrition, supplementation, prevention, and performance tracking. It features a dark-themed landing page with sections for different health protocols, a newsletter subscription system, consultation request functionality, and a comprehensive sunscreen filter database with working cross-database linking functionality.
 
 # User Preferences
 
@@ -30,6 +30,7 @@ Always add new pages to both hamburger menu and footer navigation automatically.
 - **Schema Management**: Shared schema definitions between client and server using Drizzle and Zod
 - **Development Storage**: In-memory storage implementation for development/testing
 - **Migrations**: Drizzle Kit for database schema migrations
+- **Cross-Database Linking**: Successfully implemented popup system linking sunscreen filters to products containing those filters using boolean field mapping (Jan 2025)
 
 ## Authentication and Authorization
 - **Session Management**: Basic session handling with connect-pg-simple for PostgreSQL session storage
