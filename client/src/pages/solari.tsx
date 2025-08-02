@@ -1142,80 +1142,50 @@ export default function SolariPage() {
 
               <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
                 <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
-                <div className="space-y-4 text-sm">
-                  {/* UV Protection Percentage */}
-                  <div>
-                    <h4 className="text-sm font-semibold text-scientific-blue mb-2">Protezione UVB</h4>
-                    <div className="grid grid-cols-3 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
-                      <span>SPF</span>
-                      <span>UVB Bloccato</span>
-                      <span>UVB Passante</span>
+                <div className="space-y-3 text-sm">
+                  {/* Merged SPF Table */}
+                  <div className="grid grid-cols-7 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
+                    <span>SPF</span>
+                    <span>UVB Bloccato</span>
+                    <span className="text-yellow-400">UV 6</span>
+                    <span className="text-orange-400">UV 7</span>
+                    <span className="text-orange-400">UV 8</span>
+                    <span className="text-red-400">UV 9</span>
+                    <span className="text-red-400">UV 10</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
+                      <span className="font-semibold">SPF 20</span>
+                      <span className="text-yellow-400">~95%</span>
+                      <span>200 min</span>
+                      <span>171 min</span>
+                      <span>150 min</span>
+                      <span>133 min</span>
+                      <span>120 min</span>
                     </div>
-                    <div className="space-y-1">
-                      <div className="grid grid-cols-3 gap-2 text-slate-300">
-                        <span className="font-semibold">SPF 20</span>
-                        <span className="text-yellow-400">~95%</span>
-                        <span className="text-red-400">~5%</span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 text-slate-300">
-                        <span className="font-semibold">SPF 30</span>
-                        <span className="text-blue-400">~97%</span>
-                        <span className="text-red-400">~3%</span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 text-slate-300">
-                        <span className="font-semibold">SPF 50</span>
-                        <span className="text-green-400">~98%</span>
-                        <span className="text-red-400">~2%</span>
-                      </div>
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
+                      <span className="font-semibold">SPF 30</span>
+                      <span className="text-blue-400">~97%</span>
+                      <span>300 min</span>
+                      <span>257 min</span>
+                      <span>225 min</span>
+                      <span>200 min</span>
+                      <span>180 min</span>
+                    </div>
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
+                      <span className="font-semibold">SPF 50</span>
+                      <span className="text-green-400">~98%</span>
+                      <span className="text-green-400">500 min</span>
+                      <span className="text-green-400">429 min</span>
+                      <span className="text-green-400">375 min</span>
+                      <span className="text-green-400">333 min</span>
+                      <span className="text-green-400">300 min</span>
                     </div>
                   </div>
-
-                  {/* UV Index Protection Time */}
-                  <div>
-                    <h4 className="text-sm font-semibold text-scientific-blue mb-2">Tempo Protezione per UV Index</h4>
-                    <div className="grid grid-cols-4 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
-                      <span>UV Index</span>
-                      <span>SPF 20</span>
-                      <span>SPF 30</span>
-                      <span>SPF 50</span>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="grid grid-cols-4 gap-2 text-slate-300">
-                        <span className="font-semibold text-yellow-400">6</span>
-                        <span>200 min</span>
-                        <span>300 min</span>
-                        <span className="text-green-400">500 min</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 text-slate-300">
-                        <span className="font-semibold text-orange-400">7</span>
-                        <span>171 min</span>
-                        <span>257 min</span>
-                        <span className="text-green-400">429 min</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 text-slate-300">
-                        <span className="font-semibold text-orange-400">8</span>
-                        <span>150 min</span>
-                        <span>225 min</span>
-                        <span className="text-green-400">375 min</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 text-slate-300">
-                        <span className="font-semibold text-red-400">9</span>
-                        <span>133 min</span>
-                        <span>200 min</span>
-                        <span className="text-green-400">333 min</span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 text-slate-300">
-                        <span className="font-semibold text-red-400">10</span>
-                        <span>120 min</span>
-                        <span>180 min</span>
-                        <span className="text-green-400">300 min</span>
-                      </div>
-                    </div>
-                    <div className="mt-3 pt-2 border-t border-steel-blue/30">
-                      <p className="text-xs text-slate-400 italic">
-                        SPF moltiplica quanto tempo puoi stare protetto dalle scottature rispetto alla pelle nuda.
-                      </p>
-                    </div>
+                  <div className="mt-3 pt-2 border-t border-steel-blue/30">
+                    <p className="text-xs text-slate-400 italic">
+                      SPF moltiplica quanto tempo puoi stare protetto dalle scottature rispetto alla pelle nuda.
+                    </p>
                   </div>
                 </div>
               </div>
