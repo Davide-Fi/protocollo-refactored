@@ -492,72 +492,90 @@ const sunscreenProducts: SunscreenProduct[] = [
   }
 ];
 
-// Skin Type Burn Times Data
+// Skin Type Burn Times Data - Complete UV Index Coverage
 const skinTypeData = [
   {
     type: 'Type I',
     description: 'Very Pale',
     burnTimes: { 
-      uv6: 10, uv7: 8.5, uv8: 7.5, uv9: 6, uv10: 5,
-      uv9_noSPF: 6,
-      uv9_spf20: 120,
-      uv9_spf30: 180,
-      uv9_spf50: 300
+      // No SPF times for each UV index
+      uv6: 9, uv7: 8, uv8: 7, uv9: 6, uv10: 5,
+      // SPF 20 times for each UV index
+      uv6_spf20: 180, uv7_spf20: 154, uv8_spf20: 135, uv9_spf20: 120, uv10_spf20: 100,
+      // SPF 30 times for each UV index
+      uv6_spf30: 270, uv7_spf30: 231, uv8_spf30: 202, uv9_spf30: 180, uv10_spf30: 150,
+      // SPF 50 times for each UV index
+      uv6_spf50: 450, uv7_spf50: 386, uv8_spf50: 338, uv9_spf50: 300, uv10_spf50: 250
     }
   },
   {
     type: 'Type II',
     description: 'Pale',
     burnTimes: { 
-      uv6: 12, uv7: 10.5, uv8: 9, uv9: 8, uv10: 7,
-      uv9_noSPF: 8,
-      uv9_spf20: 160,
-      uv9_spf30: 240,
-      uv9_spf50: 400
+      // No SPF times for each UV index
+      uv6: 12, uv7: 10, uv8: 9, uv9: 8, uv10: 7,
+      // SPF 20 times for each UV index
+      uv6_spf20: 240, uv7_spf20: 206, uv8_spf20: 180, uv9_spf20: 160, uv10_spf20: 140,
+      // SPF 30 times for each UV index
+      uv6_spf30: 360, uv7_spf30: 309, uv8_spf30: 270, uv9_spf30: 240, uv10_spf30: 210,
+      // SPF 50 times for each UV index
+      uv6_spf50: 600, uv7_spf50: 514, uv8_spf50: 450, uv9_spf50: 400, uv10_spf50: 350
     }
   },
   {
     type: 'Type III',
     description: 'Light Olive',
     burnTimes: { 
+      // No SPF times for each UV index
       uv6: 15, uv7: 13, uv8: 11, uv9: 10, uv10: 9,
-      uv9_noSPF: 10,
-      uv9_spf20: 200,
-      uv9_spf30: 300,
-      uv9_spf50: 500
+      // SPF 20 times for each UV index
+      uv6_spf20: 300, uv7_spf20: 257, uv8_spf20: 225, uv9_spf20: 200, uv10_spf20: 180,
+      // SPF 30 times for each UV index
+      uv6_spf30: 450, uv7_spf30: 386, uv8_spf30: 338, uv9_spf30: 300, uv10_spf30: 270,
+      // SPF 50 times for each UV index
+      uv6_spf50: 750, uv7_spf50: 643, uv8_spf50: 562, uv9_spf50: 500, uv10_spf50: 450
     }
   },
   {
     type: 'Type IV',
     description: 'Mediterranean',
     burnTimes: { 
+      // No SPF times for each UV index
       uv6: 20, uv7: 17, uv8: 15, uv9: 13, uv10: 12,
-      uv9_noSPF: 13,
-      uv9_spf20: 260,
-      uv9_spf30: 390,
-      uv9_spf50: 650
+      // SPF 20 times for each UV index
+      uv6_spf20: 390, uv7_spf20: 334, uv8_spf20: 292, uv9_spf20: 260, uv10_spf20: 240,
+      // SPF 30 times for each UV index
+      uv6_spf30: 585, uv7_spf30: 501, uv8_spf30: 439, uv9_spf30: 390, uv10_spf30: 360,
+      // SPF 50 times for each UV index
+      uv6_spf50: 975, uv7_spf50: 836, uv8_spf50: 731, uv9_spf50: 650, uv10_spf50: 600
     }
   },
   {
     type: 'Type V',
     description: 'Brown',
     burnTimes: { 
-      uv6: 25, uv7: 22, uv8: 20, uv9: 18, uv10: 15,
-      uv9_noSPF: 18,
-      uv9_spf20: 360,
-      uv9_spf30: 540,
-      uv9_spf50: 900
+      // No SPF times for each UV index
+      uv6: 27, uv7: 23, uv8: 20, uv9: 18, uv10: 15,
+      // SPF 20 times for each UV index
+      uv6_spf20: 540, uv7_spf20: 463, uv8_spf20: 405, uv9_spf20: 360, uv10_spf20: 300,
+      // SPF 30 times for each UV index
+      uv6_spf30: 810, uv7_spf30: 694, uv8_spf30: 608, uv9_spf30: 540, uv10_spf30: 450,
+      // SPF 50 times for each UV index
+      uv6_spf50: 1350, uv7_spf50: 1157, uv8_spf50: 1012, uv9_spf50: 900, uv10_spf50: 750
     }
   },
   {
     type: 'Type VI',
     description: 'Dark Brown to Black',
     burnTimes: { 
-      uv6: 30, uv7: 27, uv8: 25, uv9: 22, uv10: 20,
-      uv9_noSPF: 25,
-      uv9_spf20: 500,
-      uv9_spf30: 750,
-      uv9_spf50: 1250
+      // No SPF times for each UV index
+      uv6: 38, uv7: 32, uv8: 28, uv9: 25, uv10: 20,
+      // SPF 20 times for each UV index
+      uv6_spf20: 750, uv7_spf20: 643, uv8_spf20: 562, uv9_spf20: 500, uv10_spf20: 400,
+      // SPF 30 times for each UV index
+      uv6_spf30: 1125, uv7_spf30: 964, uv8_spf30: 844, uv9_spf30: 750, uv10_spf30: 600,
+      // SPF 50 times for each UV index
+      uv6_spf50: 1875, uv7_spf50: 1607, uv8_spf50: 1406, uv9_spf50: 1250, uv10_spf50: 1000
     }
   }
 ];
@@ -1637,7 +1655,7 @@ export default function SolariPage() {
 
                     return (
                       <div className="space-y-4">
-                        {/* Protection Time Cards for Selected Skin Type */}
+                        {/* Protection Time Cards for Selected Skin Type (UV 9) */}
                         <div className="bg-navy-charcoal rounded-lg p-4 border border-steel-blue/30">
                           <h4 className="text-lg font-semibold mb-3 text-performance-green">
                             Tempi di Protezione - {selectedData.type} ({selectedData.description})
@@ -1646,7 +1664,7 @@ export default function SolariPage() {
                           <div className="grid grid-cols-4 gap-3">
                             <div className="text-center p-3 bg-red-500/20 rounded-lg border border-red-500/30">
                               <div className="text-xs text-slate-400 mb-1">Senza SPF</div>
-                              <div className="text-red-400 font-bold text-lg">{selectedData.burnTimes.uv9_noSPF}min</div>
+                              <div className="text-red-400 font-bold text-lg">{selectedData.burnTimes.uv9}min</div>
                             </div>
                             
                             <div className="text-center p-3 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
@@ -1666,7 +1684,7 @@ export default function SolariPage() {
                           </div>
                         </div>
 
-                        {/* General SPF Table */}
+                        {/* Complete SPF Table with All UV Indices */}
                         <div className="space-y-3 text-sm">
                           <div className="grid grid-cols-7 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
                             <span>SPF</span>
@@ -1681,36 +1699,36 @@ export default function SolariPage() {
                             <div className="grid grid-cols-7 gap-2 text-slate-300">
                               <span className="font-semibold">SPF 20</span>
                               <span className="text-yellow-400">~95%</span>
-                              <span>200min</span>
-                              <span>171min</span>
-                              <span>150min</span>
-                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf20)}</span>
-                              <span>120min</span>
+                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv6_spf20)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv7_spf20)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv8_spf20)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf20)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv10_spf20)}</span>
                             </div>
                             <div className="grid grid-cols-7 gap-2 text-slate-300">
                               <span className="font-semibold">SPF 30</span>
                               <span className="text-blue-400">~97%</span>
-                              <span>300min</span>
-                              <span>257min</span>
-                              <span>225min</span>
-                              <span className="text-blue-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf30)}</span>
-                              <span>180min</span>
+                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv6_spf30)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv7_spf30)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv8_spf30)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf30)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv10_spf30)}</span>
                             </div>
                             <div className="grid grid-cols-7 gap-2 text-slate-300">
                               <span className="font-semibold">SPF 50</span>
                               <span className="text-green-400">~98%</span>
-                              <span className="text-green-400">500min</span>
-                              <span className="text-green-400">429min</span>
-                              <span className="text-green-400">375min</span>
-                              <span className="text-green-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf50)}</span>
-                              <span className="text-green-400">300min</span>
+                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv6_spf50)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv7_spf50)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv8_spf50)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf50)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv10_spf50)}</span>
                             </div>
                           </div>
                         </div>
 
                         <div className="mt-3 pt-2 border-t border-steel-blue/30">
                           <p className="text-xs text-slate-400 italic">
-                            Tempi personalizzati per {selectedData.description} (UV Index 9). I tempi variano in base a fattori individuali e condizioni ambientali.
+                            Tempi personalizzati per {selectedData.description} su tutti gli indici UV. I tempi variano in base a fattori individuali e condizioni ambientali.
                           </p>
                         </div>
                       </div>
