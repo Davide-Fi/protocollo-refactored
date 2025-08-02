@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import Navigation from "@/components/navigation";
 
 interface SunscreenFilter {
@@ -91,9 +92,9 @@ const protectionLevels = {
 
 export default function SolariPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [solubilityFilter, setSolubilityFilter] = useState("all");
-  const [regulatoryFilter, setRegulatoryFilter] = useState("all");
-  const [uvRangeFilter, setUvRangeFilter] = useState("all");
+  const [solubilityFilters, setSolubilityFilters] = useState<string[]>([]);
+  const [regulatoryFilters, setRegulatoryFilters] = useState<string[]>([]);
+  const [uvRangeFilters, setUvRangeFilters] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<SunscreenFilter | null>(null);
 
   const filteredFilters = useMemo(() => {
@@ -103,24 +104,34 @@ export default function SolariPage() {
         filter.inciName.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesSolubility = 
-        solubilityFilter === "all" ||
-        (solubilityFilter === "oil" && filter.solubility.toLowerCase().includes("oil")) ||
-        (solubilityFilter === "water" && filter.solubility.toLowerCase().includes("water"));
+        solubilityFilters.length === 0 ||
+        solubilityFilters.some(solFilter => {
+          if (solFilter === "oil") return filter.solubility.toLowerCase().includes("oil");
+          if (solFilter === "water") return filter.solubility.toLowerCase().includes("water");
+          return false;
+        });
 
       const matchesRegulatory = 
-        regulatoryFilter === "all" ||
-        (regulatoryFilter === "eu" && filter.regulatoryStatus.toLowerCase().includes("eu")) ||
-        (regulatoryFilter === "us" && !filter.regulatoryStatus.toLowerCase().includes("not") && filter.regulatoryStatus.toLowerCase().includes("fda"));
+        regulatoryFilters.length === 0 ||
+        regulatoryFilters.some(regFilter => {
+          if (regFilter === "eu") return filter.regulatoryStatus.toLowerCase().includes("eu");
+          if (regFilter === "us") return !filter.regulatoryStatus.toLowerCase().includes("not") && filter.regulatoryStatus.toLowerCase().includes("fda");
+          return false;
+        });
 
       const matchesUvRange = 
-        uvRangeFilter === "all" ||
-        (uvRangeFilter === "uvb" && filter.uvbProtection === "strong") ||
-        (uvRangeFilter === "uva1" && filter.uva1Protection === "strong") ||
-        (uvRangeFilter === "broad" && filter.uvRange.includes("280") && filter.uvRange.includes("400"));
+        uvRangeFilters.length === 0 ||
+        uvRangeFilters.some(uvFilter => {
+          if (uvFilter === "uvb") return filter.uvbProtection === "strong";
+          if (uvFilter === "uva1") return filter.uva1Protection === "strong";
+          if (uvFilter === "uva2") return filter.uva2Protection === "strong";
+          if (uvFilter === "broad") return filter.uvRange.includes("280") && filter.uvRange.includes("400");
+          return false;
+        });
 
       return matchesSearch && matchesSolubility && matchesRegulatory && matchesUvRange;
     });
-  }, [searchTerm, solubilityFilter, regulatoryFilter, uvRangeFilter]);
+  }, [searchTerm, solubilityFilters, regulatoryFilters, uvRangeFilters]);
 
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
@@ -148,7 +159,8 @@ export default function SolariPage() {
       {/* Filters Section */}
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-steel-blue/10">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
               <Input
@@ -159,40 +171,158 @@ export default function SolariPage() {
               />
             </div>
             
-            <Select value={solubilityFilter} onValueChange={setSolubilityFilter}>
-              <SelectTrigger className="bg-navy-charcoal border-steel-blue/30 text-white">
-                <SelectValue placeholder="Solubilità" />
-              </SelectTrigger>
-              <SelectContent className="bg-navy-charcoal border-steel-blue/30">
-                <SelectItem value="all">Tutte le solubilità</SelectItem>
-                <SelectItem value="oil">Liposolubile</SelectItem>
-                <SelectItem value="water">Idrosolubile</SelectItem>
-              </SelectContent>
-            </Select>
+            {/* Solubility Filters */}
+            <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+              <h4 className="font-semibold mb-3 text-scientific-blue">Solubilità</h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="oil"
+                    checked={solubilityFilters.includes("oil")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSolubilityFilters([...solubilityFilters, "oil"]);
+                      } else {
+                        setSolubilityFilters(solubilityFilters.filter(f => f !== "oil"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="oil" className="text-slate-300 cursor-pointer">Liposolubile</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="water"
+                    checked={solubilityFilters.includes("water")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSolubilityFilters([...solubilityFilters, "water"]);
+                      } else {
+                        setSolubilityFilters(solubilityFilters.filter(f => f !== "water"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="water" className="text-slate-300 cursor-pointer">Idrosolubile</Label>
+                </div>
+              </div>
+            </div>
             
-            <Select value={regulatoryFilter} onValueChange={setRegulatoryFilter}>
-              <SelectTrigger className="bg-navy-charcoal border-steel-blue/30 text-white">
-                <SelectValue placeholder="Approvazione" />
-              </SelectTrigger>
-              <SelectContent className="bg-navy-charcoal border-steel-blue/30">
-                <SelectItem value="all">Tutte le approvazioni</SelectItem>
-                <SelectItem value="eu">Approvato EU</SelectItem>
-                <SelectItem value="us">Approvato US</SelectItem>
-              </SelectContent>
-            </Select>
+            {/* Regulatory Filters */}
+            <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+              <h4 className="font-semibold mb-3 text-scientific-blue">Approvazioni</h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="eu"
+                    checked={regulatoryFilters.includes("eu")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setRegulatoryFilters([...regulatoryFilters, "eu"]);
+                      } else {
+                        setRegulatoryFilters(regulatoryFilters.filter(f => f !== "eu"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="eu" className="text-slate-300 cursor-pointer">Approvato EU</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="us"
+                    checked={regulatoryFilters.includes("us")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setRegulatoryFilters([...regulatoryFilters, "us"]);
+                      } else {
+                        setRegulatoryFilters(regulatoryFilters.filter(f => f !== "us"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="us" className="text-slate-300 cursor-pointer">Approvato US</Label>
+                </div>
+              </div>
+            </div>
             
-            <Select value={uvRangeFilter} onValueChange={setUvRangeFilter}>
-              <SelectTrigger className="bg-navy-charcoal border-steel-blue/30 text-white">
-                <SelectValue placeholder="Spettro UV" />
-              </SelectTrigger>
-              <SelectContent className="bg-navy-charcoal border-steel-blue/30">
-                <SelectItem value="all">Tutti gli spettri</SelectItem>
-                <SelectItem value="uvb">UVB Forte</SelectItem>
-                <SelectItem value="uva1">UVA1 Forte</SelectItem>
-                <SelectItem value="broad">Spettro Ampio</SelectItem>
-              </SelectContent>
-            </Select>
+            {/* UV Range Filters */}
+            <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+              <h4 className="font-semibold mb-3 text-scientific-blue">Spettro UV</h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="uvb"
+                    checked={uvRangeFilters.includes("uvb")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setUvRangeFilters([...uvRangeFilters, "uvb"]);
+                      } else {
+                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "uvb"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="uvb" className="text-slate-300 cursor-pointer">UVB Forte</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="uva1"
+                    checked={uvRangeFilters.includes("uva1")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setUvRangeFilters([...uvRangeFilters, "uva1"]);
+                      } else {
+                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva1"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="uva1" className="text-slate-300 cursor-pointer">UVA1 Forte</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="uva2"
+                    checked={uvRangeFilters.includes("uva2")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setUvRangeFilters([...uvRangeFilters, "uva2"]);
+                      } else {
+                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva2"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="uva2" className="text-slate-300 cursor-pointer">UVA2 Forte</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="broad"
+                    checked={uvRangeFilters.includes("broad")}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setUvRangeFilters([...uvRangeFilters, "broad"]);
+                      } else {
+                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "broad"));
+                      }
+                    }}
+                  />
+                  <Label htmlFor="broad" className="text-slate-300 cursor-pointer">Spettro Ampio</Label>
+                </div>
+              </div>
+            </div>
           </div>
+          
+          {/* Clear Filters Button */}
+          {(solubilityFilters.length > 0 || regulatoryFilters.length > 0 || uvRangeFilters.length > 0 || searchTerm) && (
+            <div className="flex justify-center mb-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSolubilityFilters([]);
+                  setRegulatoryFilters([]);
+                  setUvRangeFilters([]);
+                  setSearchTerm("");
+                }}
+                className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500"
+              >
+                <Filter className="w-4 h-4 mr-2" />
+                Cancella Tutti i Filtri
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
