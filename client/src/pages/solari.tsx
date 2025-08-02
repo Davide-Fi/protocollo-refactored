@@ -42,6 +42,7 @@ interface SunscreenProduct {
   ethylhexylSalicylate: boolean;
   octisalate: boolean;
   enulizole: boolean;
+  octinoxate: boolean;
   zincOxide: boolean;
   titaniumDioxide: boolean;
   // Ratings
@@ -208,6 +209,26 @@ const sunscreenFilters: SunscreenFilter[] = [
     uva2Protection: "strong",
     uva1Protection: "moderate",
     longUva1Protection: "incomplete"
+  },
+  {
+    tradeName: "Octinoxate",
+    inciName: "Ethylhexyl Methoxycinnamate",
+    uvRange: "UVB (280–320 nm) + limited UVA2",
+    peakWavelength: "~310 nm",
+    solubility: "Oil-soluble; widely used in cosmetic formulations",
+    photostability: "Moderate to poor; can degrade under UV exposure",
+    regulatoryStatus: "EU approved with restrictions; concerns in some regions",
+    extraPoints: [
+      "Storico filtro UVB ampiamente utilizzato",
+      "Richiede stabilizzazione con altri filtri",
+      "Limitazioni crescenti per sicurezza ambientale",
+      "Buona compatibilità cosmetica",
+      "Protezione UVA2 moderata"
+    ],
+    uvbProtection: "good",
+    uva2Protection: "moderate", 
+    uva1Protection: "incomplete",
+    longUva1Protection: "incomplete"
   }
 ];
 
@@ -243,6 +264,7 @@ const sunscreenProducts: SunscreenProduct[] = [
     ethylhexylSalicylate: true,
     octisalate: false,
     enulizole: false,
+    octinoxate: false,
     zincOxide: false,
     titaniumDioxide: false,
     uva1Rating: "excellent",
@@ -269,6 +291,7 @@ const sunscreenProducts: SunscreenProduct[] = [
     ethylhexylSalicylate: true,
     octisalate: false,
     enulizole: true,
+    octinoxate: false,
     zincOxide: false,
     titaniumDioxide: false,
     uva1Rating: "excellent",
@@ -295,6 +318,7 @@ const sunscreenProducts: SunscreenProduct[] = [
     ethylhexylSalicylate: false,
     octisalate: true,
     enulizole: false,
+    octinoxate: false,
     zincOxide: false,
     titaniumDioxide: false,
     uva1Rating: "excellent",
@@ -321,6 +345,7 @@ const sunscreenProducts: SunscreenProduct[] = [
     ethylhexylSalicylate: false,
     octisalate: true,
     enulizole: false,
+    octinoxate: false,
     zincOxide: false,
     titaniumDioxide: false,
     uva1Rating: "excellent",
@@ -347,6 +372,7 @@ const sunscreenProducts: SunscreenProduct[] = [
     ethylhexylSalicylate: false,
     octisalate: false,
     enulizole: false,
+    octinoxate: false,
     zincOxide: true,
     titaniumDioxide: true,
     uva1Rating: "good",
@@ -373,6 +399,7 @@ const sunscreenProducts: SunscreenProduct[] = [
     ethylhexylSalicylate: false,
     octisalate: false,
     enulizole: false,
+    octinoxate: false,
     zincOxide: false,
     titaniumDioxide: false,
     uva1Rating: "excellent",
@@ -381,6 +408,87 @@ const sunscreenProducts: SunscreenProduct[] = [
     overallRating: 4.7,
     description: "Tinosorb S + Uvinul A Plus + T150",
     availability: "EU, Spagna principalmente"
+  },
+  {
+    brand: "Hawaiian Tropic",
+    productName: "SPF 30 EU Variant",
+    spf: 30,
+    tinosorbS: false,
+    tinosorbM: false,
+    mexorylSX: false,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: false,
+    uvinulT150: false,
+    homosalate: true,
+    octocrylene: true,
+    avobenzone: true,
+    ethylhexylSalicylate: false,
+    octisalate: false,
+    enulizole: false,
+    octinoxate: false,
+    zincOxide: false,
+    titaniumDioxide: false,
+    uva1Rating: "good",
+    uva2Rating: "good",
+    uvbRating: "good",
+    overallRating: 3.8,
+    description: "Protezione quotidiana idratante ad ampio spettro",
+    availability: "USA/EU, disponibile in Europa"
+  },
+  {
+    brand: "Bilboa",
+    productName: "Carrot Plus SPF 20",
+    spf: 20,
+    tinosorbS: false,
+    tinosorbM: false,
+    mexorylSX: false,
+    mexorylXL: false,
+    mexoryl400: false,
+    uvinulAPlus: true,
+    uvinulT150: false,
+    homosalate: false,
+    octocrylene: false,
+    avobenzone: false,
+    ethylhexylSalicylate: true,
+    octisalate: false,
+    enulizole: false,
+    octinoxate: true,
+    zincOxide: false,
+    titaniumDioxide: false,
+    uva1Rating: "moderate",
+    uva2Rating: "good",
+    uvbRating: "moderate",
+    overallRating: 3.2,
+    description: "Supporto abbronzatura con protezione UVA/UVB base",
+    availability: "Italia, prodotto locale"
+  },
+  {
+    brand: "La Roche-Posay",
+    productName: "Anthelios Invisible Spray SPF 30",
+    spf: 30,
+    tinosorbS: false,
+    tinosorbM: false,
+    mexorylSX: false,
+    mexorylXL: true,
+    mexoryl400: false,
+    uvinulAPlus: false,
+    uvinulT150: true,
+    homosalate: true,
+    octocrylene: true,
+    avobenzone: true,
+    ethylhexylSalicylate: true,
+    octisalate: false,
+    enulizole: false,
+    octinoxate: false,
+    zincOxide: false,
+    titaniumDioxide: false,
+    uva1Rating: "excellent",
+    uva2Rating: "excellent",
+    uvbRating: "excellent",
+    overallRating: 4.6,
+    description: "Spray dermatologico viso e corpo per pelli sensibili",
+    availability: "Francia (Gruppo L'Oréal), EU"
   }
 ];
 
@@ -411,6 +519,7 @@ export default function SolariPage() {
       'Ethylhexyl Salicylate': 'ethylhexylSalicylate',
       'Octisalate': 'octisalate',
       'Enulizole': 'enulizole',
+      'Octinoxate': 'octinoxate',
       'Zinc Oxide': 'zincOxide',
       'Titanium Dioxide': 'titaniumDioxide'
     };
@@ -569,12 +678,13 @@ export default function SolariPage() {
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Uvinul T150</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Mexoryl SX</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Mexoryl XL</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Octinoxate</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Total Filtri</th>
                   </tr>
                 </thead>
                 <tbody>
                   {sunscreenProducts.map((product, index) => {
-                    const allFilters = ["Homosalate", "Octocrylene", "Ethylhexyl Salicylate", "Enulizole", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX", "Mexoryl XL"];
+                    const allFilters = ["Homosalate", "Octocrylene", "Ethylhexyl Salicylate", "Enulizole", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX", "Mexoryl XL", "Octinoxate"];
                     
                     return (
                       <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
@@ -585,18 +695,43 @@ export default function SolariPage() {
                             <div className="text-xs text-slate-400 mt-1">SPF {product.spf}</div>
                           </div>
                         </td>
-                        {allFilters.map((filterName) => (
-                          <td key={filterName} className="p-2 text-center">
-                            {product.filters.includes(filterName) ? (
-                              <div className="text-performance-green text-lg font-bold">✓</div>
-                            ) : (
-                              <div className="text-slate-600 text-lg">—</div>
-                            )}
-                          </td>
-                        ))}
+                        {allFilters.map((filterName) => {
+                          const filterMapping: Record<string, keyof SunscreenProduct> = {
+                            'Homosalate': 'homosalate',
+                            'Octocrylene': 'octocrylene',
+                            'Ethylhexyl Salicylate': 'ethylhexylSalicylate',
+                            'Enulizole': 'enulizole',
+                            'Avobenzone': 'avobenzone',
+                            'Tinosorb S': 'tinosorbS',
+                            'Uvinul T150': 'uvinulT150',
+                            'Mexoryl SX': 'mexorylSX',
+                            'Mexoryl XL': 'mexorylXL',
+                            'Octinoxate': 'octinoxate'
+                          };
+                          
+                          const fieldName = filterMapping[filterName];
+                          const hasFilter = fieldName && product[fieldName] === true;
+                          
+                          return (
+                            <td key={filterName} className="p-2 text-center">
+                              {hasFilter ? (
+                                <div className="text-performance-green text-lg font-bold">✓</div>
+                              ) : (
+                                <div className="text-slate-600 text-lg">—</div>
+                              )}
+                            </td>
+                          );
+                        })}
                         <td className="p-3 text-center">
                           <div className="font-bold text-scientific-blue text-lg">
-                            {product.filters.length}
+                            {(() => {
+                              const filterFields = [
+                                'tinosorbS', 'tinosorbM', 'mexorylSX', 'mexorylXL', 'mexoryl400',
+                                'uvinulAPlus', 'uvinulT150', 'homosalate', 'octocrylene', 'avobenzone',
+                                'ethylhexylSalicylate', 'octisalate', 'enulizole', 'octinoxate', 'zincOxide', 'titaniumDioxide'
+                              ] as const;
+                              return filterFields.filter(field => product[field] === true).length;
+                            })()}
                           </div>
                           <div className="text-xs text-slate-400">filtri</div>
                         </td>
@@ -1092,7 +1227,7 @@ export default function SolariPage() {
                   const productsWithFilter = findProductsWithFilter(selectedFilter.tradeName);
                   console.log('Selected filter:', selectedFilter.tradeName);
                   console.log('Products found:', productsWithFilter.length);
-                  console.log('All products:', sunscreenProducts.map(p => ({ brand: p.brand, filters: p.filters })));
+                  console.log('All products:', sunscreenProducts.map(p => ({ brand: p.brand })));
                   return (
                     <div>
                       <h4 className="text-lg font-semibold text-performance-green mb-4">
