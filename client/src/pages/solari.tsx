@@ -1294,17 +1294,17 @@ export default function SolariPage() {
         </section>
       )}
 
-      {/* Simple Popup for Cross-Database Linking */}
+      {/* Enhanced Popup with Tabs */}
       {popup && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-scientific-blue mb-2">
                     {popup.filterName}
                   </h2>
-                  <p className="text-slate-400">Prodotti che contengono questo filtro</p>
+                  <p className="text-slate-400">Informazioni complete sul filtro</p>
                 </div>
                 <Button 
                   variant="outline" 
@@ -1316,71 +1316,216 @@ export default function SolariPage() {
                 </Button>
               </div>
 
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-performance-green mb-4">
-                  Trovati {popup.products.length} prodotti
-                </h3>
-                
-                {popup.products.length > 0 ? (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {popup.products.map((product, index) => (
-                      <div key={index} className="bg-steel-blue/20 rounded-lg border border-steel-blue/30 p-4">
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="w-6 h-6 bg-scientific-blue/20 rounded flex items-center justify-center">
-                            <Sun className="w-3 h-3 text-scientific-blue" />
-                          </div>
-                          <Badge variant="outline" className="border-performance-green text-performance-green text-xs">
-                            SPF {product.spf}
-                          </Badge>
-                        </div>
-                        
-                        <h4 className="font-bold text-scientific-blue text-lg mb-1">
-                          {product.brand}
-                        </h4>
-                        <p className="text-slate-300 text-sm mb-3">
-                          {product.productName}
-                        </p>
-                        
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <span 
-                                key={i} 
-                                className={`text-xs ${
-                                  i < Math.floor(product.overallRating) 
-                                    ? 'text-yellow-400' 
-                                    : 'text-slate-600'
-                                }`}
-                              >
-                                ★
+              <Tabs defaultValue="products" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-steel-blue/20">
+                  <TabsTrigger value="products" className="data-[state=active]:bg-scientific-blue">
+                    Prodotti ({popup.products.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="details" className="data-[state=active]:bg-scientific-blue">
+                    Dettagli Filtro
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="products" className="space-y-4">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold text-performance-green mb-4">
+                      Prodotti che contengono {popup.filterName}
+                    </h3>
+                    
+                    {popup.products.length > 0 ? (
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {popup.products.map((product, index) => (
+                          <div key={index} className="bg-steel-blue/20 rounded-lg border border-steel-blue/30 p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-6 h-6 bg-scientific-blue/20 rounded flex items-center justify-center">
+                                <Sun className="w-3 h-3 text-scientific-blue" />
+                              </div>
+                              <Badge variant="outline" className="border-performance-green text-performance-green text-xs">
+                                SPF {product.spf}
+                              </Badge>
+                            </div>
+                            
+                            <h4 className="font-bold text-scientific-blue text-lg mb-1">
+                              {product.brand}
+                            </h4>
+                            <p className="text-slate-300 text-sm mb-3">
+                              {product.productName}
+                            </p>
+                            
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="flex items-center">
+                                {[...Array(5)].map((_, i) => (
+                                  <span 
+                                    key={i} 
+                                    className={`text-xs ${
+                                      i < Math.floor(product.overallRating) 
+                                        ? 'text-yellow-400' 
+                                        : 'text-slate-600'
+                                    }`}
+                                  >
+                                    ★
+                                  </span>
+                                ))}
+                              </div>
+                              <span className="text-slate-400 text-xs">
+                                {product.overallRating}/5.0
                               </span>
-                            ))}
+                            </div>
+                            
+                            <p className="text-slate-300 text-xs mb-3 leading-relaxed">
+                              {product.description}
+                            </p>
+                            
+                            <div className="border-t border-steel-blue/30 pt-3">
+                              <p className="text-slate-400 text-xs mb-1">Disponibilità</p>
+                              <p className="text-slate-300 text-xs">{product.availability}</p>
+                            </div>
                           </div>
-                          <span className="text-slate-400 text-xs">
-                            {product.overallRating}/5.0
-                          </span>
-                        </div>
-                        
-                        <p className="text-slate-300 text-xs mb-3 leading-relaxed">
-                          {product.description}
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <p className="text-slate-400">Nessun prodotto trovato con questo filtro</p>
+                        <p className="text-slate-500 text-sm mt-2">
+                          Il filtro potrebbe essere utilizzato in prodotti non ancora catalogati
                         </p>
-                        
-                        <div className="border-t border-steel-blue/30 pt-3">
-                          <p className="text-slate-400 text-xs mb-1">Disponibilità</p>
-                          <p className="text-slate-300 text-xs">{product.availability}</p>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="details" className="space-y-6">
+                  {(() => {
+                    const filterData = sunscreenFilters.find(f => f.tradeName === popup.filterName);
+                    if (!filterData) return <div>Dati filtro non trovati</div>;
+                    
+                    return (
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <Card className="bg-steel-blue/20 border-steel-blue/30">
+                          <CardHeader>
+                            <CardTitle className="flex items-center text-scientific-blue">
+                              <Shield className="mr-2 h-5 w-5" />
+                              Spettro di Protezione
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span>Range UV:</span>
+                              <Badge className="bg-performance-green text-black">{filterData.uvRange}</Badge>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Picco di assorbimento:</span>
+                              <span className="text-scientific-blue font-semibold">{filterData.peakWavelength}</span>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-steel-blue/20 border-steel-blue/30">
+                          <CardHeader>
+                            <CardTitle className="flex items-center text-scientific-blue">
+                              <Droplets className="mr-2 h-5 w-5" />
+                              Proprietà Fisiche
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-slate-300">{filterData.solubility}</p>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-steel-blue/20 border-steel-blue/30">
+                          <CardHeader>
+                            <CardTitle className="flex items-center text-scientific-blue">
+                              <Zap className="mr-2 h-5 w-5" />
+                              Fotostabilità
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-slate-300">{filterData.photostability}</p>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-steel-blue/20 border-steel-blue/30">
+                          <CardHeader>
+                            <CardTitle className="text-scientific-blue">Nome INCI</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-slate-300 font-mono text-sm">{filterData.inciName}</p>
+                          </CardContent>
+                        </Card>
+
+                        <div className="md:col-span-2">
+                          <Card className="bg-steel-blue/20 border-steel-blue/30">
+                            <CardHeader>
+                              <CardTitle className="text-scientific-blue">Status Regolamentare</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <p className="text-slate-300">{filterData.regulatoryStatus}</p>
+                            </CardContent>
+                          </Card>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <Card className="bg-steel-blue/20 border-steel-blue/30">
+                            <CardHeader>
+                              <CardTitle className="text-scientific-blue">Efficacia di Protezione</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">UVB</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.uvbProtection].color}`}>
+                                    {protectionLevels[filterData.uvbProtection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.uvbProtection}</div>
+                                </div>
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">UVA2</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.uva2Protection].color}`}>
+                                    {protectionLevels[filterData.uva2Protection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.uva2Protection}</div>
+                                </div>
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">UVA1</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.uva1Protection].color}`}>
+                                    {protectionLevels[filterData.uva1Protection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.uva1Protection}</div>
+                                </div>
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">Long UVA1</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.longUva1Protection].color}`}>
+                                    {protectionLevels[filterData.longUva1Protection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.longUva1Protection}</div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <Card className="bg-steel-blue/20 border-steel-blue/30">
+                            <CardHeader>
+                              <CardTitle className="text-scientific-blue">Vantaggi Aggiuntivi</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="grid md:grid-cols-2 gap-2">
+                                {filterData.extraPoints.map((point, idx) => (
+                                  <div key={idx} className="flex items-center">
+                                    <CheckCircle className="w-4 h-4 mr-2 text-performance-green" />
+                                    <span className="text-slate-300">{point}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-slate-400">Nessun prodotto trovato con questo filtro</p>
-                    <p className="text-slate-500 text-sm mt-2">
-                      Il filtro potrebbe essere utilizzato in prodotti non ancora catalogati
-                    </p>
-                  </div>
-                )}
-              </div>
+                    );
+                  })()}
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </div>
