@@ -296,8 +296,12 @@ export default function SolariPage() {
   
   // Function to find products containing a specific filter
   const findProductsWithFilter = (filterTradeName: string) => {
+    console.log('=== DEBUGGING FILTER MATCHING ===');
+    console.log('Looking for filter:', filterTradeName);
+    
     // Find the selected filter object to get both trade name and INCI name
     const selectedFilterObj = sunscreenFilters.find(f => f.tradeName === filterTradeName);
+    console.log('Selected filter object:', selectedFilterObj);
     
     // Helper function to normalize filter names (remove ®, ™, etc.)
     const normalizeFilterName = (name: string) => {
@@ -308,15 +312,22 @@ export default function SolariPage() {
         .trim();
     };
     
-    return sunscreenProducts.filter(product => 
-      product.filters.some(filter => {
+    const tradeNameNormalized = normalizeFilterName(filterTradeName);
+    console.log('Normalized filter name:', tradeNameNormalized);
+    
+    const matches = sunscreenProducts.filter(product => {
+      console.log('Checking product:', product.brand, product.productName);
+      console.log('Product filters:', product.filters);
+      
+      const hasMatch = product.filters.some(filter => {
         const filterNormalized = normalizeFilterName(filter);
-        const tradeNameNormalized = normalizeFilterName(filterTradeName);
+        console.log(`  Comparing "${filterNormalized}" with "${tradeNameNormalized}"`);
         
         // Direct name matches (normalized)
         if (filterNormalized === tradeNameNormalized || 
             filterNormalized.includes(tradeNameNormalized) ||
             tradeNameNormalized.includes(filterNormalized)) {
+          console.log('    ✓ Direct match found!');
           return true;
         }
         
@@ -326,6 +337,7 @@ export default function SolariPage() {
           if (filterNormalized === inciNameNormalized || 
               filterNormalized.includes(inciNameNormalized) ||
               inciNameNormalized.includes(filterNormalized)) {
+            console.log('    ✓ INCI match found!');
             return true;
           }
         }
@@ -353,13 +365,25 @@ export default function SolariPage() {
         for (const [key, variations] of Object.entries(filterMappings)) {
           if (tradeNameNormalized.includes(key) || 
               (selectedFilterObj && normalizeFilterName(selectedFilterObj.inciName).includes(key))) {
-            return variations.some(variation => filterNormalized.includes(variation));
+            const hasVariationMatch = variations.some(variation => filterNormalized.includes(variation));
+            if (hasVariationMatch) {
+              console.log('    ✓ Mapping match found!', key, '→', variations);
+              return true;
+            }
           }
         }
         
+        console.log('    ✗ No match');
         return false;
-      })
-    );
+      });
+      
+      console.log('Product match result:', hasMatch);
+      return hasMatch;
+    });
+    
+    console.log('Total matches found:', matches.length);
+    console.log('=== END DEBUGGING ===');
+    return matches;
   };
 
   const handleSort = (column: string) => {
@@ -461,18 +485,18 @@ export default function SolariPage() {
             <div className="bg-navy-charcoal rounded-lg border border-steel-blue/30 p-1">
               <div className="flex">
                 <Button
-                  variant={activeTab === "products" ? "default" : "ghost"}
-                  onClick={() => setActiveTab("products")}
-                  className={`px-6 py-2 ${activeTab === "products" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
-                >
-                  Prodotti Solari
-                </Button>
-                <Button
                   variant={activeTab === "filters" ? "default" : "ghost"}
                   onClick={() => setActiveTab("filters")}
                   className={`px-6 py-2 ${activeTab === "filters" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
                 >
                   Database Filtri
+                </Button>
+                <Button
+                  variant={activeTab === "products" ? "default" : "ghost"}
+                  onClick={() => setActiveTab("products")}
+                  className={`px-6 py-2 ${activeTab === "products" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
+                >
+                  Prodotti Solari
                 </Button>
               </div>
             </div>
@@ -1028,6 +1052,9 @@ export default function SolariPage() {
 
                 {(() => {
                   const productsWithFilter = findProductsWithFilter(selectedFilter.tradeName);
+                  console.log('Selected filter:', selectedFilter.tradeName);
+                  console.log('Products found:', productsWithFilter.length);
+                  console.log('All products:', sunscreenProducts.map(p => ({ brand: p.brand, filters: p.filters })));
                   return (
                     <div>
                       <h4 className="text-lg font-semibold text-performance-green mb-4">
