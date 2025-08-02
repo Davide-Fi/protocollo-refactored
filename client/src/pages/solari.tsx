@@ -1013,34 +1013,102 @@ export default function SolariPage() {
                       </h4>
                       
                       {productsWithFilter.length > 0 ? (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                           {productsWithFilter.map((product, index) => (
-                            <div key={index} className="bg-navy-charcoal rounded-lg border border-steel-blue/30 p-4">
-                              <div className="flex items-start justify-between mb-3">
-                                <div>
-                                  <h5 className="font-semibold text-scientific-blue text-sm">
+                            <div key={index} className="bg-navy-charcoal rounded-xl border border-steel-blue/30 p-6 hover:border-scientific-blue/50 transition-all duration-200 hover:shadow-lg hover:shadow-scientific-blue/10">
+                              {/* Product Header */}
+                              <div className="flex items-start justify-between mb-4">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <div className="w-8 h-8 bg-scientific-blue/20 rounded-lg flex items-center justify-center">
+                                      <Sun className="w-4 h-4 text-scientific-blue" />
+                                    </div>
+                                    <Badge variant="outline" className="border-performance-green text-performance-green text-xs font-semibold">
+                                      SPF {product.spf}
+                                    </Badge>
+                                  </div>
+                                  <h5 className="font-bold text-scientific-blue text-lg mb-1">
                                     {product.brand}
                                   </h5>
-                                  <p className="text-slate-300 text-sm font-medium">
+                                  <p className="text-slate-300 text-sm font-medium leading-tight">
                                     {product.productName}
                                   </p>
                                 </div>
-                                <Badge variant="outline" className="border-performance-green text-performance-green text-xs">
-                                  SPF {product.spf}
-                                </Badge>
+                              </div>
+
+                              {/* Rating Stars */}
+                              <div className="flex items-center gap-2 mb-4">
+                                <div className="flex items-center">
+                                  {[...Array(5)].map((_, i) => (
+                                    <span 
+                                      key={i} 
+                                      className={`text-sm ${
+                                        i < Math.floor(product.overallRating) 
+                                          ? 'text-yellow-400' 
+                                          : 'text-slate-600'
+                                      }`}
+                                    >
+                                      ★
+                                    </span>
+                                  ))}
+                                </div>
+                                <span className="text-slate-400 text-xs">
+                                  {product.overallRating}/5.0
+                                </span>
+                              </div>
+
+                              {/* UV Protection Grid */}
+                              <div className="bg-steel-blue/10 rounded-lg p-4 mb-4">
+                                <p className="text-slate-400 text-xs mb-3 font-medium">Protezione UV</p>
+                                <div className="grid grid-cols-3 gap-3">
+                                  <div className="text-center">
+                                    <span className="block text-slate-400 text-xs mb-1">UVB</span>
+                                    <div className={`text-lg ${
+                                      product.uvbRating === 'excellent' ? 'text-green-400' : 
+                                      product.uvbRating === 'good' ? 'text-blue-400' : 'text-yellow-400'
+                                    }`}>
+                                      {product.uvbRating === 'excellent' ? '✅✅✅' : 
+                                       product.uvbRating === 'good' ? '✅✅' : '✅'}
+                                    </div>
+                                    <span className="text-xs text-slate-500 capitalize">{product.uvbRating}</span>
+                                  </div>
+                                  <div className="text-center">
+                                    <span className="block text-slate-400 text-xs mb-1">UVA1</span>
+                                    <div className={`text-lg ${
+                                      product.uva1Rating === 'excellent' ? 'text-green-400' : 
+                                      product.uva1Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
+                                    }`}>
+                                      {product.uva1Rating === 'excellent' ? '✅✅✅' : 
+                                       product.uva1Rating === 'good' ? '✅✅' : '✅'}
+                                    </div>
+                                    <span className="text-xs text-slate-500 capitalize">{product.uva1Rating}</span>
+                                  </div>
+                                  <div className="text-center">
+                                    <span className="block text-slate-400 text-xs mb-1">UVA2</span>
+                                    <div className={`text-lg ${
+                                      product.uva2Rating === 'excellent' ? 'text-green-400' : 
+                                      product.uva2Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
+                                    }`}>
+                                      {product.uva2Rating === 'excellent' ? '✅✅✅' : 
+                                       product.uva2Rating === 'good' ? '✅✅' : '✅'}
+                                    </div>
+                                    <span className="text-xs text-slate-500 capitalize">{product.uva2Rating}</span>
+                                  </div>
+                                </div>
                               </div>
                               
-                              <div className="mb-3">
-                                <p className="text-slate-400 text-xs mb-2">Composizione filtri:</p>
-                                <div className="flex flex-wrap gap-1">
+                              {/* Filter Composition */}
+                              <div className="mb-4">
+                                <p className="text-slate-400 text-xs mb-3 font-medium">Composizione Filtri ({product.filters.length})</p>
+                                <div className="flex flex-wrap gap-2">
                                   {product.filters.map((filter, idx) => (
                                     <span 
                                       key={idx} 
-                                      className={`text-xs px-2 py-1 rounded ${
+                                      className={`text-xs px-3 py-1.5 rounded-full font-medium ${
                                         filter.toLowerCase() === selectedFilter.tradeName.toLowerCase() ||
                                         filter.toLowerCase().includes(selectedFilter.tradeName.toLowerCase())
-                                          ? 'bg-performance-green/20 text-performance-green border border-performance-green/30' 
-                                          : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/30'
+                                          ? 'bg-performance-green/20 text-performance-green border border-performance-green/40 ring-1 ring-performance-green/20' 
+                                          : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/40'
                                       }`}
                                     >
                                       {filter}
@@ -1049,41 +1117,27 @@ export default function SolariPage() {
                                 </div>
                               </div>
 
-                              <div className="grid grid-cols-3 gap-2 text-xs">
-                                <div className="text-center">
-                                  <span className="block text-slate-400">UVB</span>
-                                  <span className={`${
-                                    product.uvbRating === 'excellent' ? 'text-green-400' : 
-                                    product.uvbRating === 'good' ? 'text-blue-400' : 'text-yellow-400'
-                                  }`}>
-                                    {product.uvbRating === 'excellent' ? '✅✅✅' : 
-                                     product.uvbRating === 'good' ? '✅✅' : '✅'}
-                                  </span>
-                                </div>
-                                <div className="text-center">
-                                  <span className="block text-slate-400">UVA1</span>
-                                  <span className={`${
-                                    product.uva1Rating === 'excellent' ? 'text-green-400' : 
-                                    product.uva1Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
-                                  }`}>
-                                    {product.uva1Rating === 'excellent' ? '✅✅✅' : 
-                                     product.uva1Rating === 'good' ? '✅✅' : '✅'}
-                                  </span>
-                                </div>
-                                <div className="text-center">
-                                  <span className="block text-slate-400">UVA2</span>
-                                  <span className={`${
-                                    product.uva2Rating === 'excellent' ? 'text-green-400' : 
-                                    product.uva2Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
-                                  }`}>
-                                    {product.uva2Rating === 'excellent' ? '✅✅✅' : 
-                                     product.uva2Rating === 'good' ? '✅✅' : '✅'}
-                                  </span>
-                                </div>
+                              {/* Product Description */}
+                              <div className="mb-4">
+                                <p className="text-slate-300 text-sm leading-relaxed">
+                                  {product.description}
+                                </p>
                               </div>
 
-                              <div className="mt-3 pt-3 border-t border-steel-blue/30">
-                                <p className="text-slate-400 text-xs">{product.availability}</p>
+                              {/* Availability and CTA */}
+                              <div className="border-t border-steel-blue/30 pt-4">
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <p className="text-slate-400 text-xs">Disponibilità</p>
+                                    <p className="text-slate-300 text-sm font-medium">{product.availability}</p>
+                                  </div>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-scientific-blue hover:bg-scientific-blue/80 text-white px-4 py-2 text-xs"
+                                  >
+                                    Dettagli
+                                  </Button>
+                                </div>
                               </div>
                             </div>
                           ))}
