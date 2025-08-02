@@ -1149,11 +1149,6 @@ export default function SolariPage() {
                     <span>UVB Passante</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-slate-300">
-                    <span className="font-semibold">SPF 15</span>
-                    <span className="text-yellow-400">~93%</span>
-                    <span className="text-red-400">~7%</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 text-slate-300">
                     <span className="font-semibold">SPF 20</span>
                     <span className="text-yellow-400">~95%</span>
                     <span className="text-red-400">~5%</span>
@@ -1167,11 +1162,6 @@ export default function SolariPage() {
                     <span className="font-semibold">SPF 50</span>
                     <span className="text-green-400">~98%</span>
                     <span className="text-red-400">~2%</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 text-slate-300">
-                    <span className="font-semibold">SPF 100</span>
-                    <span className="text-green-400">~99%</span>
-                    <span className="text-red-400">~1%</span>
                   </div>
                 </div>
               </div>
