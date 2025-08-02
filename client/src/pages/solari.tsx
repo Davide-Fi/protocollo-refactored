@@ -504,6 +504,9 @@ export default function SolariPage() {
   // New simple popup state
   const [popup, setPopup] = useState<{ filterName: string; products: SunscreenProduct[] } | null>(null);
   
+  // Product filtering states
+  const [productProtectionFilters, setProductProtectionFilters] = useState<string[]>([]);
+  
   // Simple function to get products for a filter
   const getProductsForFilter = (filterName: string): SunscreenProduct[] => {
     const filterMap: Record<string, keyof SunscreenProduct> = {
@@ -611,6 +614,29 @@ export default function SolariPage() {
     return filtered;
   }, [searchTerm, solubilityFilters, regulatoryFilters, uvRangeFilters, sortBy, sortDirection]);
 
+  // Product filtering logic
+  const filteredProducts = useMemo(() => {
+    if (productProtectionFilters.length === 0) {
+      return sunscreenProducts;
+    }
+
+    return sunscreenProducts.filter(product => {
+      const matchingQualities = productProtectionFilters.filter(filter => {
+        if (filter === "uvb-excellent") return product.uvbRating === "excellent";
+        if (filter === "uvb-good") return product.uvbRating === "good";
+        if (filter === "uva1-excellent") return product.uva1Rating === "excellent";
+        if (filter === "uva1-good") return product.uva1Rating === "good";
+        if (filter === "uva2-excellent") return product.uva2Rating === "excellent";
+        if (filter === "uva2-good") return product.uva2Rating === "good";
+        if (filter === "spf-high") return product.spf >= 50;
+        if (filter === "spf-medium") return product.spf >= 30 && product.spf < 50;
+        return false;
+      });
+
+      return matchingQualities.length >= 2; // Show only products with 2+ matching criteria
+    });
+  }, [productProtectionFilters]);
+
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
       <Navigation />
@@ -668,11 +694,208 @@ export default function SolariPage() {
               </p>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
-                <thead>
-                  <tr className="border-b border-steel-blue/30">
-                    <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
+            {/* Product Filtering Controls */}
+            <div className="space-y-4 mb-8">
+              <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  
+                  {/* UVB Protection */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVB</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uvb-excellent"
+                          checked={productProtectionFilters.includes("uvb-excellent")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uvb-excellent"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uvb-excellent"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uvb-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uvb-good"
+                          checked={productProtectionFilters.includes("uvb-good")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uvb-good"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uvb-good"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uvb-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* UVA1 Protection */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA1</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva1-excellent"
+                          checked={productProtectionFilters.includes("uva1-excellent")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva1-excellent"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva1-excellent"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva1-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva1-good"
+                          checked={productProtectionFilters.includes("uva1-good")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva1-good"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva1-good"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva1-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* UVA2 Protection */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA2</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva2-excellent"
+                          checked={productProtectionFilters.includes("uva2-excellent")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva2-excellent"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva2-excellent"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva2-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva2-good"
+                          checked={productProtectionFilters.includes("uva2-good")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva2-good"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva2-good"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva2-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* SPF Range */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">SPF Range</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="spf-high"
+                          checked={productProtectionFilters.includes("spf-high")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "spf-high"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-high"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="spf-high" className="text-slate-300 cursor-pointer text-xs">50+</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="spf-medium"
+                          checked={productProtectionFilters.includes("spf-medium")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "spf-medium"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-medium"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="spf-medium" className="text-slate-300 cursor-pointer text-xs">30-49</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                {/* Filter Status */}
+                <div className="mt-4 pt-4 border-t border-steel-blue/30">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-400">
+                      {productProtectionFilters.length === 0 
+                        ? "Mostra tutti i prodotti" 
+                        : `Filtri attivi: ${productProtectionFilters.length} (mostra solo prodotti con 2+ criteri)`
+                      }
+                    </span>
+                    {productProtectionFilters.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setProductProtectionFilters([])}
+                        className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-2"
+                      >
+                        <Filter className="w-3 h-3 mr-1" />
+                        Cancella
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Products Count Display */}
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-scientific-blue">
+                Prodotti Solari ({filteredProducts.length})
+              </h3>
+              {productProtectionFilters.length > 0 && (
+                <Badge variant="outline" className="border-performance-green text-performance-green">
+                  {filteredProducts.length} di {sunscreenProducts.length} prodotti
+                </Badge>
+              )}
+            </div>
+
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-12 bg-navy-charcoal rounded-lg border border-steel-blue/30">
+                <p className="text-slate-400 text-lg mb-4">Nessun prodotto trovato</p>
+                <p className="text-slate-500">Prova a selezionare meno criteri di qualità o rimuovere i filtri</p>
+                <Button
+                  variant="outline"
+                  onClick={() => setProductProtectionFilters([])}
+                  className="mt-4 border-steel-blue/30 text-slate-300 hover:border-performance-green hover:text-performance-green"
+                >
+                  Rimuovi Tutti i Filtri
+                </Button>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
+                  <thead>
+                    <tr className="border-b border-steel-blue/30">
+                      <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Homosalate</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Octocrylene</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Ethylhexyl Salicylate</th>
@@ -687,7 +910,7 @@ export default function SolariPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {sunscreenProducts.map((product, index) => {
+                  {filteredProducts.map((product, index) => {
                     const allFilters = ["Homosalate", "Octocrylene", "Ethylhexyl Salicylate", "Enulizole", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX", "Mexoryl XL", "Octinoxate"];
                     
                     return (
@@ -697,6 +920,12 @@ export default function SolariPage() {
                             <div className="font-semibold text-white text-sm">{product.brand}</div>
                             <div className="text-slate-300 text-xs">{product.productName}</div>
                             <div className="text-xs text-slate-400 mt-1">SPF {product.spf}</div>
+                            {/* Protection Quality Indicators */}
+                            <div className="flex gap-1 mt-1">
+                              {product.uvbRating === "excellent" && <div className="w-1.5 h-1.5 bg-green-400 rounded-full" title="UVB Eccellente"></div>}
+                              {product.uva1Rating === "excellent" && <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" title="UVA1 Eccellente"></div>}
+                              {product.uva2Rating === "excellent" && <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full" title="UVA2 Eccellente"></div>}
+                            </div>
                           </div>
                         </td>
                         {allFilters.map((filterName) => {
@@ -745,6 +974,7 @@ export default function SolariPage() {
                 </tbody>
               </table>
             </div>
+            )}
 
             <div className="mt-8 grid md:grid-cols-3 gap-6">
               <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
