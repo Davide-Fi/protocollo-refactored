@@ -299,39 +299,61 @@ export default function SolariPage() {
     // Find the selected filter object to get both trade name and INCI name
     const selectedFilterObj = sunscreenFilters.find(f => f.tradeName === filterTradeName);
     
+    // Helper function to normalize filter names (remove ®, ™, etc.)
+    const normalizeFilterName = (name: string) => {
+      return name.toLowerCase()
+        .replace(/®/g, '')
+        .replace(/™/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    };
+    
     return sunscreenProducts.filter(product => 
       product.filters.some(filter => {
-        const filterLower = filter.toLowerCase();
-        const tradeNameLower = filterTradeName.toLowerCase();
+        const filterNormalized = normalizeFilterName(filter);
+        const tradeNameNormalized = normalizeFilterName(filterTradeName);
         
-        // Check trade name matches
-        if (filterLower === tradeNameLower || filterLower.includes(tradeNameLower)) {
+        // Direct name matches (normalized)
+        if (filterNormalized === tradeNameNormalized || 
+            filterNormalized.includes(tradeNameNormalized) ||
+            tradeNameNormalized.includes(filterNormalized)) {
           return true;
         }
         
         // Check INCI name matches if available
         if (selectedFilterObj) {
-          const inciNameLower = selectedFilterObj.inciName.toLowerCase();
-          if (filterLower === inciNameLower || filterLower.includes(inciNameLower)) {
+          const inciNameNormalized = normalizeFilterName(selectedFilterObj.inciName);
+          if (filterNormalized === inciNameNormalized || 
+              filterNormalized.includes(inciNameNormalized) ||
+              inciNameNormalized.includes(filterNormalized)) {
             return true;
           }
         }
         
-        // Special cases for common filter names
+        // Special mappings for common filter variations
         const filterMappings: Record<string, string[]> = {
           'tinosorb s': ['tinosorb s', 'bis-ethylhexyloxyphenol methoxyphenyl triazine'],
           'tinosorb m': ['tinosorb m', 'methylene bis-benzotriazolyl tetramethylbutylphenol'],
-          'mexoryl sx': ['mexoryl sx', 'terephthalylidene dicamphor sulfonic acid'],
+          'mexoryl sx': ['mexoryl sx', 'terephthalylidene dicamphor sulfonic acid', 'ecamsule'],
           'mexoryl xl': ['mexoryl xl', 'drometrizole trisiloxane'],
+          'mexoryl 400': ['mexoryl 400', 'methoxypropylamino cyclohexenylidene ethoxyethylcyanoacetate'],
           'uvinul a plus': ['uvinul a plus', 'diethylamino hydroxybenzoyl hexyl benzoate'],
           'uvinul t150': ['uvinul t150', 'ethylhexyl triazone'],
           'zinc oxide': ['zinc oxide', 'zno'],
-          'titanium dioxide': ['titanium dioxide', 'tio2']
+          'titanium dioxide': ['titanium dioxide', 'tio2'],
+          'homosalate': ['homosalate'],
+          'octocrylene': ['octocrylene'],
+          'avobenzone': ['avobenzone', 'butyl methoxydibenzoylmethane'],
+          'octisalate': ['octisalate', 'ethylhexyl salicylate'],
+          'ethylhexyl salicylate': ['ethylhexyl salicylate', 'octisalate'],
+          'enulizole': ['enulizole', 'phenylbenzimidazole sulfonic acid']
         };
         
+        // Check if any mapping matches
         for (const [key, variations] of Object.entries(filterMappings)) {
-          if (tradeNameLower.includes(key) || (selectedFilterObj && selectedFilterObj.inciName.toLowerCase().includes(key))) {
-            return variations.some(variation => filterLower.includes(variation));
+          if (tradeNameNormalized.includes(key) || 
+              (selectedFilterObj && normalizeFilterName(selectedFilterObj.inciName).includes(key))) {
+            return variations.some(variation => filterNormalized.includes(variation));
           }
         }
         
@@ -1101,19 +1123,33 @@ export default function SolariPage() {
                               <div className="mb-4">
                                 <p className="text-slate-400 text-xs mb-3 font-medium">Composizione Filtri ({product.filters.length})</p>
                                 <div className="flex flex-wrap gap-2">
-                                  {product.filters.map((filter, idx) => (
-                                    <span 
-                                      key={idx} 
-                                      className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                                        filter.toLowerCase() === selectedFilter.tradeName.toLowerCase() ||
-                                        filter.toLowerCase().includes(selectedFilter.tradeName.toLowerCase())
-                                          ? 'bg-performance-green/20 text-performance-green border border-performance-green/40 ring-1 ring-performance-green/20' 
-                                          : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/40'
-                                      }`}
-                                    >
-                                      {filter}
-                                    </span>
-                                  ))}
+                                  {product.filters.map((filter, idx) => {
+                                    const normalizeFilterName = (name: string) => {
+                                      return name.toLowerCase()
+                                        .replace(/®/g, '')
+                                        .replace(/™/g, '')
+                                        .replace(/\s+/g, ' ')
+                                        .trim();
+                                    };
+                                    
+                                    const isHighlighted = 
+                                      normalizeFilterName(filter) === normalizeFilterName(selectedFilter.tradeName) ||
+                                      normalizeFilterName(filter).includes(normalizeFilterName(selectedFilter.tradeName)) ||
+                                      normalizeFilterName(selectedFilter.tradeName).includes(normalizeFilterName(filter));
+                                    
+                                    return (
+                                      <span 
+                                        key={idx} 
+                                        className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+                                          isHighlighted
+                                            ? 'bg-performance-green/20 text-performance-green border border-performance-green/40 ring-1 ring-performance-green/20' 
+                                            : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/40'
+                                        }`}
+                                      >
+                                        {filter}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               </div>
 
