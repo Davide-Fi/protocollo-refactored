@@ -91,6 +91,20 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="md:hidden border-t border-steel-blue/30 py-4">
             <div className="flex flex-col space-y-4">
+              <Link 
+                href="/il-protocollo"
+                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Il Protocollo
+              </Link>
+              <Link 
+                href="/solari"
+                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Filtri Solari
+              </Link>
               <button 
                 onClick={() => scrollToSection('nutrizione')}
                 className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"

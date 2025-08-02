@@ -5,6 +5,7 @@ This is a full-stack web application for "Protocollo", a longevity optimization 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Always add new pages to both hamburger menu and footer navigation automatically.
 
 # System Architecture
 

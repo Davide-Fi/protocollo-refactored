@@ -1,5 +1,6 @@
 import { Dna } from "lucide-react";
 import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
+import { Link } from "wouter";
 
 export default function Footer() {
   const scrollToSection = (sectionId: string) => {
@@ -43,6 +44,14 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Protocolli</h4>
             <ul className="space-y-2 text-slate-400">
               <li>
+                <Link 
+                  href="/il-protocollo"
+                  className="hover:text-scientific-blue transition-colors"
+                >
+                  Il Protocollo
+                </Link>
+              </li>
+              <li>
                 <button 
                   onClick={() => scrollToSection('nutrizione')}
                   className="hover:text-scientific-blue transition-colors"
@@ -80,6 +89,14 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Risorse</h4>
             <ul className="space-y-2 text-slate-400">
+              <li>
+                <Link 
+                  href="/solari"
+                  className="hover:text-scientific-blue transition-colors"
+                >
+                  Filtri Solari
+                </Link>
+              </li>
               <li>
                 <button 
                   onClick={() => scrollToSection('ricerca')}
