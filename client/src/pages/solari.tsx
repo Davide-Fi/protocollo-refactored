@@ -1025,7 +1025,7 @@ export default function SolariPage() {
               <div className="overflow-x-auto">
                 <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
                   <thead>
-                    <tr className="border-b border-steel-blue/30">
+                    <tr className="border-b border-steel-blue/30 sticky top-0 bg-navy-charcoal z-10">
                       <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
                       <th className="text-center p-2 font-semibold text-scientific-blue text-xs">SPF</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Homosalate</th>
