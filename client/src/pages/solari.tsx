@@ -634,7 +634,7 @@ export default function SolariPage() {
           return false;
         });
 
-        return matchingQualities.length >= 2; // Show only products with 2+ matching criteria
+        return matchingQualities.length >= 1; // Show products with 1+ matching criteria
       });
     }
 
@@ -941,7 +941,7 @@ export default function SolariPage() {
                     <span className="text-slate-400">
                       {productProtectionFilters.length === 0 
                         ? "Nessun filtro qualità selezionato" 
-                        : `${productProtectionFilters.length} criteri qualità (mostra solo prodotti con 2+ criteri)`
+                        : `${productProtectionFilters.length} criteri qualità (mostra prodotti con qualsiasi criterio)`
                       }
                     </span>
                     {productProtectionFilters.length > 0 && (

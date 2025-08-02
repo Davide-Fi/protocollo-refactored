@@ -31,6 +31,7 @@ Always add new pages to both hamburger menu and footer navigation automatically.
 - **Development Storage**: In-memory storage implementation for development/testing
 - **Migrations**: Drizzle Kit for database schema migrations
 - **Cross-Database Linking**: Successfully implemented popup system linking sunscreen filters to products containing those filters using boolean field mapping (Jan 2025)
+- **Dual Filter System**: Chemical ingredient filters (OR logic) and protection quality filters (1+ criteria, changed from 2+ in Jan 2025) working independently
 
 ## Authentication and Authorization
 - **Session Management**: Basic session handling with connect-pg-simple for PostgreSQL session storage
