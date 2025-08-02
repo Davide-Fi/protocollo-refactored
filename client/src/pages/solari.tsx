@@ -496,33 +496,69 @@ const sunscreenProducts: SunscreenProduct[] = [
 const skinTypeData = [
   {
     type: 'Type I',
-    description: 'Porcelain',
-    burnTimes: { uv6: 10, uv7: 8.5, uv8: 7.5, uv9: 6, uv10: 5 }
+    description: 'Very Pale',
+    burnTimes: { 
+      uv6: 10, uv7: 8.5, uv8: 7.5, uv9: 6, uv10: 5,
+      uv9_noSPF: 6,
+      uv9_spf20: 120,
+      uv9_spf30: 180,
+      uv9_spf50: 300
+    }
   },
   {
     type: 'Type II',
-    description: 'Fair',
-    burnTimes: { uv6: 12, uv7: 10.5, uv8: 9, uv9: 8, uv10: 7 }
+    description: 'Pale',
+    burnTimes: { 
+      uv6: 12, uv7: 10.5, uv8: 9, uv9: 8, uv10: 7,
+      uv9_noSPF: 8,
+      uv9_spf20: 160,
+      uv9_spf30: 240,
+      uv9_spf50: 400
+    }
   },
   {
     type: 'Type III',
     description: 'Light Olive',
-    burnTimes: { uv6: 15, uv7: 13, uv8: 11, uv9: 10, uv10: 9 }
+    burnTimes: { 
+      uv6: 15, uv7: 13, uv8: 11, uv9: 10, uv10: 9,
+      uv9_noSPF: 10,
+      uv9_spf20: 200,
+      uv9_spf30: 300,
+      uv9_spf50: 500
+    }
   },
   {
     type: 'Type IV',
     description: 'Mediterranean',
-    burnTimes: { uv6: 20, uv7: 17, uv8: 15, uv9: 13, uv10: 12 }
+    burnTimes: { 
+      uv6: 20, uv7: 17, uv8: 15, uv9: 13, uv10: 12,
+      uv9_noSPF: 13,
+      uv9_spf20: 260,
+      uv9_spf30: 390,
+      uv9_spf50: 650
+    }
   },
   {
     type: 'Type V',
     description: 'Brown',
-    burnTimes: { uv6: 25, uv7: 22, uv8: 20, uv9: 18, uv10: 15 }
+    burnTimes: { 
+      uv6: 25, uv7: 22, uv8: 20, uv9: 18, uv10: 15,
+      uv9_noSPF: 18,
+      uv9_spf20: 360,
+      uv9_spf30: 540,
+      uv9_spf50: 900
+    }
   },
   {
     type: 'Type VI',
-    description: 'Deep',
-    burnTimes: { uv6: 30, uv7: 27, uv8: 25, uv9: 22, uv10: 20 }
+    description: 'Dark Brown to Black',
+    burnTimes: { 
+      uv6: 30, uv7: 27, uv8: 25, uv9: 22, uv10: 20,
+      uv9_noSPF: 25,
+      uv9_spf20: 500,
+      uv9_spf30: 750,
+      uv9_spf50: 1250
+    }
   }
 ];
 
@@ -1618,9 +1654,9 @@ export default function SolariPage() {
               <div className="mt-6">
                 <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
                   <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Seleziona il Tuo Tipo di Pelle</h3>
-                  <p className="text-slate-400 text-sm mb-6">Tempo di scottatura per UV 9 (pelle nuda senza protezione)</p>
+                  <p className="text-slate-400 text-sm mb-6">Tempi di protezione per UV Index 9</p>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-3 mb-6">
                     {skinTypeData.map((skinType) => (
                       <div key={skinType.type} className="flex items-center space-x-3">
                         <input
@@ -1642,17 +1678,62 @@ export default function SolariPage() {
                               <span className="text-slate-300 ml-2">- {skinType.description}</span>
                             </div>
                             <span className="text-red-400 font-semibold">
-                              {skinType.burnTimes.uv9} min
+                              {skinType.burnTimes.uv9_noSPF} min
                             </span>
                           </div>
                         </label>
                       </div>
                     ))}
                   </div>
+
+                  {/* Protection Time Table for Selected Skin Type */}
+                  {(() => {
+                    const selectedData = skinTypeData.find(st => st.type === selectedSkinType);
+                    if (!selectedData) return null;
+
+                    const formatTime = (minutes: number) => {
+                      const hours = Math.floor(minutes / 60);
+                      const mins = minutes % 60;
+                      if (hours >= 1) {
+                        return `${hours}:${mins.toString().padStart(2, '0')} ore`;
+                      }
+                      return `${minutes} min`;
+                    };
+
+                    return (
+                      <div className="bg-navy-charcoal rounded-lg p-4 border border-steel-blue/30">
+                        <h4 className="text-lg font-semibold mb-3 text-performance-green">
+                          Tempi di Protezione - {selectedData.type} ({selectedData.description})
+                        </h4>
+                        
+                        <div className="grid grid-cols-4 gap-3">
+                          <div className="text-center p-3 bg-red-500/20 rounded-lg border border-red-500/30">
+                            <div className="text-xs text-slate-400 mb-1">Senza SPF</div>
+                            <div className="text-red-400 font-bold">{selectedData.burnTimes.uv9_noSPF} min</div>
+                          </div>
+                          
+                          <div className="text-center p-3 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
+                            <div className="text-xs text-slate-400 mb-1">SPF 20</div>
+                            <div className="text-yellow-400 font-bold">{formatTime(selectedData.burnTimes.uv9_spf20)}</div>
+                          </div>
+                          
+                          <div className="text-center p-3 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                            <div className="text-xs text-slate-400 mb-1">SPF 30</div>
+                            <div className="text-blue-400 font-bold">{formatTime(selectedData.burnTimes.uv9_spf30)}</div>
+                          </div>
+                          
+                          <div className="text-center p-3 bg-green-500/20 rounded-lg border border-green-500/30">
+                            <div className="text-xs text-slate-400 mb-1">SPF 50</div>
+                            <div className="text-green-400 font-bold">{formatTime(selectedData.burnTimes.uv9_spf50)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
                   
                   <div className="mt-4 pt-3 border-t border-steel-blue/30">
                     <p className="text-xs text-slate-400 italic">
-                      Tempo di scottatura approssimativo per pelle nuda esposta a UV Index 9 senza protezione solare.
+                      Tempi di protezione approssimativi per UV Index 9. I tempi variano in base a fattori individuali e condizioni ambientali.
                     </p>
                   </div>
                 </div>
