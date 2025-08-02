@@ -791,10 +791,8 @@ export default function SolariPage() {
                       </td>
 
                       {/* UV Range */}
-                      <td className="p-3 text-center">
-                        <Badge className="bg-performance-green text-black font-semibold text-xs">
-                          {filter.uvRange}
-                        </Badge>
+                      <td className="p-3 text-center text-performance-green font-semibold text-xs">
+                        {filter.uvRange}
                       </td>
 
                       {/* Peak Wavelength */}
@@ -810,10 +808,8 @@ export default function SolariPage() {
                       {/* Solubility */}
                       <td className="p-3 text-center text-slate-300 text-xs">
                         {filter.solubility.split(';').map((sol, idx) => (
-                          <div key={idx} className="mb-1">
-                            <Badge variant="outline" className="border-steel-blue text-steel-blue text-xs">
-                              {sol.trim()}
-                            </Badge>
+                          <div key={idx} className="mb-1 text-steel-blue">
+                            {sol.trim()}
                           </div>
                         ))}
                       </td>
@@ -821,38 +817,36 @@ export default function SolariPage() {
                       {/* Regulatory Status */}
                       <td className="p-3 text-center text-slate-300 text-xs">
                         {filter.regulatoryStatus.split(';').map((status, idx) => (
-                          <div key={idx} className="mb-1">
-                            <Badge variant="outline" className="border-scientific-blue text-scientific-blue text-xs">
-                              {status.trim()}
-                            </Badge>
+                          <div key={idx} className="mb-1 text-scientific-blue">
+                            {status.trim()}
                           </div>
                         ))}
                       </td>
 
                       {/* UVB Protection */}
                       <td className="p-3 text-center">
-                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uvbProtection].color} text-white`}>
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.uvbProtection].color}`}>
                           {protectionLevels[filter.uvbProtection].icon}
                         </div>
                       </td>
 
                       {/* UVA2 Protection */}
                       <td className="p-3 text-center">
-                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva2Protection].color} text-white`}>
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.uva2Protection].color}`}>
                           {protectionLevels[filter.uva2Protection].icon}
                         </div>
                       </td>
 
                       {/* UVA1 Protection */}
                       <td className="p-3 text-center">
-                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva1Protection].color} text-white`}>
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.uva1Protection].color}`}>
                           {protectionLevels[filter.uva1Protection].icon}
                         </div>
                       </td>
 
                       {/* Long UVA1 Protection */}
                       <td className="p-3 text-center">
-                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color} text-white`}>
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color}`}>
                           {protectionLevels[filter.longUva1Protection].icon}
                         </div>
                       </td>
@@ -861,15 +855,15 @@ export default function SolariPage() {
                       <td className="p-3">
                         <div className="space-y-1">
                           {filter.extraPoints.slice(0, 3).map((point, idx) => (
-                            <Badge key={idx} variant="outline" className="border-performance-green text-performance-green text-xs block w-full">
+                            <div key={idx} className="text-performance-green text-xs">
                               <CheckCircle className="w-3 h-3 mr-1 inline" />
                               {point}
-                            </Badge>
+                            </div>
                           ))}
                           {filter.extraPoints.length > 3 && (
-                            <Badge variant="outline" className="border-slate-500 text-slate-400 text-xs">
+                            <div className="text-slate-400 text-xs">
                               +{filter.extraPoints.length - 3} altri
-                            </Badge>
+                            </div>
                           )}
                         </div>
                       </td>
