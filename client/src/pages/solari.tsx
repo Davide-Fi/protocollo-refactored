@@ -1537,33 +1537,52 @@ export default function SolariPage() {
                 </div>
               </div>
 
-              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="grid grid-cols-3 gap-1 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-1 mb-2">
+              <div className="bg-steel-blue/20 rounded-lg p-3 border border-steel-blue/30">
+                <h3 className="text-sm font-semibold mb-3 text-scientific-blue">Efficacia SPF</h3>
+                <div className="space-y-2 text-xs">
+                  {/* Merged SPF Table */}
+                  <div className="grid grid-cols-7 gap-1 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-1">
                     <span>SPF</span>
-                    <span>Bloccato</span>
-                    <span>Passante</span>
+                    <span>UVB Bloccato</span>
+                    <span className="text-yellow-400">UV 6</span>
+                    <span className="text-orange-400">UV 7</span>
+                    <span className="text-orange-400">UV 8</span>
+                    <span className="text-red-400">UV 9</span>
+                    <span className="text-red-400">UV 10</span>
                   </div>
-                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
-                    <span className="font-semibold">15</span>
-                    <span className="text-yellow-400">93%</span>
-                    <span className="text-red-400">7%</span>
+                  <div className="space-y-1">
+                    <div className="grid grid-cols-7 gap-1 text-slate-300 text-xs">
+                      <span className="font-semibold">SPF 20</span>
+                      <span className="text-yellow-400">~95%</span>
+                      <span>200 min</span>
+                      <span>171 min</span>
+                      <span>150 min</span>
+                      <span>133 min</span>
+                      <span>120 min</span>
+                    </div>
+                    <div className="grid grid-cols-7 gap-1 text-slate-300 text-xs">
+                      <span className="font-semibold">SPF 30</span>
+                      <span className="text-blue-400">~97%</span>
+                      <span>300 min</span>
+                      <span>257 min</span>
+                      <span>225 min</span>
+                      <span>200 min</span>
+                      <span>180 min</span>
+                    </div>
+                    <div className="grid grid-cols-7 gap-1 text-slate-300 text-xs">
+                      <span className="font-semibold">SPF 50</span>
+                      <span className="text-green-400">~98%</span>
+                      <span className="text-green-400">500 min</span>
+                      <span className="text-green-400">429 min</span>
+                      <span className="text-green-400">375 min</span>
+                      <span className="text-green-400">333 min</span>
+                      <span className="text-green-400">300 min</span>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
-                    <span className="font-semibold">30</span>
-                    <span className="text-blue-400">97%</span>
-                    <span className="text-red-400">3%</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
-                    <span className="font-semibold">50</span>
-                    <span className="text-green-400">98%</span>
-                    <span className="text-red-400">2%</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
-                    <span className="font-semibold">100</span>
-                    <span className="text-green-400">99%</span>
-                    <span className="text-red-400">1%</span>
+                  <div className="mt-2 pt-1 border-t border-steel-blue/30">
+                    <p className="text-xs text-slate-400 italic">
+                      SPF moltiplica quanto tempo puoi stare protetto dalle scottature rispetto alla pelle nuda.
+                    </p>
                   </div>
                 </div>
               </div>
