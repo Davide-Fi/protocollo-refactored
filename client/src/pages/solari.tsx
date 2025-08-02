@@ -1568,14 +1568,7 @@ export default function SolariPage() {
                 </div>
               </div>
 
-              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Ordinamento</h3>
-                <div className="space-y-2 text-sm text-slate-300">
-                  <div>Clicca sulle intestazioni delle colonne per ordinare</div>
-                  <div>Usa i filtri sopra per ricercare</div>
-                  <div>Scorri orizzontalmente per vedere tutte le proprietà</div>
-                </div>
-              </div>
+              
             </div>
           </div>
           </div>
