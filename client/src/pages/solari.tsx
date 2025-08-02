@@ -1614,66 +1614,7 @@ export default function SolariPage() {
                 </div>
               </div>
 
-              {/* Skin Type Burn Time Section */}
-              <div className="mt-6">
-                <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                  <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Tempo di Scottatura per Tipo di Pelle</h3>
-                  
-                  {/* Skin Type Selection - Circular Filters */}
-                  <div className="mb-6">
-                    <h4 className="text-sm font-semibold mb-3 text-slate-300">Seleziona il tuo Tipo di Pelle</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {skinTypeData.map((skinType) => (
-                        <button
-                          key={skinType.type}
-                          onClick={() => setSelectedSkinType(skinType.type)}
-                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                            selectedSkinType === skinType.type
-                              ? 'bg-scientific-blue text-white border-2 border-scientific-blue'
-                              : 'bg-navy-charcoal border-2 border-steel-blue/30 text-slate-300 hover:border-scientific-blue/50'
-                          }`}
-                        >
-                          {skinType.type} - {skinType.description}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
-                  {/* Burn Time Table for Selected Skin Type */}
-                  {(() => {
-                    const selectedData = skinTypeData.find(st => st.type === selectedSkinType);
-                    if (!selectedData) return null;
-
-                    return (
-                      <div className="space-y-3">
-                        <div className="grid grid-cols-6 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
-                          <span>Tipo Pelle</span>
-                          <span className="text-yellow-400">UV 6</span>
-                          <span className="text-orange-400">UV 7</span>
-                          <span className="text-orange-400">UV 8</span>
-                          <span className="text-red-400">UV 9</span>
-                          <span className="text-red-400">UV 10</span>
-                        </div>
-                        <div className="grid grid-cols-6 gap-2 text-slate-300">
-                          <span className="font-semibold text-scientific-blue">
-                            {selectedData.type} - {selectedData.description}
-                          </span>
-                          <span>{selectedData.burnTimes.uv6} min</span>
-                          <span>{selectedData.burnTimes.uv7} min</span>
-                          <span>{selectedData.burnTimes.uv8} min</span>
-                          <span>{selectedData.burnTimes.uv9} min</span>
-                          <span>{selectedData.burnTimes.uv10} min</span>
-                        </div>
-                        <div className="mt-3 pt-2 border-t border-steel-blue/30">
-                          <p className="text-xs text-slate-400 italic">
-                            Tempi di scottatura per pelle nuda senza protezione solare alle diverse intensità UV.
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })()}
-                </div>
-              </div>
             </div>
           </div>
           </div>
