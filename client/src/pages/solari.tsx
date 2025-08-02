@@ -117,7 +117,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     solubility: "Oil-soluble; commonly used in water-resistant formulations",
     photostability: "Moderate photostability; often paired with photostabilizers",
     regulatoryStatus: "FDA approved ≤ 15%; EU approved ≤ 10%",
-    extraPoints: ["UVB protection specialist", "Water-resistant formulations", "Common in Vichy products"],
+    extraPoints: ["UVB protection specialist", "Water-resistant formulations", "High absorption coefficient"],
     uvbProtection: "strong",
     uva2Protection: "incomplete",
     uva1Protection: "incomplete",
@@ -145,7 +145,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     solubility: "Oil-soluble; excellent spreading properties",
     photostability: "Good photostability; commonly used in high SPF formulations",
     regulatoryStatus: "FDA approved ≤ 5%; EU approved ≤ 5%",
-    extraPoints: ["UVB protection", "Excellent skin feel", "Used by both Vichy and La Roche-Posay"],
+    extraPoints: ["UVB protection", "Excellent skin feel", "Emollient properties"],
     uvbProtection: "strong",
     uva2Protection: "incomplete",
     uva1Protection: "incomplete",
@@ -173,7 +173,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     solubility: "Oil-soluble; requires photostabilizers (Octocrylene, Tinosorb)",
     photostability: "Poor without stabilizers; excellent when stabilized",
     regulatoryStatus: "FDA approved ≤ 3%; EU approved ≤ 5%",
-    extraPoints: ["UVA protection specialist", "Needs stabilizers", "Both brands use it"],
+    extraPoints: ["UVA protection specialist", "Needs stabilizers", "Gold standard UVA filter"],
     uvbProtection: "incomplete",
     uva2Protection: "strong",
     uva1Protection: "strong",
@@ -187,7 +187,7 @@ const sunscreenFilters: SunscreenFilter[] = [
     solubility: "Oil-soluble; highly photostable broad-spectrum filter",
     photostability: "Excellent photostability; maintains effectiveness under UV",
     regulatoryStatus: "EU approved ≤ 5%; not FDA approved",
-    extraPoints: ["Broad UVB/UVA protection", "Highly photostable", "Used by both brands"],
+    extraPoints: ["Broad UVB/UVA protection", "Highly photostable", "BASF patented technology"],
     uvbProtection: "strong",
     uva2Protection: "strong",
     uva1Protection: "moderate",
@@ -196,10 +196,10 @@ const sunscreenFilters: SunscreenFilter[] = [
 ];
 
 const protectionLevels = {
-  strong: { icon: "✅✅", color: "bg-green-500", label: "Strong" },
-  good: { icon: "✅", color: "bg-blue-500", label: "Good" },
-  moderate: { icon: "⚠️", color: "bg-yellow-500", label: "Moderate" },
-  incomplete: { icon: "❌", color: "bg-red-500", label: "Incomplete" }
+  strong: { icon: "✅✅", color: "text-green-400", label: "Strong" },
+  good: { icon: "✅", color: "text-blue-400", label: "Good" },
+  moderate: { icon: "⚠️", color: "text-yellow-400", label: "Moderate" },
+  incomplete: { icon: "❌", color: "text-red-400", label: "Incomplete" }
 };
 
 const productRatings = {
