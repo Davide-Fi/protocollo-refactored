@@ -668,152 +668,179 @@ export default function SolariPage() {
             </div>
           )}
 
-          {/* Filter Results Section */}
-          <div className="max-w-6xl mx-auto mt-16">
+          {/* Filter Properties Matrix Table */}
+          <div className="max-w-full mx-auto mt-16">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold">
-                Filtri Trovati ({filteredFilters.length})
+                Database Filtri UV ({filteredFilters.length})
               </h2>
               <Badge variant="outline" className="border-scientific-blue text-scientific-blue">
                 {filteredFilters.length} di {sunscreenFilters.length}
               </Badge>
             </div>
 
-            {/* Sortable Headers */}
-            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6 p-4 bg-steel-blue/10 rounded-lg">
-              <button 
-                onClick={() => handleSort("tradeName")}
-                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
-              >
-                Nome Commerciale
-                {sortBy === "tradeName" && (
-                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                )}
-              </button>
-              <button 
-                onClick={() => handleSort("inciName")}
-                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
-              >
-                Nome INCI
-                {sortBy === "inciName" && (
-                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                )}
-              </button>
-              <button 
-                onClick={() => handleSort("uvRange")}
-                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
-              >
-                Spettro UV
-                {sortBy === "uvRange" && (
-                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                )}
-              </button>
-              <button 
-                onClick={() => handleSort("photostability")}
-                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
-              >
-                Fotostabilità
-                {sortBy === "photostability" && (
-                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                )}
-              </button>
-              <div className="font-semibold text-scientific-blue">Protezione UV</div>
-              <div className="font-semibold text-scientific-blue">Azioni</div>
-            </div>
-
-            <div className="grid gap-4">
-              {filteredFilters.map((filter, index) => (
-                <Card key={index} className="bg-steel-blue/20 border-steel-blue/30 hover:border-scientific-blue/50 transition-colors">
-                  <CardContent className="p-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 items-center">
+            <div className="overflow-x-auto">
+              <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
+                <thead>
+                  <tr className="border-b border-steel-blue/30">
+                    <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal min-w-[180px]">
+                      <button 
+                        onClick={() => handleSort("tradeName")}
+                        className="flex items-center hover:text-performance-green transition-colors"
+                      >
+                        Nome Commerciale
+                        {sortBy === "tradeName" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-left p-3 font-semibold text-scientific-blue min-w-[200px]">
+                      <button 
+                        onClick={() => handleSort("inciName")}
+                        className="flex items-center hover:text-performance-green transition-colors"
+                      >
+                        Nome INCI
+                        {sortBy === "inciName" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">
+                      <button 
+                        onClick={() => handleSort("uvRange")}
+                        className="flex items-center hover:text-performance-green transition-colors"
+                      >
+                        Spettro UV
+                        {sortBy === "uvRange" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[100px]">Picco λ</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">
+                      <button 
+                        onClick={() => handleSort("photostability")}
+                        className="flex items-center hover:text-performance-green transition-colors"
+                      >
+                        Fotostabilità
+                        {sortBy === "photostability" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[100px]">Solubilità</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Status Regolatorio</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">UVB</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">UVA2</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">UVA1</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">Long UVA1</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Vantaggi Extra</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredFilters.map((filter, index) => (
+                    <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
                       {/* Commercial Name */}
-                      <div>
-                        <div className="font-bold text-scientific-blue text-lg mb-1">
+                      <td className="p-3 sticky left-0 bg-navy-charcoal">
+                        <div className="font-bold text-scientific-blue text-sm">
                           {filter.tradeName}
                         </div>
-                        <div className="text-slate-400 text-sm">
-                          {filter.peakWavelength}
-                        </div>
-                      </div>
+                      </td>
 
                       {/* INCI Name */}
-                      <div>
-                        <div className="text-slate-300 font-medium mb-1">
+                      <td className="p-3">
+                        <div className="text-slate-300 font-medium text-sm">
                           {filter.inciName}
                         </div>
-                        <div className="text-slate-500 text-sm">
-                          {filter.solubility.split(';')[0]}
-                        </div>
-                      </div>
+                      </td>
 
                       {/* UV Range */}
-                      <div>
-                        <Badge className="bg-performance-green text-black font-semibold mb-2">
+                      <td className="p-3 text-center">
+                        <Badge className="bg-performance-green text-black font-semibold text-xs">
                           {filter.uvRange}
                         </Badge>
-                        <div className="text-slate-400 text-sm">
-                          {filter.regulatoryStatus.split(';')[0]}
-                        </div>
-                      </div>
+                      </td>
+
+                      {/* Peak Wavelength */}
+                      <td className="p-3 text-center text-slate-300 text-sm">
+                        {filter.peakWavelength}
+                      </td>
 
                       {/* Photostability */}
-                      <div className="text-slate-300">
+                      <td className="p-3 text-center text-slate-300 text-sm">
                         {filter.photostability}
-                      </div>
+                      </td>
 
-                      {/* UV Protection Levels */}
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400 mb-1">UVB</div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uvbProtection].color} text-white`}>
-                            {protectionLevels[filter.uvbProtection].icon}
+                      {/* Solubility */}
+                      <td className="p-3 text-center text-slate-300 text-xs">
+                        {filter.solubility.split(';').map((sol, idx) => (
+                          <div key={idx} className="mb-1">
+                            <Badge variant="outline" className="border-steel-blue text-steel-blue text-xs">
+                              {sol.trim()}
+                            </Badge>
                           </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400 mb-1">UVA2</div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva2Protection].color} text-white`}>
-                            {protectionLevels[filter.uva2Protection].icon}
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400 mb-1">UVA1</div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva1Protection].color} text-white`}>
-                            {protectionLevels[filter.uva1Protection].icon}
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400 mb-1">Long</div>
-                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color} text-white`}>
-                            {protectionLevels[filter.longUva1Protection].icon}
-                          </div>
-                        </div>
-                      </div>
+                        ))}
+                      </td>
 
-                      {/* Action Button */}
-                      <div>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="border-scientific-blue text-scientific-blue hover:bg-scientific-blue hover:text-white"
-                          onClick={() => setSelectedFilter(filter)}
-                        >
-                          Dettagli Completi
-                        </Button>
-                      </div>
-                    </div>
+                      {/* Regulatory Status */}
+                      <td className="p-3 text-center text-slate-300 text-xs">
+                        {filter.regulatoryStatus.split(';').map((status, idx) => (
+                          <div key={idx} className="mb-1">
+                            <Badge variant="outline" className="border-scientific-blue text-scientific-blue text-xs">
+                              {status.trim()}
+                            </Badge>
+                          </div>
+                        ))}
+                      </td>
 
-                    {/* Extra Points */}
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {filter.extraPoints.map((point, idx) => (
-                        <Badge key={idx} variant="outline" className="border-performance-green text-performance-green text-xs">
-                          <CheckCircle className="w-3 h-3 mr-1" />
-                          {point}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      {/* UVB Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uvbProtection].color} text-white`}>
+                          {protectionLevels[filter.uvbProtection].icon}
+                        </div>
+                      </td>
+
+                      {/* UVA2 Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva2Protection].color} text-white`}>
+                          {protectionLevels[filter.uva2Protection].icon}
+                        </div>
+                      </td>
+
+                      {/* UVA1 Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva1Protection].color} text-white`}>
+                          {protectionLevels[filter.uva1Protection].icon}
+                        </div>
+                      </td>
+
+                      {/* Long UVA1 Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color} text-white`}>
+                          {protectionLevels[filter.longUva1Protection].icon}
+                        </div>
+                      </td>
+
+                      {/* Extra Points */}
+                      <td className="p-3">
+                        <div className="space-y-1">
+                          {filter.extraPoints.slice(0, 3).map((point, idx) => (
+                            <Badge key={idx} variant="outline" className="border-performance-green text-performance-green text-xs block w-full">
+                              <CheckCircle className="w-3 h-3 mr-1 inline" />
+                              {point}
+                            </Badge>
+                          ))}
+                          {filter.extraPoints.length > 3 && (
+                            <Badge variant="outline" className="border-slate-500 text-slate-400 text-xs">
+                              +{filter.extraPoints.length - 3} altri
+                            </Badge>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
 
             {filteredFilters.length === 0 && (
@@ -822,6 +849,50 @@ export default function SolariPage() {
                 <p className="text-slate-500">Prova a modificare i criteri di ricerca o i filtri</p>
               </div>
             )}
+
+            {/* Table Legend */}
+            <div className="mt-8 grid md:grid-cols-3 gap-6">
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Protezione UV</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center">
+                    <span className="text-green-400 mr-2">✅✅✅</span>
+                    <span className="text-slate-300">Eccellente</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-blue-400 mr-2">✅✅</span>
+                    <span className="text-slate-300">Buona</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-yellow-400 mr-2">✅</span>
+                    <span className="text-slate-300">Moderata</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-400 mr-2">❌</span>
+                    <span className="text-slate-300">Insufficiente</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Spettri UV</h3>
+                <div className="space-y-2 text-sm text-slate-300">
+                  <div><span className="font-semibold">UVB:</span> 280-320 nm (eritema)</div>
+                  <div><span className="font-semibold">UVA2:</span> 320-340 nm (pigmentazione)</div>
+                  <div><span className="font-semibold">UVA1:</span> 340-400 nm (invecchiamento)</div>
+                  <div><span className="font-semibold">Long UVA1:</span> 370-400 nm (DNA damage)</div>
+                </div>
+              </div>
+
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Ordinamento</h3>
+                <div className="space-y-2 text-sm text-slate-300">
+                  <div>Clicca sulle intestazioni delle colonne per ordinare</div>
+                  <div>Usa i filtri sopra per ricercare</div>
+                  <div>Scorri orizzontalmente per vedere tutte le proprietà</div>
+                </div>
+              </div>
+            </div>
           </div>
           </div>
         </section>
