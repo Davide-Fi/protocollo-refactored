@@ -506,6 +506,7 @@ export default function SolariPage() {
   
   // Product filtering states
   const [productProtectionFilters, setProductProtectionFilters] = useState<string[]>([]);
+  const [productChemicalFilters, setProductChemicalFilters] = useState<string[]>([]);
   
   // Simple function to get products for a filter
   const getProductsForFilter = (filterName: string): SunscreenProduct[] => {
@@ -616,26 +617,56 @@ export default function SolariPage() {
 
   // Product filtering logic
   const filteredProducts = useMemo(() => {
-    if (productProtectionFilters.length === 0) {
-      return sunscreenProducts;
+    let products = sunscreenProducts;
+
+    // Apply protection quality filters (AND logic - need 2+ criteria)
+    if (productProtectionFilters.length > 0) {
+      products = products.filter(product => {
+        const matchingQualities = productProtectionFilters.filter(filter => {
+          if (filter === "uvb-excellent") return product.uvbRating === "excellent";
+          if (filter === "uvb-good") return product.uvbRating === "good";
+          if (filter === "uva1-excellent") return product.uva1Rating === "excellent";
+          if (filter === "uva1-good") return product.uva1Rating === "good";
+          if (filter === "uva2-excellent") return product.uva2Rating === "excellent";
+          if (filter === "uva2-good") return product.uva2Rating === "good";
+          if (filter === "spf-high") return product.spf >= 50;
+          if (filter === "spf-medium") return product.spf >= 30 && product.spf < 50;
+          return false;
+        });
+
+        return matchingQualities.length >= 2; // Show only products with 2+ matching criteria
+      });
     }
 
-    return sunscreenProducts.filter(product => {
-      const matchingQualities = productProtectionFilters.filter(filter => {
-        if (filter === "uvb-excellent") return product.uvbRating === "excellent";
-        if (filter === "uvb-good") return product.uvbRating === "good";
-        if (filter === "uva1-excellent") return product.uva1Rating === "excellent";
-        if (filter === "uva1-good") return product.uva1Rating === "good";
-        if (filter === "uva2-excellent") return product.uva2Rating === "excellent";
-        if (filter === "uva2-good") return product.uva2Rating === "good";
-        if (filter === "spf-high") return product.spf >= 50;
-        if (filter === "spf-medium") return product.spf >= 30 && product.spf < 50;
-        return false;
-      });
+    // Apply chemical filters (OR logic - has ANY selected chemical)
+    if (productChemicalFilters.length > 0) {
+      products = products.filter(product => {
+        return productChemicalFilters.some(filter => {
+          const chemicalMapping: Record<string, keyof SunscreenProduct> = {
+            'tinosorb-s': 'tinosorbS',
+            'tinosorb-m': 'tinosorbM',
+            'mexoryl-sx': 'mexorylSX',
+            'mexoryl-xl': 'mexorylXL',
+            'mexoryl-400': 'mexoryl400',
+            'avobenzone': 'avobenzone',
+            'octocrylene': 'octocrylene',
+            'homosalate': 'homosalate',
+            'uvinul-t150': 'uvinulT150',
+            'ethylhexyl-salicylate': 'ethylhexylSalicylate',
+            'enulizole': 'enulizole',
+            'octinoxate': 'octinoxate',
+            'zinc-oxide': 'zincOxide',
+            'titanium-dioxide': 'titaniumDioxide'
+          };
 
-      return matchingQualities.length >= 2; // Show only products with 2+ matching criteria
-    });
-  }, [productProtectionFilters]);
+          const fieldName = chemicalMapping[filter];
+          return fieldName && product[fieldName] === true;
+        });
+      });
+    }
+
+    return products;
+  }, [productProtectionFilters, productChemicalFilters]);
 
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
@@ -696,7 +727,70 @@ export default function SolariPage() {
 
             {/* Product Filtering Controls */}
             <div className="space-y-4 mb-8">
+              {/* Chemical Filters */}
               <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+                <h4 className="font-semibold mb-3 text-scientific-blue text-sm">Filtri per Ingrediente Chimico</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                  {[
+                    { id: 'tinosorb-s', label: 'Tinosorb S' },
+                    { id: 'tinosorb-m', label: 'Tinosorb M' },
+                    { id: 'mexoryl-sx', label: 'Mexoryl SX' },
+                    { id: 'mexoryl-xl', label: 'Mexoryl XL' },
+                    { id: 'mexoryl-400', label: 'Mexoryl 400' },
+                    { id: 'avobenzone', label: 'Avobenzone' },
+                    { id: 'octocrylene', label: 'Octocrylene' },
+                    { id: 'homosalate', label: 'Homosalate' },
+                    { id: 'uvinul-t150', label: 'Uvinul T150' },
+                    { id: 'ethylhexyl-salicylate', label: 'Ethylhexyl Sal.' },
+                    { id: 'enulizole', label: 'Enulizole' },
+                    { id: 'octinoxate', label: 'Octinoxate' },
+                    { id: 'zinc-oxide', label: 'Zinc Oxide' },
+                    { id: 'titanium-dioxide', label: 'Titanium Dio.' }
+                  ].map(chemical => (
+                    <div key={chemical.id} className="flex items-center space-x-1">
+                      <Checkbox
+                        id={chemical.id}
+                        checked={productChemicalFilters.includes(chemical.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setProductChemicalFilters([...productChemicalFilters, chemical.id]);
+                          } else {
+                            setProductChemicalFilters(productChemicalFilters.filter(f => f !== chemical.id));
+                          }
+                        }}
+                      />
+                      <Label htmlFor={chemical.id} className="text-slate-300 cursor-pointer text-xs">{chemical.label}</Label>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Chemical Filter Status */}
+                <div className="mt-3 pt-3 border-t border-steel-blue/30">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-400">
+                      {productChemicalFilters.length === 0 
+                        ? "Nessun filtro chimico selezionato" 
+                        : `${productChemicalFilters.length} ingredienti selezionati (mostra prodotti con QUALSIASI di questi)`
+                      }
+                    </span>
+                    {productChemicalFilters.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setProductChemicalFilters([])}
+                        className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-2"
+                      >
+                        <Filter className="w-3 h-3 mr-1" />
+                        Cancella
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Protection Quality Filters */}
+              <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+                <h4 className="font-semibold mb-3 text-scientific-blue text-sm">Filtri per Qualità Protezione</h4>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   
                   {/* UVB Protection */}
@@ -841,13 +935,13 @@ export default function SolariPage() {
                   
                 </div>
                 
-                {/* Filter Status */}
+                {/* Protection Filter Status */}
                 <div className="mt-4 pt-4 border-t border-steel-blue/30">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-400">
                       {productProtectionFilters.length === 0 
-                        ? "Mostra tutti i prodotti" 
-                        : `Filtri attivi: ${productProtectionFilters.length} (mostra solo prodotti con 2+ criteri)`
+                        ? "Nessun filtro qualità selezionato" 
+                        : `${productProtectionFilters.length} criteri qualità (mostra solo prodotti con 2+ criteri)`
                       }
                     </span>
                     {productProtectionFilters.length > 0 && (
@@ -871,20 +965,43 @@ export default function SolariPage() {
               <h3 className="text-xl font-semibold text-scientific-blue">
                 Prodotti Solari ({filteredProducts.length})
               </h3>
-              {productProtectionFilters.length > 0 && (
-                <Badge variant="outline" className="border-performance-green text-performance-green">
-                  {filteredProducts.length} di {sunscreenProducts.length} prodotti
-                </Badge>
-              )}
+              <div className="flex items-center gap-3">
+                {(productProtectionFilters.length > 0 || productChemicalFilters.length > 0) && (
+                  <Badge variant="outline" className="border-performance-green text-performance-green">
+                    {filteredProducts.length} di {sunscreenProducts.length} prodotti
+                  </Badge>
+                )}
+                {(productProtectionFilters.length > 0 || productChemicalFilters.length > 0) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setProductProtectionFilters([]);
+                      setProductChemicalFilters([]);
+                    }}
+                    className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-3"
+                  >
+                    <Filter className="w-3 h-3 mr-1" />
+                    Cancella Tutti
+                  </Button>
+                )}
+              </div>
             </div>
 
-            {filteredProducts.length === 0 ? (
+            {filteredProducts.length === 0 && (productProtectionFilters.length > 0 || productChemicalFilters.length > 0) ? (
               <div className="text-center py-12 bg-navy-charcoal rounded-lg border border-steel-blue/30">
                 <p className="text-slate-400 text-lg mb-4">Nessun prodotto trovato</p>
-                <p className="text-slate-500">Prova a selezionare meno criteri di qualità o rimuovere i filtri</p>
+                <p className="text-slate-500 mb-2">
+                  {productProtectionFilters.length > 0 && "Criteri di qualità troppo restrittivi"}
+                  {productProtectionFilters.length > 0 && productChemicalFilters.length > 0 && " o "}
+                  {productChemicalFilters.length > 0 && "Nessun prodotto contiene gli ingredienti selezionati"}
+                </p>
                 <Button
                   variant="outline"
-                  onClick={() => setProductProtectionFilters([])}
+                  onClick={() => {
+                    setProductProtectionFilters([]);
+                    setProductChemicalFilters([]);
+                  }}
                   className="mt-4 border-steel-blue/30 text-slate-300 hover:border-performance-green hover:text-performance-green"
                 >
                   Rimuovi Tutti i Filtri
