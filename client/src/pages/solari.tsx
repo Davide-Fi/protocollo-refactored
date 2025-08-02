@@ -293,6 +293,52 @@ export default function SolariPage() {
   const [activeTab, setActiveTab] = useState<"filters" | "products">("filters");
   const [sortBy, setSortBy] = useState<string>("tradeName");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  
+  // Function to find products containing a specific filter
+  const findProductsWithFilter = (filterTradeName: string) => {
+    // Find the selected filter object to get both trade name and INCI name
+    const selectedFilterObj = sunscreenFilters.find(f => f.tradeName === filterTradeName);
+    
+    return sunscreenProducts.filter(product => 
+      product.filters.some(filter => {
+        const filterLower = filter.toLowerCase();
+        const tradeNameLower = filterTradeName.toLowerCase();
+        
+        // Check trade name matches
+        if (filterLower === tradeNameLower || filterLower.includes(tradeNameLower)) {
+          return true;
+        }
+        
+        // Check INCI name matches if available
+        if (selectedFilterObj) {
+          const inciNameLower = selectedFilterObj.inciName.toLowerCase();
+          if (filterLower === inciNameLower || filterLower.includes(inciNameLower)) {
+            return true;
+          }
+        }
+        
+        // Special cases for common filter names
+        const filterMappings: Record<string, string[]> = {
+          'tinosorb s': ['tinosorb s', 'bis-ethylhexyloxyphenol methoxyphenyl triazine'],
+          'tinosorb m': ['tinosorb m', 'methylene bis-benzotriazolyl tetramethylbutylphenol'],
+          'mexoryl sx': ['mexoryl sx', 'terephthalylidene dicamphor sulfonic acid'],
+          'mexoryl xl': ['mexoryl xl', 'drometrizole trisiloxane'],
+          'uvinul a plus': ['uvinul a plus', 'diethylamino hydroxybenzoyl hexyl benzoate'],
+          'uvinul t150': ['uvinul t150', 'ethylhexyl triazone'],
+          'zinc oxide': ['zinc oxide', 'zno'],
+          'titanium dioxide': ['titanium dioxide', 'tio2']
+        };
+        
+        for (const [key, variations] of Object.entries(filterMappings)) {
+          if (tradeNameLower.includes(key) || (selectedFilterObj && selectedFilterObj.inciName.toLowerCase().includes(key))) {
+            return variations.some(variation => filterLower.includes(variation));
+          }
+        }
+        
+        return false;
+      })
+    );
+  };
 
   const handleSort = (column: string) => {
     if (sortBy === column) {
@@ -827,7 +873,12 @@ export default function SolariPage() {
                 </thead>
                 <tbody>
                   {filteredFilters.map((filter, index) => (
-                    <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
+                    <tr 
+                      key={index} 
+                      className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors cursor-pointer"
+                      onClick={() => setSelectedFilter(filter)}
+                      title="Clicca per vedere quali prodotti contengono questo filtro"
+                    >
                       {/* Commercial Name */}
                       <td className="p-3 sticky left-0 bg-navy-charcoal">
                         <div className="font-bold text-scientific-blue text-sm">
@@ -929,6 +980,125 @@ export default function SolariPage() {
               <div className="text-center py-12">
                 <p className="text-slate-400 text-lg mb-4">Nessun filtro trovato</p>
                 <p className="text-slate-500">Prova a modificare i criteri di ricerca o i filtri</p>
+              </div>
+            )}
+
+            {/* Selected Filter Details and Products */}
+            {selectedFilter && (
+              <div className="mt-12 bg-steel-blue/20 rounded-lg border border-steel-blue/30 p-6">
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <h3 className="text-2xl font-bold text-scientific-blue mb-2">
+                      {selectedFilter.tradeName}
+                    </h3>
+                    <p className="text-slate-300 font-medium">{selectedFilter.inciName}</p>
+                    <p className="text-slate-400 text-sm mt-1">{selectedFilter.uvRange} • {selectedFilter.photostability}</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedFilter(null)}
+                    className="text-slate-400 hover:text-white"
+                  >
+                    ✕
+                  </Button>
+                </div>
+
+                {(() => {
+                  const productsWithFilter = findProductsWithFilter(selectedFilter.tradeName);
+                  return (
+                    <div>
+                      <h4 className="text-lg font-semibold text-performance-green mb-4">
+                        Prodotti che contengono questo filtro ({productsWithFilter.length})
+                      </h4>
+                      
+                      {productsWithFilter.length > 0 ? (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {productsWithFilter.map((product, index) => (
+                            <div key={index} className="bg-navy-charcoal rounded-lg border border-steel-blue/30 p-4">
+                              <div className="flex items-start justify-between mb-3">
+                                <div>
+                                  <h5 className="font-semibold text-scientific-blue text-sm">
+                                    {product.brand}
+                                  </h5>
+                                  <p className="text-slate-300 text-sm font-medium">
+                                    {product.productName}
+                                  </p>
+                                </div>
+                                <Badge variant="outline" className="border-performance-green text-performance-green text-xs">
+                                  SPF {product.spf}
+                                </Badge>
+                              </div>
+                              
+                              <div className="mb-3">
+                                <p className="text-slate-400 text-xs mb-2">Composizione filtri:</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {product.filters.map((filter, idx) => (
+                                    <span 
+                                      key={idx} 
+                                      className={`text-xs px-2 py-1 rounded ${
+                                        filter.toLowerCase() === selectedFilter.tradeName.toLowerCase() ||
+                                        filter.toLowerCase().includes(selectedFilter.tradeName.toLowerCase())
+                                          ? 'bg-performance-green/20 text-performance-green border border-performance-green/30' 
+                                          : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/30'
+                                      }`}
+                                    >
+                                      {filter}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-3 gap-2 text-xs">
+                                <div className="text-center">
+                                  <span className="block text-slate-400">UVB</span>
+                                  <span className={`${
+                                    product.uvbRating === 'excellent' ? 'text-green-400' : 
+                                    product.uvbRating === 'good' ? 'text-blue-400' : 'text-yellow-400'
+                                  }`}>
+                                    {product.uvbRating === 'excellent' ? '✅✅✅' : 
+                                     product.uvbRating === 'good' ? '✅✅' : '✅'}
+                                  </span>
+                                </div>
+                                <div className="text-center">
+                                  <span className="block text-slate-400">UVA1</span>
+                                  <span className={`${
+                                    product.uva1Rating === 'excellent' ? 'text-green-400' : 
+                                    product.uva1Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
+                                  }`}>
+                                    {product.uva1Rating === 'excellent' ? '✅✅✅' : 
+                                     product.uva1Rating === 'good' ? '✅✅' : '✅'}
+                                  </span>
+                                </div>
+                                <div className="text-center">
+                                  <span className="block text-slate-400">UVA2</span>
+                                  <span className={`${
+                                    product.uva2Rating === 'excellent' ? 'text-green-400' : 
+                                    product.uva2Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
+                                  }`}>
+                                    {product.uva2Rating === 'excellent' ? '✅✅✅' : 
+                                     product.uva2Rating === 'good' ? '✅✅' : '✅'}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="mt-3 pt-3 border-t border-steel-blue/30">
+                                <p className="text-slate-400 text-xs">{product.availability}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8">
+                          <p className="text-slate-400">Nessun prodotto trovato con questo filtro nel database</p>
+                          <p className="text-slate-500 text-sm mt-2">
+                            Il filtro potrebbe essere utilizzato in prodotti non ancora catalogati
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             )}
 
