@@ -249,7 +249,7 @@ const productRatings = {
 const sunscreenProducts: SunscreenProduct[] = [
   {
     brand: "La Roche-Posay",
-    productName: "Anthelios Ultra Cover SPF 50+",
+    productName: "Anthelios Ultra Cover",
     spf: 50,
     tinosorbS: true,
     tinosorbM: false,
@@ -276,7 +276,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "Vichy",
-    productName: "Capital Soleil SPF 50+",
+    productName: "Capital Soleil",
     spf: 50,
     tinosorbS: true,
     tinosorbM: false,
@@ -303,7 +303,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "ISDIN",
-    productName: "Fotoprotetor Fusion Water SPF 50",
+    productName: "Fotoprotetor Fusion Water",
     spf: 50,
     tinosorbS: true,
     tinosorbM: false,
@@ -330,7 +330,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "Eucerin",
-    productName: "Sun Sensitive Protect SPF 30",
+    productName: "Sun Sensitive Protect",
     spf: 30,
     tinosorbS: true,
     tinosorbM: true,
@@ -357,7 +357,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "Avène",
-    productName: "Fluide Mineral Teinté SPF 50+",
+    productName: "Fluide Mineral Teinté",
     spf: 50,
     tinosorbS: false,
     tinosorbM: false,
@@ -384,7 +384,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "Heliocare",
-    productName: "Advanced Gel SPF 50",
+    productName: "Advanced Gel",
     spf: 50,
     tinosorbS: true,
     tinosorbM: false,
@@ -411,7 +411,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "Hawaiian Tropic",
-    productName: "SPF 30 EU Variant",
+    productName: "EU Variant",
     spf: 30,
     tinosorbS: false,
     tinosorbM: false,
@@ -438,7 +438,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "Bilboa",
-    productName: "Carrot Plus SPF 20",
+    productName: "Carrot Plus",
     spf: 20,
     tinosorbS: false,
     tinosorbM: false,
@@ -465,7 +465,7 @@ const sunscreenProducts: SunscreenProduct[] = [
   },
   {
     brand: "La Roche-Posay",
-    productName: "Anthelios Invisible Spray SPF 30",
+    productName: "Anthelios Invisible Spray",
     spf: 30,
     tinosorbS: false,
     tinosorbM: false,
@@ -629,8 +629,9 @@ export default function SolariPage() {
           if (filter === "uva1-good") return product.uva1Rating === "good";
           if (filter === "uva2-excellent") return product.uva2Rating === "excellent";
           if (filter === "uva2-good") return product.uva2Rating === "good";
-          if (filter === "spf-high") return product.spf >= 50;
-          if (filter === "spf-medium") return product.spf >= 30 && product.spf < 50;
+          if (filter === "spf-30") return product.spf >= 30 && product.spf < 50;
+          if (filter === "spf-50") return product.spf >= 50 && product.spf < 60;
+          if (filter === "spf-60") return product.spf >= 60;
           return false;
         });
 
@@ -828,10 +829,10 @@ export default function SolariPage() {
                     </div>
                   </div>
                   
-                  {/* UVA1 Protection */}
+                  {/* UVA1 Protection + SPF Numbers */}
                   <div>
                     <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA1</h4>
-                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                    <div className="flex flex-wrap gap-x-3 gap-y-2 mb-3">
                       <div className="flex items-center space-x-1">
                         <Checkbox
                           id="uva1-excellent"
@@ -859,6 +860,52 @@ export default function SolariPage() {
                           }}
                         />
                         <Label htmlFor="uva1-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
+                      </div>
+                    </div>
+                    
+                    <h5 className="font-semibold mb-2 text-scientific-blue text-xs">Valore SPF</h5>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="spf-30"
+                          checked={productProtectionFilters.includes("spf-30")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "spf-30"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-30"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="spf-30" className="text-slate-300 cursor-pointer text-xs">SPF 30-49</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="spf-50"
+                          checked={productProtectionFilters.includes("spf-50")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "spf-50"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-50"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="spf-50" className="text-slate-300 cursor-pointer text-xs">SPF 50-59</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="spf-60"
+                          checked={productProtectionFilters.includes("spf-60")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "spf-60"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-60"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="spf-60" className="text-slate-300 cursor-pointer text-xs">SPF 60+</Label>
                       </div>
                     </div>
                   </div>
@@ -898,40 +945,7 @@ export default function SolariPage() {
                     </div>
                   </div>
                   
-                  {/* SPF Range */}
-                  <div>
-                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">SPF Range</h4>
-                    <div className="flex flex-wrap gap-x-3 gap-y-2">
-                      <div className="flex items-center space-x-1">
-                        <Checkbox
-                          id="spf-high"
-                          checked={productProtectionFilters.includes("spf-high")}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setProductProtectionFilters([...productProtectionFilters, "spf-high"]);
-                            } else {
-                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-high"));
-                            }
-                          }}
-                        />
-                        <Label htmlFor="spf-high" className="text-slate-300 cursor-pointer text-xs">50+</Label>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Checkbox
-                          id="spf-medium"
-                          checked={productProtectionFilters.includes("spf-medium")}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setProductProtectionFilters([...productProtectionFilters, "spf-medium"]);
-                            } else {
-                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-medium"));
-                            }
-                          }}
-                        />
-                        <Label htmlFor="spf-medium" className="text-slate-300 cursor-pointer text-xs">30-49</Label>
-                      </div>
-                    </div>
-                  </div>
+
                   
                 </div>
                 
@@ -1013,6 +1027,7 @@ export default function SolariPage() {
                   <thead>
                     <tr className="border-b border-steel-blue/30">
                       <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
+                      <th className="text-center p-2 font-semibold text-scientific-blue text-xs">SPF</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Homosalate</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Octocrylene</th>
                     <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Ethylhexyl Salicylate</th>
@@ -1036,14 +1051,16 @@ export default function SolariPage() {
                           <div>
                             <div className="font-semibold text-white text-sm">{product.brand}</div>
                             <div className="text-slate-300 text-xs">{product.productName}</div>
-                            <div className="text-xs text-slate-400 mt-1">SPF {product.spf}</div>
                             {/* Protection Quality Indicators */}
-                            <div className="flex gap-1 mt-1">
+                            <div className="flex gap-1 mt-2">
                               {product.uvbRating === "excellent" && <div className="w-1.5 h-1.5 bg-green-400 rounded-full" title="UVB Eccellente"></div>}
                               {product.uva1Rating === "excellent" && <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" title="UVA1 Eccellente"></div>}
                               {product.uva2Rating === "excellent" && <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full" title="UVA2 Eccellente"></div>}
                             </div>
                           </div>
+                        </td>
+                        <td className="p-2 text-center">
+                          <div className="font-bold text-scientific-blue text-lg">{product.spf}</div>
                         </td>
                         {allFilters.map((filterName) => {
                           const filterMapping: Record<string, keyof SunscreenProduct> = {
