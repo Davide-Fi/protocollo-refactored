@@ -1503,45 +1503,13 @@ export default function SolariPage() {
 
 
 
-            {/* Table Legend */}
-            <div className="mt-8 grid md:grid-cols-4 gap-6">
+            {/* Full Width SPF Efficacia Table - Taking entire bottom half */}
+            <div className="mt-8">
               <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Protezione UV</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center">
-                    <span className="text-green-400 mr-2">✅✅✅</span>
-                    <span className="text-slate-300">Eccellente</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-blue-400 mr-2">✅✅</span>
-                    <span className="text-slate-300">Buona</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-yellow-400 mr-2">✅</span>
-                    <span className="text-slate-300">Moderata</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-red-400 mr-2">❌</span>
-                    <span className="text-slate-300">Insufficiente</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Spettri UV</h3>
-                <div className="space-y-2 text-sm text-slate-300">
-                  <div><span className="font-semibold">UVB:</span> 280-320 nm (eritema)</div>
-                  <div><span className="font-semibold">UVA2:</span> 320-340 nm (pigmentazione)</div>
-                  <div><span className="font-semibold">UVA1:</span> 340-400 nm (invecchiamento)</div>
-                  <div><span className="font-semibold">Long UVA1:</span> 370-400 nm (DNA damage)</div>
-                </div>
-              </div>
-
-              <div className="bg-steel-blue/20 rounded-lg p-3 border border-steel-blue/30">
-                <h3 className="text-sm font-semibold mb-3 text-scientific-blue">Efficacia SPF</h3>
-                <div className="space-y-2 text-xs">
+                <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
+                <div className="space-y-3 text-sm">
                   {/* Merged SPF Table */}
-                  <div className="grid grid-cols-7 gap-1 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-1">
+                  <div className="grid grid-cols-7 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
                     <span>SPF</span>
                     <span>UVB Bloccato</span>
                     <span className="text-yellow-400">UV 6</span>
@@ -1551,7 +1519,7 @@ export default function SolariPage() {
                     <span className="text-red-400">UV 10</span>
                   </div>
                   <div className="space-y-1">
-                    <div className="grid grid-cols-7 gap-1 text-slate-300 text-xs">
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
                       <span className="font-semibold">SPF 20</span>
                       <span className="text-yellow-400">~95%</span>
                       <span>200 min</span>
@@ -1560,7 +1528,7 @@ export default function SolariPage() {
                       <span>133 min</span>
                       <span>120 min</span>
                     </div>
-                    <div className="grid grid-cols-7 gap-1 text-slate-300 text-xs">
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
                       <span className="font-semibold">SPF 30</span>
                       <span className="text-blue-400">~97%</span>
                       <span>300 min</span>
@@ -1569,7 +1537,7 @@ export default function SolariPage() {
                       <span>200 min</span>
                       <span>180 min</span>
                     </div>
-                    <div className="grid grid-cols-7 gap-1 text-slate-300 text-xs">
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
                       <span className="font-semibold">SPF 50</span>
                       <span className="text-green-400">~98%</span>
                       <span className="text-green-400">500 min</span>
@@ -1579,15 +1547,13 @@ export default function SolariPage() {
                       <span className="text-green-400">300 min</span>
                     </div>
                   </div>
-                  <div className="mt-2 pt-1 border-t border-steel-blue/30">
+                  <div className="mt-3 pt-2 border-t border-steel-blue/30">
                     <p className="text-xs text-slate-400 italic">
                       SPF moltiplica quanto tempo puoi stare protetto dalle scottature rispetto alla pelle nuda.
                     </p>
                   </div>
                 </div>
               </div>
-
-              
             </div>
           </div>
           </div>
