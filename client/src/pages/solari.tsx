@@ -291,9 +291,20 @@ export default function SolariPage() {
   const [uvRangeFilters, setUvRangeFilters] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<SunscreenFilter | null>(null);
   const [activeTab, setActiveTab] = useState<"filters" | "products">("products");
+  const [sortBy, setSortBy] = useState<string>("tradeName");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const handleSort = (column: string) => {
+    if (sortBy === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortDirection("asc");
+    }
+  };
 
   const filteredFilters = useMemo(() => {
-    return sunscreenFilters.filter(filter => {
+    let filtered = sunscreenFilters.filter(filter => {
       const matchesSearch = 
         filter.tradeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         filter.inciName.toLowerCase().includes(searchTerm.toLowerCase());
@@ -326,7 +337,24 @@ export default function SolariPage() {
 
       return matchesSearch && matchesSolubility && matchesRegulatory && matchesUvRange;
     });
-  }, [searchTerm, solubilityFilters, regulatoryFilters, uvRangeFilters]);
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue = a[sortBy as keyof SunscreenFilter];
+      let bValue = b[sortBy as keyof SunscreenFilter];
+      
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+      
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    return filtered;
+  }, [searchTerm, solubilityFilters, regulatoryFilters, uvRangeFilters, sortBy, sortDirection]);
 
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
@@ -659,6 +687,162 @@ export default function SolariPage() {
               </Button>
             </div>
           )}
+
+          {/* Filter Results Section */}
+          <div className="max-w-6xl mx-auto mt-16">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold">
+                Filtri Trovati ({filteredFilters.length})
+              </h2>
+              <Badge variant="outline" className="border-scientific-blue text-scientific-blue">
+                {filteredFilters.length} di {sunscreenFilters.length}
+              </Badge>
+            </div>
+
+            {/* Sortable Headers */}
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-6 p-4 bg-steel-blue/10 rounded-lg">
+              <button 
+                onClick={() => handleSort("tradeName")}
+                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
+              >
+                Nome Commerciale
+                {sortBy === "tradeName" && (
+                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                )}
+              </button>
+              <button 
+                onClick={() => handleSort("inciName")}
+                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
+              >
+                Nome INCI
+                {sortBy === "inciName" && (
+                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                )}
+              </button>
+              <button 
+                onClick={() => handleSort("uvRange")}
+                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
+              >
+                Spettro UV
+                {sortBy === "uvRange" && (
+                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                )}
+              </button>
+              <button 
+                onClick={() => handleSort("photostability")}
+                className="flex items-center text-left font-semibold text-scientific-blue hover:text-performance-green transition-colors"
+              >
+                Fotostabilità
+                {sortBy === "photostability" && (
+                  <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                )}
+              </button>
+              <div className="font-semibold text-scientific-blue">Protezione UV</div>
+              <div className="font-semibold text-scientific-blue">Azioni</div>
+            </div>
+
+            <div className="grid gap-4">
+              {filteredFilters.map((filter, index) => (
+                <Card key={index} className="bg-steel-blue/20 border-steel-blue/30 hover:border-scientific-blue/50 transition-colors">
+                  <CardContent className="p-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 items-center">
+                      {/* Commercial Name */}
+                      <div>
+                        <div className="font-bold text-scientific-blue text-lg mb-1">
+                          {filter.tradeName}
+                        </div>
+                        <div className="text-slate-400 text-sm">
+                          {filter.peakWavelength}
+                        </div>
+                      </div>
+
+                      {/* INCI Name */}
+                      <div>
+                        <div className="text-slate-300 font-medium mb-1">
+                          {filter.inciName}
+                        </div>
+                        <div className="text-slate-500 text-sm">
+                          {filter.solubility.split(';')[0]}
+                        </div>
+                      </div>
+
+                      {/* UV Range */}
+                      <div>
+                        <Badge className="bg-performance-green text-black font-semibold mb-2">
+                          {filter.uvRange}
+                        </Badge>
+                        <div className="text-slate-400 text-sm">
+                          {filter.regulatoryStatus.split(';')[0]}
+                        </div>
+                      </div>
+
+                      {/* Photostability */}
+                      <div className="text-slate-300">
+                        {filter.photostability}
+                      </div>
+
+                      {/* UV Protection Levels */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="text-center">
+                          <div className="text-xs text-slate-400 mb-1">UVB</div>
+                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uvbProtection].color} text-white`}>
+                            {protectionLevels[filter.uvbProtection].icon}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-slate-400 mb-1">UVA2</div>
+                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva2Protection].color} text-white`}>
+                            {protectionLevels[filter.uva2Protection].icon}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-slate-400 mb-1">UVA1</div>
+                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva1Protection].color} text-white`}>
+                            {protectionLevels[filter.uva1Protection].icon}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-slate-400 mb-1">Long</div>
+                          <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color} text-white`}>
+                            {protectionLevels[filter.longUva1Protection].icon}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="border-scientific-blue text-scientific-blue hover:bg-scientific-blue hover:text-white"
+                          onClick={() => setSelectedFilter(filter)}
+                        >
+                          Dettagli Completi
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Extra Points */}
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {filter.extraPoints.map((point, idx) => (
+                        <Badge key={idx} variant="outline" className="border-performance-green text-performance-green text-xs">
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          {point}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {filteredFilters.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-400 text-lg mb-4">Nessun filtro trovato</p>
+                <p className="text-slate-500">Prova a modificare i criteri di ricerca o i filtri</p>
+              </div>
+            )}
+          </div>
           </div>
         </section>
       )}
