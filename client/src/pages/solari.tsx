@@ -1614,6 +1614,49 @@ export default function SolariPage() {
                 </div>
               </div>
 
+              {/* Skin Type Selection Section */}
+              <div className="mt-6">
+                <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                  <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Seleziona il Tuo Tipo di Pelle</h3>
+                  <p className="text-slate-400 text-sm mb-6">Tempo di scottatura per UV 9 (pelle nuda senza protezione)</p>
+                  
+                  <div className="space-y-3">
+                    {skinTypeData.map((skinType) => (
+                      <div key={skinType.type} className="flex items-center space-x-3">
+                        <input
+                          type="radio"
+                          id={skinType.type.replace(' ', '')}
+                          name="skinType"
+                          value={skinType.type}
+                          checked={selectedSkinType === skinType.type}
+                          onChange={(e) => setSelectedSkinType(e.target.value)}
+                          className="w-4 h-4 text-scientific-blue bg-navy-charcoal border-steel-blue/30 focus:ring-scientific-blue focus:ring-2"
+                        />
+                        <label 
+                          htmlFor={skinType.type.replace(' ', '')}
+                          className="flex-1 cursor-pointer"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <span className="text-scientific-blue font-semibold">{skinType.type}</span>
+                              <span className="text-slate-300 ml-2">- {skinType.description}</span>
+                            </div>
+                            <span className="text-red-400 font-semibold">
+                              {skinType.burnTimes.uv9} min
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-4 pt-3 border-t border-steel-blue/30">
+                    <p className="text-xs text-slate-400 italic">
+                      Tempo di scottatura approssimativo per pelle nuda esposta a UV Index 9 senza protezione solare.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
