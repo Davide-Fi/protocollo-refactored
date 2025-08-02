@@ -465,7 +465,7 @@ export default function SolariPage() {
               </table>
             </div>
 
-            <div className="mt-8 grid md:grid-cols-2 gap-6">
+            <div className="mt-8 grid md:grid-cols-3 gap-6">
               <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
                 <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Legenda Filtri</h3>
                 <div className="space-y-2 text-sm">
@@ -491,6 +491,42 @@ export default function SolariPage() {
                   </div>
                   <div className="text-slate-300">
                     <span className="font-semibold text-yellow-400">Filtri condivisi:</span> Ethylhexyl Salicylate, Avobenzone, Tinosorb S, Uvinul T150, Mexoryl SX
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
+                <div className="space-y-3 text-sm">
+                  <div className="grid grid-cols-3 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
+                    <span>SPF</span>
+                    <span>UVB Bloccato</span>
+                    <span>UVB Passante</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 15</span>
+                    <span className="text-yellow-400">~93%</span>
+                    <span className="text-red-400">~7%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 20</span>
+                    <span className="text-yellow-400">~95%</span>
+                    <span className="text-red-400">~5%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 30</span>
+                    <span className="text-blue-400">~97%</span>
+                    <span className="text-red-400">~3%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 50</span>
+                    <span className="text-green-400">~98%</span>
+                    <span className="text-red-400">~2%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 100</span>
+                    <span className="text-green-400">~99%</span>
+                    <span className="text-red-400">~1%</span>
                   </div>
                 </div>
               </div>
@@ -851,7 +887,7 @@ export default function SolariPage() {
             )}
 
             {/* Table Legend */}
-            <div className="mt-8 grid md:grid-cols-3 gap-6">
+            <div className="mt-8 grid md:grid-cols-4 gap-6">
               <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
                 <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Protezione UV</h3>
                 <div className="space-y-2 text-sm">
@@ -881,6 +917,37 @@ export default function SolariPage() {
                   <div><span className="font-semibold">UVA2:</span> 320-340 nm (pigmentazione)</div>
                   <div><span className="font-semibold">UVA1:</span> 340-400 nm (invecchiamento)</div>
                   <div><span className="font-semibold">Long UVA1:</span> 370-400 nm (DNA damage)</div>
+                </div>
+              </div>
+
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="grid grid-cols-3 gap-1 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-1 mb-2">
+                    <span>SPF</span>
+                    <span>Bloccato</span>
+                    <span>Passante</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
+                    <span className="font-semibold">15</span>
+                    <span className="text-yellow-400">93%</span>
+                    <span className="text-red-400">7%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
+                    <span className="font-semibold">30</span>
+                    <span className="text-blue-400">97%</span>
+                    <span className="text-red-400">3%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
+                    <span className="font-semibold">50</span>
+                    <span className="text-green-400">98%</span>
+                    <span className="text-red-400">2%</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1 text-slate-300 text-xs">
+                    <span className="font-semibold">100</span>
+                    <span className="text-green-400">99%</span>
+                    <span className="text-red-400">1%</span>
+                  </div>
                 </div>
               </div>
 
