@@ -1701,30 +1701,30 @@ export default function SolariPage() {
                     };
 
                     return (
-                      <div className="bg-navy-charcoal rounded-lg p-4 border border-steel-blue/30">
-                        <h4 className="text-lg font-semibold mb-3 text-performance-green">
+                      <div className="bg-navy-charcoal rounded-lg p-6 border border-steel-blue/30 w-full">
+                        <h4 className="text-xl font-semibold mb-4 text-performance-green">
                           Tempi di Protezione - {selectedData.type} ({selectedData.description})
                         </h4>
                         
-                        <div className="grid grid-cols-4 gap-3">
-                          <div className="text-center p-3 bg-red-500/20 rounded-lg border border-red-500/30">
-                            <div className="text-xs text-slate-400 mb-1">Senza SPF</div>
-                            <div className="text-red-400 font-bold">{selectedData.burnTimes.uv9_noSPF} min</div>
+                        <div className="grid grid-cols-4 gap-4 w-full">
+                          <div className="text-center p-4 bg-red-500/20 rounded-lg border border-red-500/30">
+                            <div className="text-sm text-slate-400 mb-2">Senza SPF</div>
+                            <div className="text-red-400 font-bold text-xl">{selectedData.burnTimes.uv9_noSPF} min</div>
                           </div>
                           
-                          <div className="text-center p-3 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
-                            <div className="text-xs text-slate-400 mb-1">SPF 20</div>
-                            <div className="text-yellow-400 font-bold">{formatTime(selectedData.burnTimes.uv9_spf20)}</div>
+                          <div className="text-center p-4 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
+                            <div className="text-sm text-slate-400 mb-2">SPF 20</div>
+                            <div className="text-yellow-400 font-bold text-xl">{formatTime(selectedData.burnTimes.uv9_spf20)}</div>
                           </div>
                           
-                          <div className="text-center p-3 bg-blue-500/20 rounded-lg border border-blue-500/30">
-                            <div className="text-xs text-slate-400 mb-1">SPF 30</div>
-                            <div className="text-blue-400 font-bold">{formatTime(selectedData.burnTimes.uv9_spf30)}</div>
+                          <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                            <div className="text-sm text-slate-400 mb-2">SPF 30</div>
+                            <div className="text-blue-400 font-bold text-xl">{formatTime(selectedData.burnTimes.uv9_spf30)}</div>
                           </div>
                           
-                          <div className="text-center p-3 bg-green-500/20 rounded-lg border border-green-500/30">
-                            <div className="text-xs text-slate-400 mb-1">SPF 50</div>
-                            <div className="text-green-400 font-bold">{formatTime(selectedData.burnTimes.uv9_spf50)}</div>
+                          <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-500/30">
+                            <div className="text-sm text-slate-400 mb-2">SPF 50</div>
+                            <div className="text-green-400 font-bold text-xl">{formatTime(selectedData.burnTimes.uv9_spf50)}</div>
                           </div>
                         </div>
                       </div>
