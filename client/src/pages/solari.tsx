@@ -24,6 +24,20 @@ interface SunscreenFilter {
   longUva1Protection: "strong" | "good" | "moderate" | "incomplete";
 }
 
+interface SunscreenProduct {
+  brand: string;
+  productName: string;
+  spf: number;
+  filters: string[];
+  uva1Rating: "excellent" | "good" | "moderate" | "poor";
+  uva2Rating: "excellent" | "good" | "moderate" | "poor";
+  uvbRating: "excellent" | "good" | "moderate" | "poor";
+  overallRating: number; // out of 5
+  description: string;
+  price?: string;
+  availability: string;
+}
+
 const sunscreenFilters: SunscreenFilter[] = [
   {
     tradeName: "Tinosorb® S",
@@ -90,12 +104,95 @@ const protectionLevels = {
   incomplete: { icon: "❌", color: "bg-red-500", label: "Incomplete" }
 };
 
+const productRatings = {
+  excellent: { icon: "✅✅✅", color: "text-green-400", label: "Excellent" },
+  good: { icon: "✅✅", color: "text-blue-400", label: "Good" },
+  moderate: { icon: "✅", color: "text-yellow-400", label: "Moderate" },
+  poor: { icon: "❌", color: "text-red-400", label: "Poor" }
+};
+
+const sunscreenProducts: SunscreenProduct[] = [
+  {
+    brand: "La Roche-Posay",
+    productName: "Anthelios Shaka SPF 30",
+    spf: 30,
+    filters: ["Mexoryl SX", "Mexoryl XL", "Tinosorb S"],
+    uva1Rating: "excellent",
+    uva2Rating: "excellent", 
+    uvbRating: "excellent",
+    overallRating: 5.0,
+    description: "Mexoryl SX + XL + Tinosorb S",
+    availability: "EU, disponibile in Italia"
+  },
+  {
+    brand: "Vichy",
+    productName: "Acqua Solare SPF 30",
+    spf: 30,
+    filters: ["Mexoryl SX", "Tinosorb S"],
+    uva1Rating: "good",
+    uva2Rating: "excellent",
+    uvbRating: "excellent", 
+    overallRating: 4.5,
+    description: "Mexoryl SX + Tinosorb S",
+    availability: "EU, disponibile in Italia"
+  },
+  {
+    brand: "ISDIN",
+    productName: "Fotoprotetor Fusion Water SPF 50",
+    spf: 50,
+    filters: ["Tinosorb S", "Uvinul A Plus", "Octisalate"],
+    uva1Rating: "excellent",
+    uva2Rating: "excellent",
+    uvbRating: "excellent",
+    overallRating: 4.8,
+    description: "Tinosorb S + Uvinul A Plus + Octisalate",
+    availability: "EU, Spagna principalmente"
+  },
+  {
+    brand: "Eucerin",
+    productName: "Sun Sensitive Protect SPF 30",
+    spf: 30,
+    filters: ["Tinosorb S", "Tinosorb M", "Octisalate"],
+    uva1Rating: "excellent",
+    uva2Rating: "excellent",
+    uvbRating: "good",
+    overallRating: 4.3,
+    description: "Tinosorb S + M + Octisalate",
+    availability: "EU, disponibile in Italia"
+  },
+  {
+    brand: "Avène",
+    productName: "Fluide Mineral Teinté SPF 50+",
+    spf: 50,
+    filters: ["Zinc Oxide", "Titanium Dioxide"],
+    uva1Rating: "good",
+    uva2Rating: "excellent",
+    uvbRating: "excellent",
+    overallRating: 4.0,
+    description: "Zinc Oxide + Titanium Dioxide (Mineral)",
+    availability: "EU, disponibile in Italia"
+  },
+  {
+    brand: "Heliocare",
+    productName: "Advanced Gel SPF 50",
+    spf: 50,
+    filters: ["Tinosorb S", "Uvinul A Plus", "Uvinul T150"],
+    uva1Rating: "excellent",
+    uva2Rating: "excellent", 
+    uvbRating: "excellent",
+    overallRating: 4.7,
+    description: "Tinosorb S + Uvinul A Plus + T150",
+    availability: "EU, Spagna principalmente"
+  }
+];
+
 export default function SolariPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [solubilityFilters, setSolubilityFilters] = useState<string[]>([]);
   const [regulatoryFilters, setRegulatoryFilters] = useState<string[]>([]);
   const [uvRangeFilters, setUvRangeFilters] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<SunscreenFilter | null>(null);
+  const [activeTab, setActiveTab] = useState<"filters" | "products">("products");
 
   const filteredFilters = useMemo(() => {
     return sunscreenFilters.filter(filter => {
@@ -149,16 +246,157 @@ export default function SolariPage() {
             Database <span className="text-scientific-blue">Filtri Solari</span>
           </h1>
           
-          <p className="text-xl text-slate-300 mb-12 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-3xl mx-auto">
             Trova e confronta i filtri solari più avanzati per nome chimico, spettro UV, 
             solubilità e approvazioni regolatorie.
           </p>
+          
+          <div className="flex justify-center mb-12">
+            <div className="bg-navy-charcoal rounded-lg border border-steel-blue/30 p-1">
+              <div className="flex">
+                <Button
+                  variant={activeTab === "products" ? "default" : "ghost"}
+                  onClick={() => setActiveTab("products")}
+                  className={`px-6 py-2 ${activeTab === "products" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
+                >
+                  Prodotti Solari
+                </Button>
+                <Button
+                  variant={activeTab === "filters" ? "default" : "ghost"}
+                  onClick={() => setActiveTab("filters")}
+                  className={`px-6 py-2 ${activeTab === "filters" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
+                >
+                  Database Filtri
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* Products Comparison Table */}
+      {activeTab === "products" && (
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                Confronto <span className="text-scientific-blue">Prodotti Solari</span>
+              </h2>
+              <p className="text-lg text-slate-300">
+                Confronta le performance di protezione UV dei migliori prodotti disponibili
+              </p>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
+                <thead>
+                  <tr className="border-b border-steel-blue/30">
+                    <th className="text-left p-4 font-semibold text-scientific-blue">Prodotto</th>
+                    <th className="text-center p-4 font-semibold text-scientific-blue">UVA1 (340–400 nm)</th>
+                    <th className="text-center p-4 font-semibold text-scientific-blue">UVA2 (320–340 nm)</th>
+                    <th className="text-center p-4 font-semibold text-scientific-blue">UVB (280–320 nm)</th>
+                    <th className="text-center p-4 font-semibold text-scientific-blue">Copertura Totale</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sunscreenProducts.map((product, index) => (
+                    <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
+                      <td className="p-4">
+                        <div>
+                          <div className="font-semibold text-white text-lg">{product.brand}</div>
+                          <div className="text-slate-300">{product.productName}</div>
+                          <div className="text-sm text-slate-400 mt-1">
+                            SPF {product.spf} • {product.description}
+                          </div>
+                          <div className="text-xs text-slate-500 mt-1">
+                            {product.availability}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">
+                        <div className={`font-semibold ${productRatings[product.uva1Rating].color}`}>
+                          {productRatings[product.uva1Rating].icon}
+                        </div>
+                        <div className="text-sm text-slate-400 mt-1">
+                          {productRatings[product.uva1Rating].label}
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">
+                        <div className={`font-semibold ${productRatings[product.uva2Rating].color}`}>
+                          {productRatings[product.uva2Rating].icon}
+                        </div>
+                        <div className="text-sm text-slate-400 mt-1">
+                          {productRatings[product.uva2Rating].label}
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">
+                        <div className={`font-semibold ${productRatings[product.uvbRating].color}`}>
+                          {productRatings[product.uvbRating].icon}
+                        </div>
+                        <div className="text-sm text-slate-400 mt-1">
+                          {productRatings[product.uvbRating].label}
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">
+                        <div className="flex justify-center mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <span
+                              key={i}
+                              className={`text-lg ${
+                                i < Math.floor(product.overallRating)
+                                  ? "text-yellow-400"
+                                  : i === Math.floor(product.overallRating) && product.overallRating % 1 >= 0.5
+                                  ? "text-yellow-400"
+                                  : "text-slate-600"
+                              }`}
+                            >
+                              {i === Math.floor(product.overallRating) && product.overallRating % 1 >= 0.5 ? "½" : "⭐"}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="text-sm text-slate-400">
+                          {product.overallRating}/5.0
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-8 bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+              <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Legenda</h3>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <div className="flex items-center mb-2">
+                    <span className="text-green-400 mr-2">✅✅✅</span>
+                    <span className="text-slate-300">Excellent - Protezione ottimale</span>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <span className="text-blue-400 mr-2">✅✅</span>
+                    <span className="text-slate-300">Good - Protezione buona</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center mb-2">
+                    <span className="text-yellow-400 mr-2">✅</span>
+                    <span className="text-slate-300">Moderate - Protezione moderata</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-400 mr-2">❌</span>
+                    <span className="text-slate-300">Poor - Protezione insufficiente</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Filters Section */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-steel-blue/10">
-        <div className="max-w-6xl mx-auto">
+      {activeTab === "filters" && (
+        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-steel-blue/10">
+          <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
             {/* Search */}
             <div className="relative">
@@ -323,92 +561,100 @@ export default function SolariPage() {
               </Button>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Results Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">
-              Filtri Trovati ({filteredFilters.length})
-            </h2>
-            <Badge variant="outline" className="border-scientific-blue text-scientific-blue">
-              {filteredFilters.length} di {sunscreenFilters.length}
-            </Badge>
           </div>
+        </section>
 
-          <div className="grid gap-6">
-            {filteredFilters.map((filter, index) => (
-              <Card key={index} className="bg-steel-blue/20 border-steel-blue/30 hover:border-scientific-blue/50 transition-colors cursor-pointer"
-                    onClick={() => setSelectedFilter(filter)}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-2xl text-scientific-blue mb-2">
-                        {filter.tradeName}
-                      </CardTitle>
-                      <p className="text-slate-300 text-sm">{filter.inciName}</p>
-                    </div>
-                    <Badge className="bg-performance-green text-black font-semibold">
-                      {filter.uvRange}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                    <div className="text-center">
-                      <div className="text-sm text-slate-400 mb-1">UVB (280-320nm)</div>
-                      <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uvbProtection].color} text-white`}>
-                        {protectionLevels[filter.uvbProtection].icon} {protectionLevels[filter.uvbProtection].label}
+        {/* Results Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold">
+                Filtri Trovati ({filteredFilters.length})
+              </h2>
+              <Badge variant="outline" className="border-scientific-blue text-scientific-blue">
+                {filteredFilters.length} di {sunscreenFilters.length}
+              </Badge>
+            </div>
+
+            <div className="grid gap-6">
+              {filteredFilters.map((filter, index) => (
+                <Card key={index} className="bg-steel-blue/20 border-steel-blue/30 hover:border-scientific-blue/50 transition-colors cursor-pointer"
+                      onClick={() => setSelectedFilter(filter)}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-2xl text-scientific-blue mb-2">
+                          {filter.tradeName}
+                        </CardTitle>
+                        <p className="text-slate-300 text-sm">{filter.inciName}</p>
                       </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-sm text-slate-400 mb-1">UVA2 (320-340nm)</div>
-                      <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva2Protection].color} text-white`}>
-                        {protectionLevels[filter.uva2Protection].icon} {protectionLevels[filter.uva2Protection].label}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-sm text-slate-400 mb-1">UVA1 (340-400nm)</div>
-                      <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva1Protection].color} text-white`}>
-                        {protectionLevels[filter.uva1Protection].icon} {protectionLevels[filter.uva1Protection].label}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-sm text-slate-400 mb-1">Long UVA1 (380-400nm)</div>
-                      <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color} text-white`}>
-                        {protectionLevels[filter.longUva1Protection].icon} {protectionLevels[filter.longUva1Protection].label}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {filter.extraPoints.map((point, idx) => (
-                      <Badge key={idx} variant="outline" className="border-performance-green text-performance-green text-xs">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        {point}
+                      <Badge className="bg-performance-green text-black font-semibold">
+                        {filter.uvRange}
                       </Badge>
-                    ))}
-                  </div>
-                  
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="border-scientific-blue text-scientific-blue hover:bg-scientific-blue hover:text-white"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedFilter(filter);
-                    }}
-                  >
-                    Vedi Dettagli Completi
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                      <div className="text-center">
+                        <div className="text-sm text-slate-400 mb-1">UVB (280-320nm)</div>
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uvbProtection].color} text-white`}>
+                          {protectionLevels[filter.uvbProtection].icon} {protectionLevels[filter.uvbProtection].label}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm text-slate-400 mb-1">UVA2 (320-340nm)</div>
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva2Protection].color} text-white`}>
+                          {protectionLevels[filter.uva2Protection].icon} {protectionLevels[filter.uva2Protection].label}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm text-slate-400 mb-1">UVA1 (340-380nm)</div>
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.uva1Protection].color} text-white`}>
+                          {protectionLevels[filter.uva1Protection].icon} {protectionLevels[filter.uva1Protection].label}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm text-slate-400 mb-1">Long UVA1 (380-400nm)</div>
+                        <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color} text-white`}>
+                          {protectionLevels[filter.longUva1Protection].icon} {protectionLevels[filter.longUva1Protection].label}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {filter.extraPoints.map((point, idx) => (
+                        <Badge key={idx} variant="outline" className="border-performance-green text-performance-green text-xs">
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          {point}
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="border-scientific-blue text-scientific-blue hover:bg-scientific-blue hover:text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedFilter(filter);
+                      }}
+                    >
+                      Vedi Dettagli Completi
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {filteredFilters.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-400 text-lg mb-4">Nessun filtro trovato</p>
+                <p className="text-slate-500">Prova a modificare i criteri di ricerca</p>
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Detailed View Modal/Panel */}
       {selectedFilter && (
