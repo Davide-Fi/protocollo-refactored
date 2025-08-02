@@ -497,15 +497,16 @@ export default function SolariPage() {
   const [solubilityFilters, setSolubilityFilters] = useState<string[]>([]);
   const [regulatoryFilters, setRegulatoryFilters] = useState<string[]>([]);
   const [uvRangeFilters, setUvRangeFilters] = useState<string[]>([]);
-  const [selectedFilter, setSelectedFilter] = useState<SunscreenFilter | null>(null);
   const [activeTab, setActiveTab] = useState<"filters" | "products">("filters");
   const [sortBy, setSortBy] = useState<string>("tradeName");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   
-  // Function to find products containing a specific filter
-  const findProductsWithFilter = (filterTradeName: string) => {
-    // Map filter trade names to product boolean fields
-    const filterMapping: Record<string, keyof SunscreenProduct> = {
+  // New simple popup state
+  const [popup, setPopup] = useState<{ filterName: string; products: SunscreenProduct[] } | null>(null);
+  
+  // Simple function to get products for a filter
+  const getProductsForFilter = (filterName: string): SunscreenProduct[] => {
+    const filterMap: Record<string, keyof SunscreenProduct> = {
       'Tinosorb S': 'tinosorbS',
       'Tinosorb M': 'tinosorbM',
       'Mexoryl SX': 'mexorylSX',
@@ -524,13 +525,16 @@ export default function SolariPage() {
       'Titanium Dioxide': 'titaniumDioxide'
     };
     
-    const fieldName = filterMapping[filterTradeName];
+    const field = filterMap[filterName];
+    if (!field) return [];
     
-    if (!fieldName) {
-      return [];
-    }
-    
-    return sunscreenProducts.filter(product => product[fieldName] === true);
+    return sunscreenProducts.filter(product => product[field] === true);
+  };
+  
+  // Handle filter click
+  const handleFilterClick = (filterName: string) => {
+    const products = getProductsForFilter(filterName);
+    setPopup({ filterName, products });
   };
 
   const handleSort = (column: string) => {
@@ -1095,7 +1099,7 @@ export default function SolariPage() {
                     <tr 
                       key={index} 
                       className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors cursor-pointer"
-                      onClick={() => setSelectedFilter(filter)}
+                      onClick={() => handleFilterClick(filter.tradeName)}
                       title="Clicca per vedere quali prodotti contengono questo filtro"
                     >
                       {/* Commercial Name */}
@@ -1202,215 +1206,7 @@ export default function SolariPage() {
               </div>
             )}
 
-            {/* Selected Filter Details and Products */}
-            {selectedFilter && (
-              <div className="mt-12 bg-steel-blue/20 rounded-lg border border-steel-blue/30 p-6">
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h3 className="text-2xl font-bold text-scientific-blue mb-2">
-                      {selectedFilter.tradeName}
-                    </h3>
-                    <p className="text-slate-300 font-medium">{selectedFilter.inciName}</p>
-                    <p className="text-slate-400 text-sm mt-1">{selectedFilter.uvRange} • {selectedFilter.photostability}</p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedFilter(null)}
-                    className="text-slate-400 hover:text-white"
-                  >
-                    ✕
-                  </Button>
-                </div>
 
-                {(() => {
-                  const productsWithFilter = findProductsWithFilter(selectedFilter.tradeName);
-                  console.log('Selected filter:', selectedFilter.tradeName);
-                  console.log('Products found:', productsWithFilter.length);
-                  console.log('All products:', sunscreenProducts.map(p => ({ brand: p.brand })));
-                  return (
-                    <div>
-                      <h4 className="text-lg font-semibold text-performance-green mb-4">
-                        Prodotti che contengono questo filtro ({productsWithFilter.length})
-                      </h4>
-                      
-                      {productsWithFilter.length > 0 ? (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {productsWithFilter.map((product, index) => (
-                            <div key={index} className="bg-navy-charcoal rounded-xl border border-steel-blue/30 p-6 hover:border-scientific-blue/50 transition-all duration-200 hover:shadow-lg hover:shadow-scientific-blue/10">
-                              {/* Product Header */}
-                              <div className="flex items-start justify-between mb-4">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-8 h-8 bg-scientific-blue/20 rounded-lg flex items-center justify-center">
-                                      <Sun className="w-4 h-4 text-scientific-blue" />
-                                    </div>
-                                    <Badge variant="outline" className="border-performance-green text-performance-green text-xs font-semibold">
-                                      SPF {product.spf}
-                                    </Badge>
-                                  </div>
-                                  <h5 className="font-bold text-scientific-blue text-lg mb-1">
-                                    {product.brand}
-                                  </h5>
-                                  <p className="text-slate-300 text-sm font-medium leading-tight">
-                                    {product.productName}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* Rating Stars */}
-                              <div className="flex items-center gap-2 mb-4">
-                                <div className="flex items-center">
-                                  {[...Array(5)].map((_, i) => (
-                                    <span 
-                                      key={i} 
-                                      className={`text-sm ${
-                                        i < Math.floor(product.overallRating) 
-                                          ? 'text-yellow-400' 
-                                          : 'text-slate-600'
-                                      }`}
-                                    >
-                                      ★
-                                    </span>
-                                  ))}
-                                </div>
-                                <span className="text-slate-400 text-xs">
-                                  {product.overallRating}/5.0
-                                </span>
-                              </div>
-
-                              {/* UV Protection Grid */}
-                              <div className="bg-steel-blue/10 rounded-lg p-4 mb-4">
-                                <p className="text-slate-400 text-xs mb-3 font-medium">Protezione UV</p>
-                                <div className="grid grid-cols-3 gap-3">
-                                  <div className="text-center">
-                                    <span className="block text-slate-400 text-xs mb-1">UVB</span>
-                                    <div className={`text-lg ${
-                                      product.uvbRating === 'excellent' ? 'text-green-400' : 
-                                      product.uvbRating === 'good' ? 'text-blue-400' : 'text-yellow-400'
-                                    }`}>
-                                      {product.uvbRating === 'excellent' ? '✅✅✅' : 
-                                       product.uvbRating === 'good' ? '✅✅' : '✅'}
-                                    </div>
-                                    <span className="text-xs text-slate-500 capitalize">{product.uvbRating}</span>
-                                  </div>
-                                  <div className="text-center">
-                                    <span className="block text-slate-400 text-xs mb-1">UVA1</span>
-                                    <div className={`text-lg ${
-                                      product.uva1Rating === 'excellent' ? 'text-green-400' : 
-                                      product.uva1Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
-                                    }`}>
-                                      {product.uva1Rating === 'excellent' ? '✅✅✅' : 
-                                       product.uva1Rating === 'good' ? '✅✅' : '✅'}
-                                    </div>
-                                    <span className="text-xs text-slate-500 capitalize">{product.uva1Rating}</span>
-                                  </div>
-                                  <div className="text-center">
-                                    <span className="block text-slate-400 text-xs mb-1">UVA2</span>
-                                    <div className={`text-lg ${
-                                      product.uva2Rating === 'excellent' ? 'text-green-400' : 
-                                      product.uva2Rating === 'good' ? 'text-blue-400' : 'text-yellow-400'
-                                    }`}>
-                                      {product.uva2Rating === 'excellent' ? '✅✅✅' : 
-                                       product.uva2Rating === 'good' ? '✅✅' : '✅'}
-                                    </div>
-                                    <span className="text-xs text-slate-500 capitalize">{product.uva2Rating}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                              {/* Filter Composition */}
-                              <div className="mb-4">
-                                {(() => {
-                                  const activeFilters: { name: string; isSelected: boolean }[] = [];
-                                  const filterMapping = [
-                                    { field: 'tinosorbS', name: 'Tinosorb S' },
-                                    { field: 'tinosorbM', name: 'Tinosorb M' },
-                                    { field: 'mexorylSX', name: 'Mexoryl SX' },
-                                    { field: 'mexorylXL', name: 'Mexoryl XL' },
-                                    { field: 'mexoryl400', name: 'Mexoryl 400' },
-                                    { field: 'uvinulAPlus', name: 'Uvinul A Plus' },
-                                    { field: 'uvinulT150', name: 'Uvinul T150' },
-                                    { field: 'homosalate', name: 'Homosalate' },
-                                    { field: 'octocrylene', name: 'Octocrylene' },
-                                    { field: 'avobenzone', name: 'Avobenzone' },
-                                    { field: 'ethylhexylSalicylate', name: 'Ethylhexyl Salicylate' },
-                                    { field: 'octisalate', name: 'Octisalate' },
-                                    { field: 'enulizole', name: 'Enulizole' },
-                                    { field: 'octinoxate', name: 'Octinoxate' },
-                                    { field: 'zincOxide', name: 'Zinc Oxide' },
-                                    { field: 'titaniumDioxide', name: 'Titanium Dioxide' }
-                                  ] as const;
-                                  
-                                  filterMapping.forEach(({ field, name }) => {
-                                    if (product[field]) {
-                                      activeFilters.push({
-                                        name,
-                                        isSelected: name === selectedFilter.tradeName
-                                      });
-                                    }
-                                  });
-                                  
-                                  return (
-                                    <>
-                                      <p className="text-slate-400 text-xs mb-3 font-medium">Composizione Filtri ({activeFilters.length})</p>
-                                      <div className="flex flex-wrap gap-2">
-                                        {activeFilters.map((filter, idx) => (
-                                          <span 
-                                            key={idx} 
-                                            className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                                              filter.isSelected
-                                                ? 'bg-performance-green/20 text-performance-green border border-performance-green/40 ring-1 ring-performance-green/20' 
-                                                : 'bg-steel-blue/20 text-slate-300 border border-steel-blue/40'
-                                            }`}
-                                          >
-                                            {filter.name}
-                                          </span>
-                                        ))}
-                                      </div>
-                                    </>
-                                  );
-                                })()}
-                              </div>
-
-                              {/* Product Description */}
-                              <div className="mb-4">
-                                <p className="text-slate-300 text-sm leading-relaxed">
-                                  {product.description}
-                                </p>
-                              </div>
-
-                              {/* Availability and CTA */}
-                              <div className="border-t border-steel-blue/30 pt-4">
-                                <div className="flex items-center justify-between">
-                                  <div>
-                                    <p className="text-slate-400 text-xs">Disponibilità</p>
-                                    <p className="text-slate-300 text-sm font-medium">{product.availability}</p>
-                                  </div>
-                                  <Button 
-                                    size="sm" 
-                                    className="bg-scientific-blue hover:bg-scientific-blue/80 text-white px-4 py-2 text-xs"
-                                  >
-                                    Dettagli
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-8">
-                          <p className="text-slate-400">Nessun prodotto trovato con questo filtro nel database</p>
-                          <p className="text-slate-500 text-sm mt-2">
-                            Il filtro potrebbe essere utilizzato in prodotti non ancora catalogati
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-              </div>
-            )}
 
             {/* Table Legend */}
             <div className="mt-8 grid md:grid-cols-4 gap-6">
@@ -1491,150 +1287,98 @@ export default function SolariPage() {
         </section>
       )}
 
-      {/* Detailed View Modal/Panel */}
-      {selectedFilter && (
+      {/* Simple Popup for Cross-Database Linking */}
+      {popup && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <h2 className="text-3xl font-bold text-scientific-blue mb-2">
-                    {selectedFilter.tradeName}
+                  <h2 className="text-2xl font-bold text-scientific-blue mb-2">
+                    {popup.filterName}
                   </h2>
-                  <p className="text-slate-300">{selectedFilter.inciName}</p>
+                  <p className="text-slate-400">Prodotti che contengono questo filtro</p>
                 </div>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => setSelectedFilter(null)}
+                  onClick={() => setPopup(null)}
                   className="border-slate-600 text-slate-400 hover:border-red-500 hover:text-red-500"
                 >
                   Chiudi
                 </Button>
               </div>
 
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-6 bg-steel-blue/20">
-                  <TabsTrigger value="overview" className="data-[state=active]:bg-scientific-blue">Panoramica</TabsTrigger>
-                  <TabsTrigger value="technical" className="data-[state=active]:bg-scientific-blue">Dettagli Tecnici</TabsTrigger>
-                  <TabsTrigger value="regulatory" className="data-[state=active]:bg-scientific-blue">Regolamentazione</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="overview" className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <Card className="bg-steel-blue/20 border-steel-blue/30">
-                      <CardHeader>
-                        <CardTitle className="flex items-center text-scientific-blue">
-                          <Shield className="mr-2 h-5 w-5" />
-                          Spettro di Protezione
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span>Range UV:</span>
-                          <Badge className="bg-performance-green text-black">{selectedFilter.uvRange}</Badge>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span>Picco di assorbimento:</span>
-                          <span className="text-scientific-blue font-semibold">{selectedFilter.peakWavelength}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="bg-steel-blue/20 border-steel-blue/30">
-                      <CardHeader>
-                        <CardTitle className="flex items-center text-scientific-blue">
-                          <Droplets className="mr-2 h-5 w-5" />
-                          Proprietà Fisiche
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-slate-300">{selectedFilter.solubility}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-
-                  <Card className="bg-steel-blue/20 border-steel-blue/30">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-scientific-blue">
-                        <Zap className="mr-2 h-5 w-5" />
-                        Fotostabilità
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-slate-300">{selectedFilter.photostability}</p>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="technical" className="space-y-6">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center p-4 bg-steel-blue/20 rounded-lg">
-                      <div className="text-sm text-slate-400 mb-2">UVB Protection</div>
-                      <div className={`inline-flex items-center px-3 py-1 rounded font-semibold ${protectionLevels[selectedFilter.uvbProtection].color} text-white`}>
-                        {protectionLevels[selectedFilter.uvbProtection].icon} {protectionLevels[selectedFilter.uvbProtection].label}
-                      </div>
-                    </div>
-                    <div className="text-center p-4 bg-steel-blue/20 rounded-lg">
-                      <div className="text-sm text-slate-400 mb-2">UVA2 Protection</div>
-                      <div className={`inline-flex items-center px-3 py-1 rounded font-semibold ${protectionLevels[selectedFilter.uva2Protection].color} text-white`}>
-                        {protectionLevels[selectedFilter.uva2Protection].icon} {protectionLevels[selectedFilter.uva2Protection].label}
-                      </div>
-                    </div>
-                    <div className="text-center p-4 bg-steel-blue/20 rounded-lg">
-                      <div className="text-sm text-slate-400 mb-2">UVA1 Protection</div>
-                      <div className={`inline-flex items-center px-3 py-1 rounded font-semibold ${protectionLevels[selectedFilter.uva1Protection].color} text-white`}>
-                        {protectionLevels[selectedFilter.uva1Protection].icon} {protectionLevels[selectedFilter.uva1Protection].label}
-                      </div>
-                    </div>
-                    <div className="text-center p-4 bg-steel-blue/20 rounded-lg">
-                      <div className="text-sm text-slate-400 mb-2">Long UVA1</div>
-                      <div className={`inline-flex items-center px-3 py-1 rounded font-semibold ${protectionLevels[selectedFilter.longUva1Protection].color} text-white`}>
-                        {protectionLevels[selectedFilter.longUva1Protection].icon} {protectionLevels[selectedFilter.longUva1Protection].label}
-                      </div>
-                    </div>
-                  </div>
-
-                  <Card className="bg-steel-blue/20 border-steel-blue/30">
-                    <CardHeader>
-                      <CardTitle className="text-scientific-blue">Vantaggi Aggiuntivi</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid md:grid-cols-2 gap-2">
-                        {selectedFilter.extraPoints.map((point, idx) => (
-                          <div key={idx} className="flex items-center">
-                            <CheckCircle className="w-4 h-4 mr-2 text-performance-green" />
-                            <span className="text-slate-300">{point}</span>
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-performance-green mb-4">
+                  Trovati {popup.products.length} prodotti
+                </h3>
+                
+                {popup.products.length > 0 ? (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {popup.products.map((product, index) => (
+                      <div key={index} className="bg-steel-blue/20 rounded-lg border border-steel-blue/30 p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-6 h-6 bg-scientific-blue/20 rounded flex items-center justify-center">
+                            <Sun className="w-3 h-3 text-scientific-blue" />
                           </div>
-                        ))}
+                          <Badge variant="outline" className="border-performance-green text-performance-green text-xs">
+                            SPF {product.spf}
+                          </Badge>
+                        </div>
+                        
+                        <h4 className="font-bold text-scientific-blue text-lg mb-1">
+                          {product.brand}
+                        </h4>
+                        <p className="text-slate-300 text-sm mb-3">
+                          {product.productName}
+                        </p>
+                        
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="flex items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <span 
+                                key={i} 
+                                className={`text-xs ${
+                                  i < Math.floor(product.overallRating) 
+                                    ? 'text-yellow-400' 
+                                    : 'text-slate-600'
+                                }`}
+                              >
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-slate-400 text-xs">
+                            {product.overallRating}/5.0
+                          </span>
+                        </div>
+                        
+                        <p className="text-slate-300 text-xs mb-3 leading-relaxed">
+                          {product.description}
+                        </p>
+                        
+                        <div className="border-t border-steel-blue/30 pt-3">
+                          <p className="text-slate-400 text-xs mb-1">Disponibilità</p>
+                          <p className="text-slate-300 text-xs">{product.availability}</p>
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="regulatory" className="space-y-6">
-                  <Card className="bg-steel-blue/20 border-steel-blue/30">
-                    <CardHeader>
-                      <CardTitle className="text-scientific-blue">Status Regolamentare</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-slate-300 text-lg">{selectedFilter.regulatoryStatus}</p>
-                    </CardContent>
-                  </Card>
-
-                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-                    <h4 className="text-yellow-500 font-semibold mb-2">Nota Importante</h4>
-                    <p className="text-slate-300 text-sm">
-                      Verifica sempre le approvazioni locali prima dell'uso. Le regolamentazioni 
-                      possono variare tra paesi e aggiornarsi nel tempo.
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-slate-400">Nessun prodotto trovato con questo filtro</p>
+                    <p className="text-slate-500 text-sm mt-2">
+                      Il filtro potrebbe essere utilizzato in prodotti non ancora catalogati
                     </p>
                   </div>
-                </TabsContent>
-              </Tabs>
+                )}
+              </div>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 }
