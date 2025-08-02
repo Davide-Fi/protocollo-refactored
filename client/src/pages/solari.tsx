@@ -1337,6 +1337,7 @@ export default function SolariPage() {
                                     { field: 'ethylhexylSalicylate', name: 'Ethylhexyl Salicylate' },
                                     { field: 'octisalate', name: 'Octisalate' },
                                     { field: 'enulizole', name: 'Enulizole' },
+                                    { field: 'octinoxate', name: 'Octinoxate' },
                                     { field: 'zincOxide', name: 'Zinc Oxide' },
                                     { field: 'titaniumDioxide', name: 'Titanium Dioxide' }
                                   ] as const;
