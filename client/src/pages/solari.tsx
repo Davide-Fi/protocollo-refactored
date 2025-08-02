@@ -1110,7 +1110,7 @@ export default function SolariPage() {
             </div>
             )}
 
-            <div className="mt-8 grid md:grid-cols-3 gap-6">
+            <div className="mt-8 grid md:grid-cols-2 gap-6">
               <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
                 <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Legenda Filtri</h3>
                 <div className="space-y-2 text-sm">
@@ -1121,21 +1121,6 @@ export default function SolariPage() {
                   <div className="flex items-center">
                     <span className="text-slate-600 mr-2 text-lg">—</span>
                     <span className="text-slate-300">Filtro non presente</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Analisi Composizione</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="text-slate-300">
-                    <span className="font-semibold text-performance-green">Vichy:</span> 8 filtri totali - Sistema più completo
-                  </div>
-                  <div className="text-slate-300">
-                    <span className="font-semibold text-scientific-blue">La Roche-Posay:</span> 6 filtri + Mexoryl XL esclusivo
-                  </div>
-                  <div className="text-slate-300">
-                    <span className="font-semibold text-yellow-400">Filtri condivisi:</span> Ethylhexyl Salicylate, Avobenzone, Tinosorb S, Uvinul T150, Mexoryl SX
                   </div>
                 </div>
               </div>
@@ -1370,6 +1355,59 @@ export default function SolariPage() {
             </div>
           )}
 
+          {/* SPF Efficacia Table in Filters Section */}
+          <div className="mb-8">
+            <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+              <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
+              <div className="space-y-3 text-sm">
+                {/* Merged SPF Table */}
+                <div className="grid grid-cols-7 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
+                  <span>SPF</span>
+                  <span>UVB Bloccato</span>
+                  <span className="text-yellow-400">UV 6</span>
+                  <span className="text-orange-400">UV 7</span>
+                  <span className="text-orange-400">UV 8</span>
+                  <span className="text-red-400">UV 9</span>
+                  <span className="text-red-400">UV 10</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="grid grid-cols-7 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 20</span>
+                    <span className="text-yellow-400">~95%</span>
+                    <span>200 min</span>
+                    <span>171 min</span>
+                    <span>150 min</span>
+                    <span>133 min</span>
+                    <span>120 min</span>
+                  </div>
+                  <div className="grid grid-cols-7 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 30</span>
+                    <span className="text-blue-400">~97%</span>
+                    <span>300 min</span>
+                    <span>257 min</span>
+                    <span>225 min</span>
+                    <span>200 min</span>
+                    <span>180 min</span>
+                  </div>
+                  <div className="grid grid-cols-7 gap-2 text-slate-300">
+                    <span className="font-semibold">SPF 50</span>
+                    <span className="text-green-400">~98%</span>
+                    <span className="text-green-400">500 min</span>
+                    <span className="text-green-400">429 min</span>
+                    <span className="text-green-400">375 min</span>
+                    <span className="text-green-400">333 min</span>
+                    <span className="text-green-400">300 min</span>
+                  </div>
+                </div>
+                <div className="mt-3 pt-2 border-t border-steel-blue/30">
+                  <p className="text-xs text-slate-400 italic">
+                    SPF moltiplica quanto tempo puoi stare protetto dalle scottature rispetto alla pelle nuda.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Filter Properties Matrix Table */}
           <div className="max-w-full mx-auto mt-16">
             <div className="flex items-center justify-between mb-8">
@@ -1386,95 +1424,31 @@ export default function SolariPage() {
                 <thead>
                   <tr className="border-b border-steel-blue/30">
                     <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal min-w-[180px]">
-                      <button 
-                        onClick={() => handleSort("tradeName")}
-                        className="flex items-center hover:text-performance-green transition-colors"
-                      >
-                        Nome Commerciale
-                        {sortBy === "tradeName" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      Nome Commerciale
                     </th>
                     <th className="text-left p-3 font-semibold text-scientific-blue min-w-[200px]">
-                      <button 
-                        onClick={() => handleSort("inciName")}
-                        className="flex items-center hover:text-performance-green transition-colors"
-                      >
-                        Nome INCI
-                        {sortBy === "inciName" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      Nome INCI
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">
-                      <button 
-                        onClick={() => handleSort("uvRange")}
-                        className="flex items-center hover:text-performance-green transition-colors"
-                      >
-                        Spettro UV
-                        {sortBy === "uvRange" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      Spettro UV
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[100px]">Picco λ</th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">
-                      <button 
-                        onClick={() => handleSort("photostability")}
-                        className="flex items-center hover:text-performance-green transition-colors"
-                      >
-                        Fotostabilità
-                        {sortBy === "photostability" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      Fotostabilità
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[100px]">Solubilità</th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Status Regolatorio</th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
-                      <button 
-                        onClick={() => handleSort("uvbProtection")}
-                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
-                      >
-                        UVB
-                        {sortBy === "uvbProtection" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      UVB
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
-                      <button 
-                        onClick={() => handleSort("uva2Protection")}
-                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
-                      >
-                        UVA2
-                        {sortBy === "uva2Protection" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      UVA2
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
-                      <button 
-                        onClick={() => handleSort("uva1Protection")}
-                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
-                      >
-                        UVA1
-                        {sortBy === "uva1Protection" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      UVA1
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
-                      <button 
-                        onClick={() => handleSort("longUva1Protection")}
-                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
-                      >
-                        Long UVA1
-                        {sortBy === "longUva1Protection" && (
-                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
-                        )}
-                      </button>
+                      Long UVA1
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Vantaggi Extra</th>
                   </tr>
