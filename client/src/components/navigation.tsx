@@ -33,6 +33,12 @@ export default function Navigation() {
             >
               Il Protocollo
             </Link>
+            <Link 
+              href="/solari"
+              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
+            >
+              Filtri Solari
+            </Link>
             <button 
               onClick={() => scrollToSection('nutrizione')}
               className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
