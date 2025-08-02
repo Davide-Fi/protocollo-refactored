@@ -343,6 +343,18 @@ export default function SolariPage() {
       let aValue = a[sortBy as keyof SunscreenFilter];
       let bValue = b[sortBy as keyof SunscreenFilter];
       
+      // Special handling for protection level columns
+      if (["uvbProtection", "uva2Protection", "uva1Protection", "longUva1Protection"].includes(sortBy)) {
+        const protectionOrder = { "strong": 4, "good": 3, "moderate": 2, "incomplete": 1 };
+        const aScore = protectionOrder[aValue as keyof typeof protectionOrder] || 0;
+        const bScore = protectionOrder[bValue as keyof typeof protectionOrder] || 0;
+        
+        if (aScore !== bScore) {
+          return sortDirection === "asc" ? aScore - bScore : bScore - aScore;
+        }
+        return 0;
+      }
+      
       if (typeof aValue === 'string' && typeof bValue === 'string') {
         aValue = aValue.toLowerCase();
         bValue = bValue.toLowerCase();
@@ -766,10 +778,50 @@ export default function SolariPage() {
                     </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[100px]">Solubilità</th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Status Regolatorio</th>
-                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">UVB</th>
-                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">UVA2</th>
-                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">UVA1</th>
-                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">Long UVA1</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
+                      <button 
+                        onClick={() => handleSort("uvbProtection")}
+                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
+                      >
+                        UVB
+                        {sortBy === "uvbProtection" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
+                      <button 
+                        onClick={() => handleSort("uva2Protection")}
+                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
+                      >
+                        UVA2
+                        {sortBy === "uva2Protection" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
+                      <button 
+                        onClick={() => handleSort("uva1Protection")}
+                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
+                      >
+                        UVA1
+                        {sortBy === "uva1Protection" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[80px]">
+                      <button 
+                        onClick={() => handleSort("longUva1Protection")}
+                        className="flex items-center justify-center hover:text-performance-green transition-colors w-full"
+                      >
+                        Long UVA1
+                        {sortBy === "longUva1Protection" && (
+                          <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                        )}
+                      </button>
+                    </th>
                     <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Vantaggi Extra</th>
                   </tr>
                 </thead>
