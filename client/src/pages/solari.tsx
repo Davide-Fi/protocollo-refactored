@@ -820,9 +820,9 @@ export default function SolariPage() {
       {activeTab === "filters" && (
         <section className="py-8 px-4 sm:px-6 lg:px-8 bg-steel-blue/10">
           <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-            {/* Search */}
-            <div className="relative">
+          <div className="space-y-4 mb-6">
+            {/* Search Row */}
+            <div className="relative max-w-md">
               <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
               <Input
                 placeholder="Cerca per nome commerciale o INCI..."
@@ -832,136 +832,143 @@ export default function SolariPage() {
               />
             </div>
             
-            {/* Solubility Filters */}
+            {/* Compact Filter Controls Row */}
             <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
-              <h4 className="font-semibold mb-3 text-scientific-blue">Solubilità</h4>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="oil"
-                    checked={solubilityFilters.includes("oil")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSolubilityFilters([...solubilityFilters, "oil"]);
-                      } else {
-                        setSolubilityFilters(solubilityFilters.filter(f => f !== "oil"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="oil" className="text-slate-300 cursor-pointer">Liposolubile</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                {/* Solubility Filters */}
+                <div>
+                  <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Solubilità</h4>
+                  <div className="flex gap-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="oil"
+                        checked={solubilityFilters.includes("oil")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSolubilityFilters([...solubilityFilters, "oil"]);
+                          } else {
+                            setSolubilityFilters(solubilityFilters.filter(f => f !== "oil"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="oil" className="text-slate-300 cursor-pointer text-sm">Lipo</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="water"
+                        checked={solubilityFilters.includes("water")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSolubilityFilters([...solubilityFilters, "water"]);
+                          } else {
+                            setSolubilityFilters(solubilityFilters.filter(f => f !== "water"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="water" className="text-slate-300 cursor-pointer text-sm">Idro</Label>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="water"
-                    checked={solubilityFilters.includes("water")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSolubilityFilters([...solubilityFilters, "water"]);
-                      } else {
-                        setSolubilityFilters(solubilityFilters.filter(f => f !== "water"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="water" className="text-slate-300 cursor-pointer">Idrosolubile</Label>
+                
+                {/* Regulatory Filters */}
+                <div>
+                  <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Approvazioni</h4>
+                  <div className="flex gap-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="eu"
+                        checked={regulatoryFilters.includes("eu")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setRegulatoryFilters([...regulatoryFilters, "eu"]);
+                          } else {
+                            setRegulatoryFilters(regulatoryFilters.filter(f => f !== "eu"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="eu" className="text-slate-300 cursor-pointer text-sm">EU</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="us"
+                        checked={regulatoryFilters.includes("us")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setRegulatoryFilters([...regulatoryFilters, "us"]);
+                          } else {
+                            setRegulatoryFilters(regulatoryFilters.filter(f => f !== "us"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="us" className="text-slate-300 cursor-pointer text-sm">US</Label>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            
-            {/* Regulatory Filters */}
-            <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
-              <h4 className="font-semibold mb-3 text-scientific-blue">Approvazioni</h4>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="eu"
-                    checked={regulatoryFilters.includes("eu")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setRegulatoryFilters([...regulatoryFilters, "eu"]);
-                      } else {
-                        setRegulatoryFilters(regulatoryFilters.filter(f => f !== "eu"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="eu" className="text-slate-300 cursor-pointer">Approvato EU</Label>
+                
+                {/* UV Range Filters */}
+                <div>
+                  <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Spettro UV</h4>
+                  <div className="flex flex-wrap gap-x-3 gap-y-2">
+                    <div className="flex items-center space-x-1">
+                      <Checkbox
+                        id="uvb"
+                        checked={uvRangeFilters.includes("uvb")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setUvRangeFilters([...uvRangeFilters, "uvb"]);
+                          } else {
+                            setUvRangeFilters(uvRangeFilters.filter(f => f !== "uvb"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="uvb" className="text-slate-300 cursor-pointer text-xs">UVB</Label>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Checkbox
+                        id="uva1"
+                        checked={uvRangeFilters.includes("uva1")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setUvRangeFilters([...uvRangeFilters, "uva1"]);
+                          } else {
+                            setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva1"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="uva1" className="text-slate-300 cursor-pointer text-xs">UVA1</Label>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Checkbox
+                        id="uva2"
+                        checked={uvRangeFilters.includes("uva2")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setUvRangeFilters([...uvRangeFilters, "uva2"]);
+                          } else {
+                            setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva2"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="uva2" className="text-slate-300 cursor-pointer text-xs">UVA2</Label>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Checkbox
+                        id="broad"
+                        checked={uvRangeFilters.includes("broad")}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setUvRangeFilters([...uvRangeFilters, "broad"]);
+                          } else {
+                            setUvRangeFilters(uvRangeFilters.filter(f => f !== "broad"));
+                          }
+                        }}
+                      />
+                      <Label htmlFor="broad" className="text-slate-300 cursor-pointer text-xs">Ampio</Label>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="us"
-                    checked={regulatoryFilters.includes("us")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setRegulatoryFilters([...regulatoryFilters, "us"]);
-                      } else {
-                        setRegulatoryFilters(regulatoryFilters.filter(f => f !== "us"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="us" className="text-slate-300 cursor-pointer">Approvato US</Label>
-                </div>
-              </div>
-            </div>
-            
-            {/* UV Range Filters */}
-            <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
-              <h4 className="font-semibold mb-3 text-scientific-blue">Spettro UV</h4>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="uvb"
-                    checked={uvRangeFilters.includes("uvb")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setUvRangeFilters([...uvRangeFilters, "uvb"]);
-                      } else {
-                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "uvb"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="uvb" className="text-slate-300 cursor-pointer">UVB Forte</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="uva1"
-                    checked={uvRangeFilters.includes("uva1")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setUvRangeFilters([...uvRangeFilters, "uva1"]);
-                      } else {
-                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva1"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="uva1" className="text-slate-300 cursor-pointer">UVA1 Forte</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="uva2"
-                    checked={uvRangeFilters.includes("uva2")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setUvRangeFilters([...uvRangeFilters, "uva2"]);
-                      } else {
-                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva2"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="uva2" className="text-slate-300 cursor-pointer">UVA2 Forte</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="broad"
-                    checked={uvRangeFilters.includes("broad")}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setUvRangeFilters([...uvRangeFilters, "broad"]);
-                      } else {
-                        setUvRangeFilters(uvRangeFilters.filter(f => f !== "broad"));
-                      }
-                    }}
-                  />
-                  <Label htmlFor="broad" className="text-slate-300 cursor-pointer">Spettro Ampio</Label>
-                </div>
+                
               </div>
             </div>
           </div>
