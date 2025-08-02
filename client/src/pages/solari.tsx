@@ -290,7 +290,7 @@ export default function SolariPage() {
   const [regulatoryFilters, setRegulatoryFilters] = useState<string[]>([]);
   const [uvRangeFilters, setUvRangeFilters] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<SunscreenFilter | null>(null);
-  const [activeTab, setActiveTab] = useState<"filters" | "products">("products");
+  const [activeTab, setActiveTab] = useState<"filters" | "products">("filters");
   const [sortBy, setSortBy] = useState<string>("tradeName");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
@@ -400,16 +400,16 @@ export default function SolariPage() {
         </div>
       </section>
 
-      {/* Products Comparison Table */}
+      {/* Filter Composition Matrix */}
       {activeTab === "products" && (
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-                Confronto <span className="text-scientific-blue">Prodotti Solari</span>
+                Matrice <span className="text-scientific-blue">Composizione Filtri</span>
               </h2>
               <p className="text-lg text-slate-300">
-                Confronta le performance di protezione UV dei migliori prodotti disponibili
+                Confronta esattamente quali filtri usa ogni marca - Basato sui dati autentici Vichy vs La Roche-Posay
               </p>
             </div>
 
@@ -417,100 +417,80 @@ export default function SolariPage() {
               <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
                 <thead>
                   <tr className="border-b border-steel-blue/30">
-                    <th className="text-left p-4 font-semibold text-scientific-blue">Prodotto</th>
-                    <th className="text-center p-4 font-semibold text-scientific-blue">UVA1 (340–400 nm)</th>
-                    <th className="text-center p-4 font-semibold text-scientific-blue">UVA2 (320–340 nm)</th>
-                    <th className="text-center p-4 font-semibold text-scientific-blue">UVB (280–320 nm)</th>
-                    <th className="text-center p-4 font-semibold text-scientific-blue">Copertura Totale</th>
+                    <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Homosalate</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Octocrylene</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Ethylhexyl Salicylate</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Enulizole (PBSA)</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Avobenzone</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Tinosorb S</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Uvinul T150</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Mexoryl SX</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Mexoryl XL</th>
+                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Total Filtri</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {sunscreenProducts.map((product, index) => (
-                    <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
-                      <td className="p-4">
-                        <div>
-                          <div className="font-semibold text-white text-lg">{product.brand}</div>
-                          <div className="text-slate-300">{product.productName}</div>
-                          <div className="text-sm text-slate-400 mt-1">
-                            SPF {product.spf} • {product.description}
+                  {sunscreenProducts.map((product, index) => {
+                    const allFilters = ["Homosalate", "Octocrylene", "Ethylhexyl Salicylate", "Enulizole", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX", "Mexoryl XL"];
+                    
+                    return (
+                      <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
+                        <td className="p-3 sticky left-0 bg-navy-charcoal">
+                          <div>
+                            <div className="font-semibold text-white text-sm">{product.brand}</div>
+                            <div className="text-slate-300 text-xs">{product.productName}</div>
+                            <div className="text-xs text-slate-400 mt-1">SPF {product.spf}</div>
                           </div>
-                          <div className="text-xs text-slate-500 mt-1">
-                            {product.availability}
+                        </td>
+                        {allFilters.map((filterName) => (
+                          <td key={filterName} className="p-2 text-center">
+                            {product.filters.includes(filterName) ? (
+                              <div className="text-performance-green text-lg font-bold">✓</div>
+                            ) : (
+                              <div className="text-slate-600 text-lg">—</div>
+                            )}
+                          </td>
+                        ))}
+                        <td className="p-3 text-center">
+                          <div className="font-bold text-scientific-blue text-lg">
+                            {product.filters.length}
                           </div>
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className={`font-semibold ${productRatings[product.uva1Rating].color}`}>
-                          {productRatings[product.uva1Rating].icon}
-                        </div>
-                        <div className="text-sm text-slate-400 mt-1">
-                          {productRatings[product.uva1Rating].label}
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className={`font-semibold ${productRatings[product.uva2Rating].color}`}>
-                          {productRatings[product.uva2Rating].icon}
-                        </div>
-                        <div className="text-sm text-slate-400 mt-1">
-                          {productRatings[product.uva2Rating].label}
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className={`font-semibold ${productRatings[product.uvbRating].color}`}>
-                          {productRatings[product.uvbRating].icon}
-                        </div>
-                        <div className="text-sm text-slate-400 mt-1">
-                          {productRatings[product.uvbRating].label}
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className="flex justify-center mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <span
-                              key={i}
-                              className={`text-lg ${
-                                i < Math.floor(product.overallRating)
-                                  ? "text-yellow-400"
-                                  : i === Math.floor(product.overallRating) && product.overallRating % 1 >= 0.5
-                                  ? "text-yellow-400"
-                                  : "text-slate-600"
-                              }`}
-                            >
-                              {i === Math.floor(product.overallRating) && product.overallRating % 1 >= 0.5 ? "½" : "⭐"}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="text-sm text-slate-400">
-                          {product.overallRating}/5.0
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                          <div className="text-xs text-slate-400">filtri</div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
 
-            <div className="mt-8 bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-              <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Legenda</h3>
-              <div className="grid md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <div className="flex items-center mb-2">
-                    <span className="text-green-400 mr-2">✅✅✅</span>
-                    <span className="text-slate-300">Excellent - Protezione ottimale</span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <span className="text-blue-400 mr-2">✅✅</span>
-                    <span className="text-slate-300">Good - Protezione buona</span>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center mb-2">
-                    <span className="text-yellow-400 mr-2">✅</span>
-                    <span className="text-slate-300">Moderate - Protezione moderata</span>
+            <div className="mt-8 grid md:grid-cols-2 gap-6">
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Legenda Filtri</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center">
+                    <span className="text-performance-green mr-2 text-lg font-bold">✓</span>
+                    <span className="text-slate-300">Filtro presente nel prodotto</span>
                   </div>
                   <div className="flex items-center">
-                    <span className="text-red-400 mr-2">❌</span>
-                    <span className="text-slate-300">Poor - Protezione insufficiente</span>
+                    <span className="text-slate-600 mr-2 text-lg">—</span>
+                    <span className="text-slate-300">Filtro non presente</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Analisi Composizione</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="text-slate-300">
+                    <span className="font-semibold text-performance-green">Vichy:</span> 8 filtri totali - Sistema più completo
+                  </div>
+                  <div className="text-slate-300">
+                    <span className="font-semibold text-scientific-blue">La Roche-Posay:</span> 6 filtri + Mexoryl XL esclusivo
+                  </div>
+                  <div className="text-slate-300">
+                    <span className="font-semibold text-yellow-400">Filtri condivisi:</span> Ethylhexyl Salicylate, Avobenzone, Tinosorb S, Uvinul T150, Mexoryl SX
                   </div>
                 </div>
               </div>
