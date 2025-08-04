@@ -597,6 +597,12 @@ export default function SolariPage() {
   const [productChemicalFilters, setProductChemicalFilters] = useState<string[]>([]);
   const [selectedSkinType, setSelectedSkinType] = useState<string>('Type III');
   
+  // Get unique SPF values from products data (sorted descending)
+  const availableSpfValues = useMemo(() => {
+    const spfValues = [...new Set(sunscreenProducts.map(product => product.spf))];
+    return spfValues.sort((a, b) => b - a);
+  }, []);
+  
   // Simple function to get products for a filter
   const getProductsForFilter = (filterName: string): SunscreenProduct[] => {
     const filterMap: Record<string, keyof SunscreenProduct> = {
@@ -718,9 +724,11 @@ export default function SolariPage() {
           if (filter === "uva1-good") return product.uva1Rating === "good";
           if (filter === "uva2-excellent") return product.uva2Rating === "excellent";
           if (filter === "uva2-good") return product.uva2Rating === "good";
-          if (filter === "spf-30") return product.spf >= 30 && product.spf < 50;
-          if (filter === "spf-50") return product.spf >= 50 && product.spf < 60;
-          if (filter === "spf-60") return product.spf >= 60;
+          // Handle dynamic SPF values
+          if (filter.startsWith("spf-")) {
+            const spfValue = parseInt(filter.replace("spf-", ""));
+            return product.spf === spfValue;
+          }
           return false;
         });
 
@@ -986,48 +994,27 @@ export default function SolariPage() {
                     
                     <h5 className="font-semibold mb-2 text-scientific-blue text-xs">Valore SPF</h5>
                     <div className="flex flex-wrap gap-x-3 gap-y-2">
-                      <div className="flex items-center space-x-1">
-                        <Checkbox
-                          id="spf-30"
-                          checked={productProtectionFilters.includes("spf-30")}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setProductProtectionFilters([...productProtectionFilters, "spf-30"]);
-                            } else {
-                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-30"));
-                            }
-                          }}
-                        />
-                        <Label htmlFor="spf-30" className="text-slate-300 cursor-pointer text-xs">SPF 30-49</Label>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Checkbox
-                          id="spf-50"
-                          checked={productProtectionFilters.includes("spf-50")}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setProductProtectionFilters([...productProtectionFilters, "spf-50"]);
-                            } else {
-                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-50"));
-                            }
-                          }}
-                        />
-                        <Label htmlFor="spf-50" className="text-slate-300 cursor-pointer text-xs">SPF 50-59</Label>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Checkbox
-                          id="spf-60"
-                          checked={productProtectionFilters.includes("spf-60")}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setProductProtectionFilters([...productProtectionFilters, "spf-60"]);
-                            } else {
-                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "spf-60"));
-                            }
-                          }}
-                        />
-                        <Label htmlFor="spf-60" className="text-slate-300 cursor-pointer text-xs">SPF 60+</Label>
-                      </div>
+                      {availableSpfValues.map((spfValue) => {
+                        const filterId = `spf-${spfValue}`;
+                        return (
+                          <div key={spfValue} className="flex items-center space-x-1">
+                            <Checkbox
+                              id={filterId}
+                              checked={productProtectionFilters.includes(filterId)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setProductProtectionFilters([...productProtectionFilters, filterId]);
+                                } else {
+                                  setProductProtectionFilters(productProtectionFilters.filter(f => f !== filterId));
+                                }
+                              }}
+                            />
+                            <Label htmlFor={filterId} className="text-slate-300 cursor-pointer text-xs">
+                              SPF {spfValue}
+                            </Label>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                   
