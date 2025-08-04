@@ -1216,6 +1216,15 @@ export default function SolariPage() {
                   </div>
                   <div className="space-y-1">
                     <div className="grid grid-cols-7 gap-2 text-slate-300">
+                      <span className="font-semibold">No SPF</span>
+                      <span className="text-red-400">~0%</span>
+                      <span className="text-red-400">9 min</span>
+                      <span className="text-red-400">8 min</span>
+                      <span className="text-red-400">7 min</span>
+                      <span className="text-red-400">6 min</span>
+                      <span className="text-red-400">5 min</span>
+                    </div>
+                    <div className="grid grid-cols-7 gap-2 text-slate-300">
                       <span className="font-semibold">SPF 20</span>
                       <span className="text-yellow-400">~95%</span>
                       <span>200 min</span>
@@ -1696,6 +1705,15 @@ export default function SolariPage() {
                             <span className="text-red-400">UV 10</span>
                           </div>
                           <div className="space-y-1">
+                            <div className="grid grid-cols-7 gap-2 text-slate-300">
+                              <span className="font-semibold">No SPF</span>
+                              <span className="text-red-400">~0%</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv6}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv7}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv8}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv9}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv10}min</span>
+                            </div>
                             <div className="grid grid-cols-7 gap-2 text-slate-300">
                               <span className="font-semibold">SPF 20</span>
                               <span className="text-yellow-400">~95%</span>
