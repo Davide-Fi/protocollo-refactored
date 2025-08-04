@@ -758,6 +758,38 @@ export default function SolariPage() {
     return products;
   }, [productProtectionFilters, productChemicalFilters]);
 
+  // Dynamic chemical columns based on filtered products
+  const dynamicChemicalColumns = useMemo(() => {
+    if (filteredProducts.length === 0) return [];
+
+    // Define all possible chemicals with their display names and field mappings
+    const allChemicals = [
+      { id: 'tinosorbS', displayName: 'Tinosorb S', field: 'tinosorbS' as keyof SunscreenProduct },
+      { id: 'tinosorbM', displayName: 'Tinosorb M', field: 'tinosorbM' as keyof SunscreenProduct },
+      { id: 'mexorylSX', displayName: 'Mexoryl SX', field: 'mexorylSX' as keyof SunscreenProduct },
+      { id: 'mexorylXL', displayName: 'Mexoryl XL', field: 'mexorylXL' as keyof SunscreenProduct },
+      { id: 'mexoryl400', displayName: 'Mexoryl 400', field: 'mexoryl400' as keyof SunscreenProduct },
+      { id: 'uvinulAPlus', displayName: 'Uvinul A Plus', field: 'uvinulAPlus' as keyof SunscreenProduct },
+      { id: 'uvinulT150', displayName: 'Uvinul T150', field: 'uvinulT150' as keyof SunscreenProduct },
+      { id: 'homosalate', displayName: 'Homosalate', field: 'homosalate' as keyof SunscreenProduct },
+      { id: 'octocrylene', displayName: 'Octocrylene', field: 'octocrylene' as keyof SunscreenProduct },
+      { id: 'avobenzone', displayName: 'Avobenzone', field: 'avobenzone' as keyof SunscreenProduct },
+      { id: 'ethylhexylSalicylate', displayName: 'Ethylhexyl Salicylate', field: 'ethylhexylSalicylate' as keyof SunscreenProduct },
+      { id: 'octisalate', displayName: 'Octisalate', field: 'octisalate' as keyof SunscreenProduct },
+      { id: 'enulizole', displayName: 'Enulizole (PBSA)', field: 'enulizole' as keyof SunscreenProduct },
+      { id: 'octinoxate', displayName: 'Octinoxate', field: 'octinoxate' as keyof SunscreenProduct },
+      { id: 'zincOxide', displayName: 'Zinc Oxide', field: 'zincOxide' as keyof SunscreenProduct },
+      { id: 'titaniumDioxide', displayName: 'Titanium Dioxide', field: 'titaniumDioxide' as keyof SunscreenProduct }
+    ];
+
+    // Find chemicals that are present in at least one filtered product
+    const presentChemicals = allChemicals.filter(chemical => {
+      return filteredProducts.some(product => product[chemical.field] === true);
+    });
+
+    return presentChemicals;
+  }, [filteredProducts]);
+
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
       <Navigation />
@@ -1065,9 +1097,21 @@ export default function SolariPage() {
 
             {/* Products Count Display */}
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-scientific-blue">
-                Prodotti Solari ({filteredProducts.length})
-              </h3>
+              <div>
+                <h3 className="text-xl font-semibold text-scientific-blue">
+                  Prodotti Solari ({filteredProducts.length})
+                </h3>
+                {dynamicChemicalColumns.length > 0 && (
+                  <div className="text-sm text-slate-400 mt-1">
+                    <p>Mostrando {dynamicChemicalColumns.length} filtri chimici presenti nei prodotti filtrati</p>
+                    {productChemicalFilters.length > 0 && (
+                      <p className="text-xs text-slate-500 mt-1">
+                        Filtri attivi: {productChemicalFilters.length} • Colonne dinamiche: {dynamicChemicalColumns.length}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
               <div className="flex items-center gap-3">
                 {(productProtectionFilters.length > 0 || productChemicalFilters.length > 0) && (
                   <Badge variant="outline" className="border-performance-green text-performance-green">
@@ -1110,6 +1154,13 @@ export default function SolariPage() {
                   Rimuovi Tutti i Filtri
                 </Button>
               </div>
+            ) : dynamicChemicalColumns.length === 0 && filteredProducts.length > 0 ? (
+              <div className="text-center py-12 bg-navy-charcoal rounded-lg border border-steel-blue/30">
+                <p className="text-slate-400 text-lg mb-4">Nessun filtro chimico presente</p>
+                <p className="text-slate-500 mb-2">
+                  I prodotti filtrati non contengono filtri chimici solari
+                </p>
+              </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
@@ -1117,23 +1168,18 @@ export default function SolariPage() {
                     <tr className="border-b border-steel-blue/30 sticky top-0 bg-navy-charcoal z-10">
                       <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
                       <th className="text-center p-2 font-semibold text-scientific-blue text-xs">SPF</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Homosalate</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Octocrylene</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Ethylhexyl Salicylate</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Enulizole (PBSA)</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Avobenzone</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Tinosorb S</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Uvinul T150</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Mexoryl SX</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Mexoryl XL</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Octinoxate</th>
-                    <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Total Filtri</th>
-                  </tr>
-                </thead>
+                      {dynamicChemicalColumns.map((chemical) => (
+                        <th key={chemical.id} className={`text-center p-2 font-semibold text-scientific-blue text-xs ${dynamicChemicalColumns.length > 8 ? 'min-w-16' : 'min-w-20'}`} title={chemical.displayName}>
+                          <div className={`${dynamicChemicalColumns.length > 8 ? 'max-w-16' : 'max-w-20'} truncate`}>
+                            {chemical.displayName}
+                          </div>
+                        </th>
+                      ))}
+                      <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Total Filtri</th>
+                    </tr>
+                  </thead>
                 <tbody>
                   {filteredProducts.map((product, index) => {
-                    const allFilters = ["Homosalate", "Octocrylene", "Ethylhexyl Salicylate", "Enulizole", "Avobenzone", "Tinosorb S", "Uvinul T150", "Mexoryl SX", "Mexoryl XL", "Octinoxate"];
-                    
                     return (
                       <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
                         <td className="p-3 sticky left-0 bg-navy-charcoal">
@@ -1151,25 +1197,11 @@ export default function SolariPage() {
                         <td className="p-2 text-center">
                           <div className="font-bold text-scientific-blue text-lg">{product.spf}</div>
                         </td>
-                        {allFilters.map((filterName) => {
-                          const filterMapping: Record<string, keyof SunscreenProduct> = {
-                            'Homosalate': 'homosalate',
-                            'Octocrylene': 'octocrylene',
-                            'Ethylhexyl Salicylate': 'ethylhexylSalicylate',
-                            'Enulizole': 'enulizole',
-                            'Avobenzone': 'avobenzone',
-                            'Tinosorb S': 'tinosorbS',
-                            'Uvinul T150': 'uvinulT150',
-                            'Mexoryl SX': 'mexorylSX',
-                            'Mexoryl XL': 'mexorylXL',
-                            'Octinoxate': 'octinoxate'
-                          };
-                          
-                          const fieldName = filterMapping[filterName];
-                          const hasFilter = fieldName && product[fieldName] === true;
+                        {dynamicChemicalColumns.map((chemical) => {
+                          const hasFilter = product[chemical.field] === true;
                           
                           return (
-                            <td key={filterName} className="p-2 text-center">
+                            <td key={chemical.id} className="p-2 text-center">
                               {hasFilter ? (
                                 <div className="text-performance-green text-lg font-bold">✓</div>
                               ) : (
