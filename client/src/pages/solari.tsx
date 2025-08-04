@@ -1153,7 +1153,7 @@ export default function SolariPage() {
                 <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
                   <thead>
                     <tr className="border-b border-steel-blue/30 sticky top-0 bg-navy-charcoal z-10">
-                      <th className="text-left p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
+                      <th className="text-center p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
                       <th className="text-center p-2 font-semibold text-scientific-blue text-xs">SPF</th>
                       {dynamicChemicalColumns.map((chemical) => (
                         <th key={chemical.id} className={`text-center p-2 font-semibold text-scientific-blue text-xs ${dynamicChemicalColumns.length > 8 ? 'min-w-16' : 'min-w-20'}`} title={chemical.displayName}>
@@ -1169,12 +1169,12 @@ export default function SolariPage() {
                   {filteredProducts.map((product, index) => {
                     return (
                       <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
-                        <td className="p-3 sticky left-0 bg-navy-charcoal">
+                        <td className="p-3 sticky left-0 bg-navy-charcoal text-center">
                           <div>
                             <div className="font-semibold text-white text-sm">{product.brand}</div>
                             <div className="text-slate-300 text-xs">{product.productName}</div>
                             {/* Protection Quality Indicators */}
-                            <div className="flex gap-1 mt-2">
+                            <div className="flex gap-1 mt-2 justify-center">
                               {product.uvbRating === "excellent" && <div className="w-1.5 h-1.5 bg-green-400 rounded-full" title="UVB Eccellente"></div>}
                               {product.uva1Rating === "excellent" && <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" title="UVA1 Eccellente"></div>}
                               {product.uva2Rating === "excellent" && <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full" title="UVA2 Eccellente"></div>}
