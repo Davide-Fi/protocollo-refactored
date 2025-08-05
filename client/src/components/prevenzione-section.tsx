@@ -1,6 +1,7 @@
 import { Heart, Brain, Dna, Moon, Activity, Thermometer, Microscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import preventionImage from "@assets/generated_images/Italian_man_focused_health_optimization_prevention_3d851534.png";
+import { LazyImage } from "@/components/ui/lazy-image";
+import preventionImageWebP from "@assets/generated_images/Italian_man_focused_health_optimization_prevention_3d851534.webp";
 
 export default function PreventioneSection() {
   const preventionAreas = [
@@ -65,8 +66,8 @@ export default function PreventioneSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <img 
-              src={preventionImage} 
+            <LazyImage 
+              src={preventionImageWebP}
               alt="Persona atletica concentrata su ottimizzazione salute e prevenzione" 
               className="w-full h-auto rounded-lg shadow-xl"
             />

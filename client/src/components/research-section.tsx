@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
-import nutritionResearchImage from "@assets/generated_images/Italian_man_nutrition_research_study_ed0b681f.png";
-import supplementsResearchImage from "@assets/generated_images/Italian_man_taking_supplements_research_e63753c6.png";
-import preventionResearchImage from "@assets/generated_images/Italian_man_prevention_research_biomarkers_2a7baa78.png";
+import { LazyImage } from "@/components/ui/lazy-image";
+import nutritionResearchImageWebP from "@assets/generated_images/Italian_man_nutrition_research_study_ed0b681f.webp";
+import supplementsResearchImageWebP from "@assets/generated_images/Italian_man_taking_supplements_research_e63753c6.webp";
+import preventionResearchImageWebP from "@assets/generated_images/Italian_man_prevention_research_biomarkers_2a7baa78.webp";
 
 export default function ResearchSection() {
   const articles = [
     {
-      image: nutritionResearchImage,
+      image: nutritionResearchImageWebP,
       category: "NUTRIZIONE",
       title: "Intermittent Fasting e Longevità",
       excerpt: "Nuovi studi dimostrano come il digiuno intermittente possa aumentare l'aspettativa di vita del 15-20%.",
@@ -14,7 +15,7 @@ export default function ResearchSection() {
       categoryColor: "scientific-blue"
     },
     {
-      image: supplementsResearchImage,
+      image: supplementsResearchImageWebP,
       category: "INTEGRAZIONE",
       title: "NAD+ e Prestazioni Cognitive",
       excerpt: "Ricerca su come i precursori del NAD+ migliorino memoria e focus negli over 40.",
@@ -22,7 +23,7 @@ export default function ResearchSection() {
       categoryColor: "performance-green"
     },
     {
-      image: preventionResearchImage,
+      image: preventionResearchImageWebP,
       category: "PREVENZIONE",
       title: "Biomarcatori Predittivi del Aging",
       excerpt: "Identificati 12 biomarcatori chiave per predire l'invecchiamento biologico.",
@@ -46,8 +47,8 @@ export default function ResearchSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article, index) => (
             <article key={index} className="bg-navy-charcoal border border-steel-blue/30 rounded-lg overflow-hidden hover:border-scientific-blue/50 transition-colors">
-              <img 
-                src={article.image} 
+              <LazyImage 
+                src={article.image}
                 alt={article.title} 
                 className="w-full h-48 object-cover"
               />

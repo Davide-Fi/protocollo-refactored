@@ -1,6 +1,7 @@
 import { Apple, Sprout, Leaf, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import nutritionImage from "@assets/generated_images/Italian_man_eating_healthy_nutrition_meal_771476cc.png";
+import { LazyImage } from "@/components/ui/lazy-image";
+import nutritionImageWebP from "@assets/generated_images/Italian_man_eating_healthy_nutrition_meal_771476cc.webp";
 
 export default function NutrizioneSection() {
   const nutritionProtocols = [
@@ -41,8 +42,8 @@ export default function NutrizioneSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <img 
-              src={nutritionImage} 
+            <LazyImage 
+              src={nutritionImageWebP}
               alt="Persona che mangia pasto nutritivo e salutare" 
               className="w-full h-auto rounded-lg shadow-xl"
             />

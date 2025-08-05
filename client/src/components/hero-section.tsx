@@ -1,7 +1,8 @@
 import { Award, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LazyImage } from "@/components/ui/lazy-image";
 import { Link } from "wouter";
-import heroImage from "@assets/generated_images/Italian_athletic_man_professional_portrait_26460732.png";
+import heroImageWebP from "@assets/generated_images/Italian_athletic_man_professional_portrait_26460732.webp";
 
 export default function HeroSection() {
   const scrollToSection = (sectionId: string) => {
@@ -65,8 +66,8 @@ export default function HeroSection() {
           </div>
           
           <div className="relative">
-            <img 
-              src={heroImage} 
+            <LazyImage 
+              src={heroImageWebP}
               alt="Persona professionale rappresentante ottimizzazione salute" 
               className="w-full h-auto rounded-lg shadow-2xl"
             />
