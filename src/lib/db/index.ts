@@ -4,6 +4,7 @@ import * as schema from './schema';
 
 // Load environment variables for non-Next.js environments
 if (!process.env.DATABASE_URL && typeof window === 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require('dotenv').config({ path: '.env.local' });
 }
 

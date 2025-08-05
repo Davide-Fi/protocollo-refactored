@@ -1,4 +1,4 @@
-import { and, eq, ilike, gte, lte, inArray } from 'drizzle-orm';
+import { and, ilike, gte, lte, inArray } from 'drizzle-orm';
 import { db, sunscreenProducts } from '@/lib/db';
 import { sunscreenProductSchema, sunscreenFilterSchema } from '@/lib/validations';
 import { publicProcedure, router } from '../server';

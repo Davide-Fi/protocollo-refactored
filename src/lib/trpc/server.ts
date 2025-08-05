@@ -2,6 +2,8 @@ import { initTRPC } from '@trpc/server';
 import { cache } from 'react';
 import superjson from 'superjson';
 
+// Currently unused but kept for future authentication implementation
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createContext = cache(() => {
   return {
     // Add context properties here (user, session, etc.)
