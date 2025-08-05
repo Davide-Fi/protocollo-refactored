@@ -6,29 +6,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Development
-npm run dev          # Start development server with HMR (Vite + Express)
-
-# Production
-npm run build        # Build client (Vite) and server (ESBuild)
+npm run dev          # Start development server with Turbopack
+npm run build        # Build Next.js application
 npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript type checking
 
 # Database
-npm run db:push      # Push schema changes to database (Drizzle Kit)
+npm run db:generate  # Generate Drizzle migrations
+npm run db:migrate   # Run Drizzle migrations
+npm run db:studio    # Open Drizzle Studio
+npm run db:seed      # Seed database with sample data
 
-# Type Checking
-npm run check        # Run TypeScript type checking
+# Testing
+npm run test         # Run Vitest tests
+npm run test:e2e     # Run Playwright E2E tests
 ```
 
 ## Architecture Overview
 
-This is a full-stack TypeScript monorepo for a longevity optimization platform focused on male health.
+This is a Next.js 15 application for a longevity optimization platform focused on male health, completely refactored from the original Vite/Express architecture.
 
 ### Tech Stack
-- **Frontend**: React 18 + TypeScript + Vite + Wouter (routing) + TanStack Query
-- **Backend**: Express.js + TypeScript (ES modules) + Drizzle ORM
-- **Database**: PostgreSQL (Neon Database serverless)
-- **UI**: Tailwind CSS + shadcn/ui (Radix UI) + Dark theme design system
+- **Framework**: Next.js 15 + App Router + React 19 + TypeScript
+- **API Layer**: tRPC for end-to-end type safety
+- **Database**: Neon PostgreSQL + Drizzle ORM
+- **UI**: Tailwind CSS v4 + Dark theme design system
 - **Forms**: React Hook Form + Zod validation
+- **State Management**: Zustand + TanStack Query
 
 ### Key Architecture Patterns
 
