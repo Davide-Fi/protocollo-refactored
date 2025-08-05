@@ -4,12 +4,16 @@ import { useState } from "react";
 import { Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { api } from "@/lib/trpc/client";
 
 export default function ContactSection() {
+  const newsletterMutation = api.newsletter.subscribe.useMutation();
+  const consultationMutation = api.consultation.create.useMutation();
+
   // Newsletter form state
   const [newsletterData, setNewsletterData] = useState({
-    email: "",
-    name: ""
+    name: "",
+    email: ""
   });
 
   // Consultation form state
@@ -29,10 +33,13 @@ export default function ContactSection() {
     }
     
     try {
-      // TODO: Implement API call when tRPC is properly configured
-      console.log("Newsletter submission:", newsletterData);
-      alert("Iscrizione completata!");
-      setNewsletterData({ email: "", name: "" });
+      const result = await newsletterMutation.mutateAsync(newsletterData);
+      if (result.success) {
+        alert("Iscrizione completata! Controlla la tua email.");
+        setNewsletterData({ email: "", name: "" });
+      } else {
+        alert(result.message || "Si è verificato un errore. Riprova.");
+      }
     } catch {
       alert("Si è verificato un errore. Riprova.");
     }
@@ -46,16 +53,19 @@ export default function ContactSection() {
     }
     
     try {
-      // TODO: Implement API call when tRPC is properly configured
-      console.log("Consultation submission:", consultationData);
-      alert("Richiesta inviata!");
-      setConsultationData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        interest: "",
-        message: ""
-      });
+      const result = await consultationMutation.mutateAsync(consultationData);
+      if (result.success) {
+        alert("Richiesta inviata con successo! Ti contatteremo a breve.");
+        setConsultationData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          interest: "",
+          message: ""
+        });
+      } else {
+        alert(result.message || "Si è verificato un errore. Riprova.");
+      }
     } catch {
       alert("Si è verificato un errore. Riprova.");
     }
@@ -64,24 +74,18 @@ export default function ContactSection() {
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-3xl font-bold mb-6">Unisciti alla Community Longevità</h3>
+        <h2 className="text-4xl font-bold text-center mb-16">Contatta il Team Protocollo</h2>
+        
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Newsletter Signup */}
+          <div className="bg-steel-blue/10 backdrop-blur-sm rounded-2xl p-8 border border-steel-blue/20">
+            <h3 className="text-3xl font-bold mb-6">Newsletter Biohacking</h3>
             <p className="text-slate-300 mb-8 text-lg">
               Ricevi protocolli esclusivi, aggiornamenti scientifici e consigli personalizzati 
               per ottimizzare la tua longevità maschile.
             </p>
             
             <form onSubmit={handleNewsletterSubmit} className="space-y-4">
-              <Input
-                type="email"
-                placeholder="La tua email"
-                value={newsletterData.email}
-                onChange={(e) => setNewsletterData(prev => ({ ...prev, email: e.target.value }))}
-                className="bg-steel-blue/20 border-steel-blue/30 text-white placeholder-slate-400 focus:border-scientific-blue"
-                required
-              />
               <Input
                 type="text"
                 placeholder="Nome"
@@ -90,11 +94,20 @@ export default function ContactSection() {
                 className="bg-steel-blue/20 border-steel-blue/30 text-white placeholder-slate-400 focus:border-scientific-blue"
                 required
               />
+              <Input
+                type="email"
+                placeholder="Email"
+                value={newsletterData.email}
+                onChange={(e) => setNewsletterData(prev => ({ ...prev, email: e.target.value }))}
+                className="bg-steel-blue/20 border-steel-blue/30 text-white placeholder-slate-400 focus:border-scientific-blue"
+                required
+              />
               <Button 
                 type="submit" 
                 className="w-full bg-scientific-blue hover:bg-scientific-blue/80 font-semibold"
+                disabled={newsletterMutation.isLoading}
               >
-                Iscriviti alla Newsletter
+                {newsletterMutation.isLoading ? "Invio in corso..." : "Iscriviti alla Newsletter"}
               </Button>
             </form>
             
@@ -130,6 +143,7 @@ export default function ContactSection() {
                   required
                 />
               </div>
+              
               <Input
                 type="email"
                 placeholder="Email"
@@ -138,32 +152,52 @@ export default function ContactSection() {
                 className="bg-steel-blue/20 border-steel-blue/30 text-white placeholder-slate-400 focus:border-scientific-blue"
                 required
               />
+              
               <select
                 value={consultationData.interest}
                 onChange={(e) => setConsultationData(prev => ({ ...prev, interest: e.target.value }))}
-                className="w-full bg-steel-blue/20 border border-steel-blue/30 text-white focus:border-scientific-blue rounded-md px-3 py-2"
+                className="w-full px-4 py-3 bg-steel-blue/20 border border-steel-blue/30 rounded-md text-white placeholder-slate-400 focus:border-scientific-blue focus:outline-none"
                 required
               >
-                <option value="">Area di interesse</option>
-                <option value="nutrition">Protocolli Nutrizione</option>
-                <option value="supplements">Stack Integrazione</option>
-                <option value="prevention">Prevenzione</option>
-                <option value="complete">Protocollo Completo</option>
+                <option value="">Seleziona area di interesse</option>
+                <option value="completo">Protocollo Completo</option>
+                <option value="nutrizione">Solo Nutrizione</option>
+                <option value="integrazione">Solo Integrazione</option>
+                <option value="prevenzione">Solo Prevenzione</option>
+                <option value="personalizzato">Piano Personalizzato</option>
               </select>
+              
               <textarea
-                placeholder="Descrivere i tuoi obiettivi di longevità..."
+                placeholder="Messaggio (opzionale)"
                 rows={4}
                 value={consultationData.message}
                 onChange={(e) => setConsultationData(prev => ({ ...prev, message: e.target.value }))}
-                className="w-full bg-steel-blue/20 border border-steel-blue/30 text-white placeholder-slate-400 focus:border-scientific-blue rounded-md px-3 py-2"
+                className="w-full px-4 py-3 bg-steel-blue/20 border border-steel-blue/30 rounded-md text-white placeholder-slate-400 focus:border-scientific-blue focus:outline-none resize-none"
               />
+              
               <Button 
                 type="submit" 
                 className="w-full bg-performance-green hover:bg-performance-green/80 font-semibold"
+                disabled={consultationMutation.isLoading}
               >
-                Richiedi Consulenza
+                {consultationMutation.isLoading ? "Invio in corso..." : "Richiedi Consulenza"}
               </Button>
             </form>
+            
+            <div className="mt-8 grid md:grid-cols-3 gap-6 text-center">
+              <div className="bg-steel-blue/10 p-6 rounded-lg border border-steel-blue/20">
+                <p className="text-3xl font-bold text-scientific-blue mb-2">€247</p>
+                <p className="text-sm text-slate-400">Protocollo Base</p>
+              </div>
+              <div className="bg-steel-blue/10 p-6 rounded-lg border border-steel-blue/20">
+                <p className="text-3xl font-bold text-scientific-blue mb-2">€497</p>
+                <p className="text-sm text-slate-400">Protocollo Avanzato</p>
+              </div>
+              <div className="bg-steel-blue/10 p-6 rounded-lg border border-steel-blue/20">
+                <p className="text-3xl font-bold text-scientific-blue mb-2">€997</p>
+                <p className="text-sm text-slate-400">Protocollo Premium</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
