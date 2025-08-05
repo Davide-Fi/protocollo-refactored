@@ -1,0 +1,30 @@
+name: Auto Pull Request
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+      - 'fix/*'
+      - 'update/*'
+      - 'claude/*'
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}
+          base: main
+          title: '${{ github.ref_name }}'
+          body: |
+            ### Changes
+            ${{ github.event.head_commit.message }}
