@@ -144,3 +144,19 @@ export const pageViews = pgTable("page_views", {
   pathIdx: index("page_views_path_idx").on(table.path),
   timestampIdx: index("page_views_timestamp_idx").on(table.timestamp),
 }));
+
+// Protocol tabs for dynamic protocol builder
+export const protocolTabs = pgTable("protocol_tabs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tabIndex: integer("tab_index").notNull().unique(),
+  concernName: text("concern_name").notNull(),
+  tabTitle: text("tab_title").notNull(),
+  emoji: text("emoji"),
+  imageUrl: text("image_url"),
+  contentHtml: text("content_html").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => ({
+  tabIndexIdx: index("protocol_tabs_tab_index_idx").on(table.tabIndex),
+  concernNameIdx: index("protocol_tabs_concern_name_idx").on(table.concernName),
+}));
