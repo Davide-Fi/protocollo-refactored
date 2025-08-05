@@ -17,11 +17,7 @@ import {
   ChevronDown,
   ChevronUp,
   Timer,
-  Zap,
   Shield,
-  Target,
-  Award,
-  TrendingUp,
   Beaker,
   Salad,
   ChefHat,
@@ -29,7 +25,6 @@ import {
   BarChart3,
   FlaskConical,
   BookOpen,
-  Calculator
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -341,7 +336,7 @@ export default function ProtocolloPage() {
                           </div>
                           <div className="flex justify-between items-start">
                             <div>
-                              <p className="font-medium text-white">Olio d'oliva extra vergine</p>
+                              <p className="font-medium text-white">Olio d&apos;oliva extra vergine</p>
                               <p className="text-sm text-slate-400">1 cucchiaio</p>
                             </div>
                             <Badge className="bg-performance-green/20 text-performance-green">120 cal</Badge>
@@ -388,7 +383,7 @@ export default function ProtocolloPage() {
                           </div>
                           <div className="flex justify-between items-start">
                             <div>
-                              <p className="font-medium text-white">Olio d'oliva extra vergine</p>
+                              <p className="font-medium text-white">Olio d&apos;oliva extra vergine</p>
                               <p className="text-sm text-slate-400">1 cucchiaio</p>
                             </div>
                             <Badge className="bg-performance-green/20 text-performance-green">120 cal</Badge>
@@ -761,7 +756,7 @@ export default function ProtocolloPage() {
 
                     <div className="bg-scientific-blue/10 p-4 rounded-lg">
                       <p className="text-center font-semibold">
-                        Stessa routine ogni giorno, 365 giorni all'anno
+                        Stessa routine ogni giorno, 365 giorni all&apos;anno
                       </p>
                     </div>
                   </div>
