@@ -28,11 +28,10 @@ interface SunscreenFilter {
 }
 
 interface SunscreenProduct {
-  id?: string;
   brand: string;
   productName: string;
   spf: number;
-  // Filter composition as boolean fields (matching original exactly)
+  // Filter composition as boolean fields
   tinosorbS: boolean;
   tinosorbM: boolean;
   mexorylSX: boolean;
@@ -40,7 +39,7 @@ interface SunscreenProduct {
   mexoryl400: boolean;
   uvinulAPlus: boolean;
   uvinulT150: boolean;
-  homosalate: boolean;  
+  homosalate: boolean;
   octocrylene: boolean;
   avobenzone: boolean;
   ethylhexylSalicylate: boolean;
@@ -49,7 +48,7 @@ interface SunscreenProduct {
   octinoxate: boolean;
   zincOxide: boolean;
   titaniumDioxide: boolean;
-  // Ratings (matching original exactly)
+  // Ratings
   uva1Rating: "excellent" | "good" | "moderate" | "poor";
   uva2Rating: "excellent" | "good" | "moderate" | "poor";
   uvbRating: "excellent" | "good" | "moderate" | "poor";
@@ -57,16 +56,8 @@ interface SunscreenProduct {
   description: string;
   price?: string;
   availability: string;
-  // Database-specific fields (optional)
-  filters?: any;
-  textureRating?: "excellent" | "good" | "moderate" | "poor";
-  priceRange?: "budget" | "mid" | "premium";
-  notes?: string;
-  createdAt?: Date | null;
-  updatedAt?: Date | null;
 }
 
-// Keep the original filter data for educational purposes
 const sunscreenFilters: SunscreenFilter[] = [
   {
     tradeName: "Tinosorb S",
@@ -355,31 +346,31 @@ export default function SolariPage() {
   const [sortBy, setSortBy] = useState<string>("tradeName");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   
-  // Popup state for filter details
+  // New simple popup state
   const [popup, setPopup] = useState<{ filterName: string; products: SunscreenProduct[] } | null>(null);
   
   // Product filtering states
   const [productProtectionFilters, setProductProtectionFilters] = useState<string[]>([]);
   const [productChemicalFilters, setProductChemicalFilters] = useState<string[]>([]);
   const [selectedSkinType, setSelectedSkinType] = useState<string>('Type III');
-  
-  // Fetch sunscreen products from the database using tRPC
-  const { data: rawSunscreenProducts = [], isLoading: isLoadingProducts } = api.sunscreen.getAll.useQuery({
-    searchTerm: searchTerm || undefined,
-  });
-  
-  // Transform the raw products to match original interface exactly
-  const sunscreenProducts = useMemo(() => {
-    return rawSunscreenProducts.map(product => {
-      // Cast filters as any to handle JSONB type from database
-      const filters = (product.filters as any) || {};
+
+  // Fetch products from database using tRPC
+  const { data: dbProducts = [] } = api.sunscreen.getAll.useQuery();
+
+  // Transform database products to match our interface
+  const sunscreenProducts: SunscreenProduct[] = useMemo(() => {
+    return dbProducts.map(product => {
+      // Parse the filters JSON field to extract boolean values
+      const filters = (product.filters as Record<string, unknown>) || {};
       
       return {
-        ...product,
-        // Map all boolean filter properties to top-level (matching original interface exactly)
+        brand: product.brand,
+        productName: product.productName,
+        spf: product.spf,
+        // Map filter chemicals from the JSON field
         tinosorbS: Boolean(filters.tinosorbS),
         tinosorbM: Boolean(filters.tinosorbM),
-        mexorylSX: Boolean(filters.mexorylSX),  
+        mexorylSX: Boolean(filters.mexorylSX),
         mexorylXL: Boolean(filters.mexorylXL),
         mexoryl400: Boolean(filters.mexoryl400),
         uvinulAPlus: Boolean(filters.uvinulAPlus),
@@ -393,29 +384,25 @@ export default function SolariPage() {
         octinoxate: Boolean(filters.octinoxate),
         zincOxide: Boolean(filters.zincOxide),
         titaniumDioxide: Boolean(filters.titaniumDioxide),
-        // Add missing fields with defaults (to match original exactly)
-        overallRating: 4.0, // Default rating - should be stored in database
-        description: product.notes || "Prodotto solare ad ampio spettro", // Use notes as description fallback
-        price: product.priceRange === 'budget' ? '€10-20' : 
-               product.priceRange === 'mid' ? '€20-35' : 
-               product.priceRange === 'premium' ? '€35-50+' : undefined,
-        availability: product.availability === 'widely_available' ? 'Ampiamente disponibile' :
-                     product.availability === 'limited' ? 'Disponibilità limitata' :
-                     product.availability === 'discontinued' ? 'Fuori produzione' : 'Disponibile'
-      } as SunscreenProduct;
+        // Ratings
+        uva1Rating: product.uva1Rating as "excellent" | "good" | "moderate" | "poor",
+        uva2Rating: product.uva2Rating as "excellent" | "good" | "moderate" | "poor",
+        uvbRating: product.uvbRating as "excellent" | "good" | "moderate" | "poor",
+        overallRating: Number(filters.overallRating) || 4.0,
+        description: product.notes || "",
+        price: filters.price as string | undefined,
+        availability: product.availability === "widely_available" ? "EU, disponibile in Italia" : 
+                     product.availability === "limited" ? "Disponibilità limitata" : "Non disponibile"
+      };
     });
-  }, [rawSunscreenProducts]);
+  }, [dbProducts]);
   
-  // Fetch available brands
-  const { data: availableBrands = [] } = api.sunscreen.getBrands.useQuery();
-
   // Get unique SPF values from products data (sorted descending)
   const availableSpfValues = useMemo(() => {
-    if (!sunscreenProducts.length) return [];
     const spfValues = [...new Set(sunscreenProducts.map(product => product.spf))];
     return spfValues.sort((a, b) => b - a);
   }, [sunscreenProducts]);
-
+  
   // Simple function to get products for a filter
   const getProductsForFilter = (filterName: string): SunscreenProduct[] => {
     const filterMap: Record<string, keyof SunscreenProduct> = {
@@ -442,7 +429,7 @@ export default function SolariPage() {
     
     return sunscreenProducts.filter(product => product[field] === true);
   };
-
+  
   // Handle filter click
   const handleFilterClick = (filterName: string) => {
     const products = getProductsForFilter(filterName);
@@ -527,7 +514,7 @@ export default function SolariPage() {
   const filteredProducts = useMemo(() => {
     let products = sunscreenProducts;
 
-    // Apply protection quality filters
+    // Apply protection quality filters (AND logic - need 1+ criteria)
     if (productProtectionFilters.length > 0) {
       products = products.filter(product => {
         const matchingQualities = productProtectionFilters.filter(filter => {
@@ -544,6 +531,7 @@ export default function SolariPage() {
           }
           return false;
         });
+
         return matchingQualities.length >= 1; // Show products with 1+ matching criteria
       });
     }
@@ -558,7 +546,6 @@ export default function SolariPage() {
             'mexoryl-sx': 'mexorylSX',
             'mexoryl-xl': 'mexorylXL',
             'mexoryl-400': 'mexoryl400',
-            'uvinul-a-plus': 'uvinulAPlus',
             'avobenzone': 'avobenzone',
             'octocrylene': 'octocrylene',
             'homosalate': 'homosalate',
@@ -569,6 +556,7 @@ export default function SolariPage() {
             'zinc-oxide': 'zincOxide',
             'titanium-dioxide': 'titaniumDioxide'
           };
+
           const fieldName = chemicalMapping[filter];
           return fieldName && product[fieldName] === true;
         });
@@ -576,12 +564,12 @@ export default function SolariPage() {
     }
 
     return products;
-  }, [sunscreenProducts, productProtectionFilters, productChemicalFilters]);
+  }, [productProtectionFilters, productChemicalFilters, sunscreenProducts]);
 
   // Dynamic chemical columns based on filtered products
   const dynamicChemicalColumns = useMemo(() => {
     if (filteredProducts.length === 0) return [];
-    
+
     // Define all possible chemicals with their display names and field mappings
     const allChemicals = [
       { id: 'tinosorbS', displayName: 'Tinosorb S', field: 'tinosorbS' as keyof SunscreenProduct },
@@ -601,14 +589,23 @@ export default function SolariPage() {
       { id: 'zincOxide', displayName: 'Zinc Oxide', field: 'zincOxide' as keyof SunscreenProduct },
       { id: 'titaniumDioxide', displayName: 'Titanium Dioxide', field: 'titaniumDioxide' as keyof SunscreenProduct }
     ];
-    
+
     // Find chemicals that are present in at least one filtered product
     const presentChemicals = allChemicals.filter(chemical => {
       return filteredProducts.some(product => product[chemical.field] === true);
     });
-    
+
     return presentChemicals;
   }, [filteredProducts]);
+
+  const formatTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    if (hours >= 1) {
+      return `${hours}:${mins.toString().padStart(2, '0')}h`;
+    }
+    return `${minutes}min`;
+  };
 
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
@@ -617,755 +614,821 @@ export default function SolariPage() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-steel-blue/30 rounded-sm mb-6">
-            <Shield className="text-performance-green mr-2 h-4 w-4" />
-            <span className="text-sm font-medium">Database Protocollo Solari</span>
+          <div className="inline-flex items-center px-4 py-2 bg-scientific-blue/30 rounded-sm mb-6">
+            <Sun className="text-performance-green mr-2 h-4 w-4" />
+            <span className="text-sm font-medium">Comparatore Filtri Solari</span>
           </div>
           
           <h1 className="text-5xl lg:text-6xl font-black leading-tight mb-6">
-            <span className="text-scientific-blue">Solari</span> Pro
+            Database <span className="text-scientific-blue">Filtri Solari</span>
           </h1>
           
-          <p className="text-xl text-slate-300 mb-12 leading-relaxed">
-            Database scientifico completo di filtri UV e prodotti solari con analisi dettagliata della protezione.
+          <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+            Trova e confronta i filtri solari più avanzati per nome chimico, spettro UV, 
+            solubilità e approvazioni regolatorie.
           </p>
+          
+          <div className="flex justify-center mb-12">
+            <div className="bg-navy-charcoal rounded-lg border border-steel-blue/30 p-1">
+              <div className="flex">
+                <Button
+                  variant={activeTab === "filters" ? "default" : "ghost"}
+                  onClick={() => setActiveTab("filters")}
+                  className={`px-6 py-2 ${activeTab === "filters" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
+                >
+                  Database Filtri
+                </Button>
+                <Button
+                  variant={activeTab === "products" ? "default" : "ghost"}
+                  onClick={() => setActiveTab("products")}
+                  className={`px-6 py-2 ${activeTab === "products" ? "bg-scientific-blue text-white" : "text-slate-300 hover:text-white"}`}
+                >
+                  Prodotti Solari
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "filters" | "products")}>
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="filters">Filtri UV</TabsTrigger>
-              <TabsTrigger value="products">
-                Prodotti {isLoadingProducts ? "(Caricamento...)" : `(${sunscreenProducts.length})`}
-              </TabsTrigger>
-            </TabsList>
+      {/* Filter Composition Matrix */}
+      {activeTab === "products" && (
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                Matrice <span className="text-scientific-blue">Composizione Filtri</span>
+              </h2>
+              <p className="text-lg text-slate-300">
+                Confronta esattamente quali filtri usa ogni marca - Basato sui dati autentici Vichy vs La Roche-Posay
+              </p>
+            </div>
 
-            {/* Filters Tab */}
-            <TabsContent value="filters">
-              {/* Filter Controls */}
-              <div className="mb-8 space-y-6">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
-                  <Input
-                    placeholder="Cerca filtri UV per nome..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 bg-steel-blue/20 border-steel-blue/30"
-                  />
+            {/* Product Filtering Controls */}
+            <div className="space-y-4 mb-8">
+              {/* Chemical Filters */}
+              <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+                <h4 className="font-semibold mb-3 text-scientific-blue text-sm">Filtri per Ingrediente Chimico</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                  {[
+                    { id: 'tinosorb-s', label: 'Tinosorb S' },
+                    { id: 'tinosorb-m', label: 'Tinosorb M' },
+                    { id: 'mexoryl-sx', label: 'Mexoryl SX' },
+                    { id: 'mexoryl-xl', label: 'Mexoryl XL' },
+                    { id: 'mexoryl-400', label: 'Mexoryl 400' },
+                    { id: 'avobenzone', label: 'Avobenzone' },
+                    { id: 'octocrylene', label: 'Octocrylene' },
+                    { id: 'homosalate', label: 'Homosalate' },
+                    { id: 'uvinul-t150', label: 'Uvinul T150' },
+                    { id: 'ethylhexyl-salicylate', label: 'Ethylhexyl Sal.' },
+                    { id: 'enulizole', label: 'Enulizole' },
+                    { id: 'octinoxate', label: 'Octinoxate' },
+                    { id: 'zinc-oxide', label: 'Zinc Oxide' },
+                    { id: 'titanium-dioxide', label: 'Titanium Dio.' }
+                  ].map(chemical => (
+                    <div key={chemical.id} className="flex items-center space-x-1">
+                      <Checkbox
+                        id={chemical.id}
+                        checked={productChemicalFilters.includes(chemical.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setProductChemicalFilters([...productChemicalFilters, chemical.id]);
+                          } else {
+                            setProductChemicalFilters(productChemicalFilters.filter(f => f !== chemical.id));
+                          }
+                        }}
+                      />
+                      <Label htmlFor={chemical.id} className="text-slate-300 cursor-pointer text-xs">{chemical.label}</Label>
+                    </div>
+                  ))}
                 </div>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {/* Solubility Filter */}
-                  <Card className="bg-steel-blue/10 border-steel-blue/30">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg">Solubilità</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {["oil", "water"].map((type) => (
-                        <div key={type} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`solubility-${type}`}
-                            checked={solubilityFilters.includes(type)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setSolubilityFilters([...solubilityFilters, type]);
-                              } else {
-                                setSolubilityFilters(solubilityFilters.filter(f => f !== type));
-                              }
-                            }}
-                          />
-                          <Label htmlFor={`solubility-${type}`} className="capitalize">
-                            {type === "oil" ? "Liposolubile" : "Idrosolubile"}
-                          </Label>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-
-                  {/* Regulatory Filter */}
-                  <Card className="bg-steel-blue/10 border-steel-blue/30">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg">Approvazione</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {[
-                        { id: "eu", label: "Europa (EU)" },
-                        { id: "us", label: "Stati Uniti (FDA)" }
-                      ].map((reg) => (
-                        <div key={reg.id} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`regulatory-${reg.id}`}
-                            checked={regulatoryFilters.includes(reg.id)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setRegulatoryFilters([...regulatoryFilters, reg.id]);
-                              } else {
-                                setRegulatoryFilters(regulatoryFilters.filter(f => f !== reg.id));
-                              }
-                            }}
-                          />
-                          <Label htmlFor={`regulatory-${reg.id}`}>
-                            {reg.label}
-                          </Label>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-
-                  {/* UV Range Filter */}
-                  <Card className="bg-steel-blue/10 border-steel-blue/30">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg">Protezione UV</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {[
-                        { id: "uvb", label: "UVB Forte" },
-                        { id: "uva2", label: "UVA2 Forte" },
-                        { id: "uva1", label: "UVA1 Forte" },
-                        { id: "broad", label: "Ampio Spettro" }
-                      ].map((uv) => (
-                        <div key={uv.id} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`uv-${uv.id}`}
-                            checked={uvRangeFilters.includes(uv.id)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setUvRangeFilters([...uvRangeFilters, uv.id]);
-                              } else {
-                                setUvRangeFilters(uvRangeFilters.filter(f => f !== uv.id));
-                              }
-                            }}
-                          />
-                          <Label htmlFor={`uv-${uv.id}`}>
-                            {uv.label}
-                          </Label>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
+                
+                {/* Chemical Filter Status */}
+                <div className="mt-3 pt-3 border-t border-steel-blue/30">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-400">
+                      {productChemicalFilters.length === 0 
+                        ? "Nessun filtro chimico selezionato" 
+                        : `${productChemicalFilters.length} ingredienti selezionati (mostra prodotti con QUALSIASI di questi)`
+                      }
+                    </span>
+                    {productChemicalFilters.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setProductChemicalFilters([])}
+                        className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-2"
+                      >
+                        <Filter className="w-3 h-3 mr-1" />
+                        Cancella
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
-
-              {/* Filters Table */}
-              <Card className="bg-steel-blue/10 border-steel-blue/30">
-                <CardHeader>
-                  <CardTitle>Database Filtri UV ({filteredFilters.length})</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-steel-blue/30">
-                          <th 
-                            className="text-left p-3 cursor-pointer hover:text-scientific-blue"
-                            onClick={() => handleSort("tradeName")}
-                          >
-                            Nome Commerciale {sortBy === "tradeName" && (sortDirection === "asc" ? "↑" : "↓")}
-                          </th>
-                          <th className="text-left p-3">Nome INCI</th>
-                          <th className="text-left p-3">Spettro UV</th>
-                          <th 
-                            className="text-left p-3 cursor-pointer hover:text-scientific-blue"
-                            onClick={() => handleSort("uvbProtection")}
-                          >
-                            UVB {sortBy === "uvbProtection" && (sortDirection === "asc" ? "↑" : "↓")}
-                          </th>
-                          <th 
-                            className="text-left p-3 cursor-pointer hover:text-scientific-blue"
-                            onClick={() => handleSort("uva2Protection")}
-                          >
-                            UVA2 {sortBy === "uva2Protection" && (sortDirection === "asc" ? "↑" : "↓")}
-                          </th>
-                          <th 
-                            className="text-left p-3 cursor-pointer hover:text-scientific-blue"
-                            onClick={() => handleSort("uva1Protection")}
-                          >
-                            UVA1 {sortBy === "uva1Protection" && (sortDirection === "asc" ? "↑" : "↓")}
-                          </th>
-                          <th className="text-left p-3">Fotostabilità</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredFilters.map((filter, index) => (
-                          <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/5">
-                            <td className="p-3 font-medium text-scientific-blue">
-                              <button 
-                                onClick={() => handleFilterClick(filter.tradeName)}
-                                className="hover:text-performance-green transition-colors cursor-pointer underline"
-                              >
-                                {filter.tradeName}
-                              </button>
-                            </td>
-                            <td className="p-3 text-slate-300 text-xs">{filter.inciName}</td>
-                            <td className="p-3 text-slate-300 text-xs">{filter.uvRange}</td>
-                            <td className="p-3">
-                              <span className={protectionLevels[filter.uvbProtection].color}>
-                                {protectionLevels[filter.uvbProtection].icon}
-                              </span>
-                            </td>
-                            <td className="p-3">
-                              <span className={protectionLevels[filter.uva2Protection].color}>
-                                {protectionLevels[filter.uva2Protection].icon}
-                              </span>
-                            </td>
-                            <td className="p-3">
-                              <span className={protectionLevels[filter.uva1Protection].color}>
-                                {protectionLevels[filter.uva1Protection].icon}
-                              </span>
-                            </td>
-                            <td className="p-3 text-slate-300 text-xs">{filter.photostability}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Products Tab */}
-            <TabsContent value="products">
-              {isLoadingProducts ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-scientific-blue mx-auto mb-4"></div>
-                  <p className="text-slate-300">Caricamento prodotti dal database...</p>
-                </div>
-              ) : (
-                <>
-                  {/* Section Header */}
-                  <div className="text-center mb-8">
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-                      Matrice <span className="text-scientific-blue">Composizione Filtri</span>
-                    </h2>
-                    <p className="text-lg text-slate-300">
-                      Confronta esattamente quali filtri usa ogni marca - Basato sui dati autentici
-                    </p>
-                  </div>
-
-                  {/* Product Filtering Controls */}
-                  <div className="space-y-4 mb-8">
-                    {/* Chemical Filters */}
-                    <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
-                      <h4 className="font-semibold mb-3 text-scientific-blue text-sm">Filtri per Ingrediente Chimico</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                        {[
-                          { id: 'tinosorb-s', label: 'Tinosorb S' },
-                          { id: 'tinosorb-m', label: 'Tinosorb M' },
-                          { id: 'mexoryl-sx', label: 'Mexoryl SX' },
-                          { id: 'mexoryl-xl', label: 'Mexoryl XL' },
-                          { id: 'mexoryl-400', label: 'Mexoryl 400' },
-                          { id: 'uvinul-a-plus', label: 'Uvinul A Plus' },
-                          { id: 'avobenzone', label: 'Avobenzone' },
-                          { id: 'octocrylene', label: 'Octocrylene' },
-                          { id: 'homosalate', label: 'Homosalate' },
-                          { id: 'uvinul-t150', label: 'Uvinul T150' },
-                          { id: 'ethylhexyl-salicylate', label: 'Ethylhexyl Sal.' },
-                          { id: 'enulizole', label: 'Enulizole' },
-                          { id: 'octinoxate', label: 'Octinoxate' },
-                          { id: 'zinc-oxide', label: 'Zinc Oxide' },
-                          { id: 'titanium-dioxide', label: 'Titanium Dio.' }
-                        ].map(chemical => (
-                          <div key={chemical.id} className="flex items-center space-x-1">
-                            <Checkbox
-                              id={chemical.id}
-                              checked={productChemicalFilters.includes(chemical.id)}
-                              onCheckedChange={(checked) => {
-                                if (checked) {
-                                  setProductChemicalFilters([...productChemicalFilters, chemical.id]);
-                                } else {
-                                  setProductChemicalFilters(productChemicalFilters.filter(f => f !== chemical.id));
-                                }
-                              }}
-                            />
-                            <Label htmlFor={chemical.id} className="text-slate-300 cursor-pointer text-xs">{chemical.label}</Label>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      {/* Chemical Filter Status */}
-                      <div className="mt-3 pt-3 border-t border-steel-blue/30">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-slate-400">
-                            {productChemicalFilters.length === 0 
-                              ? "Nessun filtro chimico selezionato" 
-                              : `${productChemicalFilters.length} ingredienti selezionati (mostra prodotti con QUALSIASI di questi)`
+              
+              {/* Protection Quality Filters */}
+              <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
+                <h4 className="font-semibold mb-3 text-scientific-blue text-sm">Filtri per Qualità Protezione</h4>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  
+                  {/* UVB Protection */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVB</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uvb-excellent"
+                          checked={productProtectionFilters.includes("uvb-excellent")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uvb-excellent"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uvb-excellent"));
                             }
-                          </span>
-                          {productChemicalFilters.length > 0 && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setProductChemicalFilters([])}
-                              className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-2"
-                            >
-                              <Filter className="w-3 h-3 mr-1" />
-                              Cancella
-                            </Button>
-                          )}
-                        </div>
+                          }}
+                        />
+                        <Label htmlFor="uvb-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uvb-good"
+                          checked={productProtectionFilters.includes("uvb-good")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uvb-good"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uvb-good"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uvb-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* UVA1 Protection + SPF Numbers */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA1</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2 mb-3">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva1-excellent"
+                          checked={productProtectionFilters.includes("uva1-excellent")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva1-excellent"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva1-excellent"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva1-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva1-good"
+                          checked={productProtectionFilters.includes("uva1-good")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva1-good"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva1-good"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva1-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
                       </div>
                     </div>
                     
-                    {/* Protection Quality Filters */}
-                    <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg p-4">
-                      <h4 className="font-semibold mb-3 text-scientific-blue text-sm">Filtri per Qualità Protezione</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        
-                        {/* UVB Protection */}
-                        <div>
-                          <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVB</h4>
-                          <div className="flex flex-wrap gap-x-3 gap-y-2">
-                            <div className="flex items-center space-x-1">
-                              <Checkbox
-                                id="uvb-excellent"
-                                checked={productProtectionFilters.includes("uvb-excellent")}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    setProductProtectionFilters([...productProtectionFilters, "uvb-excellent"]);
-                                  } else {
-                                    setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uvb-excellent"));
-                                  }
-                                }}
-                              />
-                              <Label htmlFor="uvb-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Checkbox
-                                id="uvb-good"
-                                checked={productProtectionFilters.includes("uvb-good")}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    setProductProtectionFilters([...productProtectionFilters, "uvb-good"]);
-                                  } else {
-                                    setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uvb-good"));
-                                  }
-                                }}
-                              />
-                              <Label htmlFor="uvb-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
-                            </div>
+                    <h5 className="font-semibold mb-2 text-scientific-blue text-xs">Valore SPF</h5>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      {availableSpfValues.map((spfValue) => {
+                        const filterId = `spf-${spfValue}`;
+                        return (
+                          <div key={filterId} className="flex items-center space-x-1">
+                            <Checkbox
+                              id={filterId}
+                              checked={productProtectionFilters.includes(filterId)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setProductProtectionFilters([...productProtectionFilters, filterId]);
+                                } else {
+                                  setProductProtectionFilters(productProtectionFilters.filter(f => f !== filterId));
+                                }
+                              }}
+                            />
+                            <Label htmlFor={filterId} className="text-slate-300 cursor-pointer text-xs">SPF {spfValue}</Label>
                           </div>
-                        </div>
-                        
-                        {/* UVA1 Protection */}
-                        <div>
-                          <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA1</h4>
-                          <div className="flex flex-wrap gap-x-3 gap-y-2">
-                            <div className="flex items-center space-x-1">
-                              <Checkbox
-                                id="uva1-excellent"
-                                checked={productProtectionFilters.includes("uva1-excellent")}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    setProductProtectionFilters([...productProtectionFilters, "uva1-excellent"]);
-                                  } else {
-                                    setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva1-excellent"));
-                                  }
-                                }}
-                              />
-                              <Label htmlFor="uva1-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Checkbox
-                                id="uva1-good"
-                                checked={productProtectionFilters.includes("uva1-good")}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    setProductProtectionFilters([...productProtectionFilters, "uva1-good"]);
-                                  } else {
-                                    setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva1-good"));
-                                  }
-                                }}
-                              />
-                              <Label htmlFor="uva1-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* UVA2 Protection */}
-                        <div>
-                          <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA2</h4>
-                          <div className="flex flex-wrap gap-x-3 gap-y-2">
-                            <div className="flex items-center space-x-1">
-                              <Checkbox
-                                id="uva2-excellent"
-                                checked={productProtectionFilters.includes("uva2-excellent")}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    setProductProtectionFilters([...productProtectionFilters, "uva2-excellent"]);
-                                  } else {
-                                    setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva2-excellent"));
-                                  }
-                                }}
-                              />
-                              <Label htmlFor="uva2-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Checkbox
-                                id="uva2-good"
-                                checked={productProtectionFilters.includes("uva2-good")}
-                                onCheckedChange={(checked) => {
-                                  if (checked) {
-                                    setProductProtectionFilters([...productProtectionFilters, "uva2-good"]);
-                                  } else {
-                                    setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva2-good"));
-                                  }
-                                }}
-                              />
-                              <Label htmlFor="uva2-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* SPF Values */}
-                        <div>
-                          <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Valori SPF</h4>
-                          <div className="flex flex-wrap gap-x-3 gap-y-2">
-                            {availableSpfValues.map(spf => (
-                              <div key={spf} className="flex items-center space-x-1">
-                                <Checkbox
-                                  id={`spf-${spf}`}
-                                  checked={productProtectionFilters.includes(`spf-${spf}`)}
-                                  onCheckedChange={(checked) => {
-                                    if (checked) {
-                                      setProductProtectionFilters([...productProtectionFilters, `spf-${spf}`]);
-                                    } else {
-                                      setProductProtectionFilters(productProtectionFilters.filter(f => f !== `spf-${spf}`));
-                                    }
-                                  }}
-                                />
-                                <Label htmlFor={`spf-${spf}`} className="text-slate-300 cursor-pointer text-xs">SPF {spf}</Label>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  
+                  {/* UVA2 Protection */}
+                  <div>
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Protezione UVA2</h4>
+                    <div className="flex flex-wrap gap-x-3 gap-y-2">
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva2-excellent"
+                          checked={productProtectionFilters.includes("uva2-excellent")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva2-excellent"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva2-excellent"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva2-excellent" className="text-slate-300 cursor-pointer text-xs">Eccellente</Label>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Checkbox
+                          id="uva2-good"
+                          checked={productProtectionFilters.includes("uva2-good")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProductProtectionFilters([...productProtectionFilters, "uva2-good"]);
+                            } else {
+                              setProductProtectionFilters(productProtectionFilters.filter(f => f !== "uva2-good"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva2-good" className="text-slate-300 cursor-pointer text-xs">Buona</Label>
                       </div>
                     </div>
                   </div>
-
-                  {/* Products Count Display */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-xl font-semibold text-scientific-blue">
-                        Prodotti Solari ({filteredProducts.length})
-                      </h3>
-                      {dynamicChemicalColumns.length > 0 && (
-                        <div className="text-sm text-slate-400 mt-1">
-                          <p>Mostrando {dynamicChemicalColumns.length} filtri chimici presenti nei prodotti filtrati</p>
-                          {productChemicalFilters.length > 0 && (
-                            <p className="text-xs text-slate-500 mt-1">
-                              Filtri attivi: {productChemicalFilters.length} • Colonne dinamiche: {dynamicChemicalColumns.length}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                  
+                  {/* Filter Status Summary */}
+                  <div className="md:col-span-1">
+                    <h4 className="font-semibold mb-2 text-scientific-blue text-sm">Filtri Attivi</h4>
+                    <div className="text-xs text-slate-400">
+                      {productProtectionFilters.length === 0 
+                        ? "Nessun filtro protezione attivo" 
+                        : `${productProtectionFilters.length} criteri selezionati`
+                      }
                     </div>
-                    <div className="flex items-center gap-3">
-                      {(productProtectionFilters.length > 0 || productChemicalFilters.length > 0) && (
-                        <Badge variant="outline" className="border-performance-green text-performance-green">
-                          {filteredProducts.length} di {sunscreenProducts.length} prodotti
-                        </Badge>
-                      )}
-                      {(productProtectionFilters.length > 0 || productChemicalFilters.length > 0) && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setProductProtectionFilters([]);
-                            setProductChemicalFilters([]);
-                          }}
-                          className="border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-3"
-                        >
-                          <Filter className="w-3 h-3 mr-1" />
-                          Cancella Tutti
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Product Table */}
-                  {filteredProducts.length === 0 && (productProtectionFilters.length > 0 || productChemicalFilters.length > 0) ? (
-                    <div className="text-center py-12 bg-navy-charcoal rounded-lg border border-steel-blue/30">
-                      <p className="text-slate-400 text-lg mb-4">Nessun prodotto trovato</p>
-                      <p className="text-slate-500 mb-2">
-                        {productProtectionFilters.length > 0 && "Criteri di qualità troppo restrittivi"}
-                        {productProtectionFilters.length > 0 && productChemicalFilters.length > 0 && " o "}
-                        {productChemicalFilters.length > 0 && "Nessun prodotto contiene gli ingredienti selezionati"}
-                      </p>
+                    {productProtectionFilters.length > 0 && (
                       <Button
                         variant="outline"
-                        onClick={() => {
-                          setProductProtectionFilters([]);
-                          setProductChemicalFilters([]);
-                        }}
-                        className="mt-4 border-steel-blue/30 text-slate-300 hover:border-performance-green hover:text-performance-green"
+                        size="sm"
+                        onClick={() => setProductProtectionFilters([])}
+                        className="mt-2 border-steel-blue/30 text-slate-300 hover:border-red-500 hover:text-red-500 h-7 px-2"
                       >
-                        Rimuovi Tutti i Filtri
+                        <Filter className="w-3 h-3 mr-1" />
+                        Cancella tutto
                       </Button>
-                    </div>
-                  ) : dynamicChemicalColumns.length === 0 && filteredProducts.length > 0 ? (
-                    <div className="text-center py-12 bg-navy-charcoal rounded-lg border border-steel-blue/30">
-                      <p className="text-slate-400 text-lg mb-4">Nessun filtro chimico presente</p>
-                      <p className="text-slate-500 mb-2">
-                        I prodotti filtrati non contengono filtri chimici solari
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full bg-navy-charcoal rounded-lg border border-steel-blue/30">
-                        <thead>
-                          <tr className="border-b border-steel-blue/30 sticky top-0 bg-navy-charcoal z-10">
-                            <th className="text-center p-3 font-semibold text-scientific-blue sticky left-0 bg-navy-charcoal">Prodotto</th>
-                            <th className="text-center p-2 font-semibold text-scientific-blue text-xs">SPF</th>
-                            {dynamicChemicalColumns.map((chemical) => (
-                              <th key={chemical.id} className={`text-center p-2 font-semibold text-scientific-blue text-xs ${dynamicChemicalColumns.length > 8 ? 'min-w-16' : 'min-w-20'}`} title={chemical.displayName}>
-                                <div className={`${dynamicChemicalColumns.length > 8 ? 'max-w-16' : 'max-w-20'} truncate`}>
-                                  {chemical.displayName}
-                                </div>
-                              </th>
-                            ))}
-                            <th className="text-center p-2 font-semibold text-scientific-blue text-xs">Total Filtri</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredProducts.map((product, index) => {
-                            return (
-                              <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
-                                <td className="p-3 sticky left-0 bg-navy-charcoal text-center">
-                                  <div>
-                                    <div className="font-semibold text-white text-sm">{product.brand}</div>
-                                    <div className="text-slate-300 text-xs">{product.productName}</div>
-                                    
-                                    {/* Overall Rating Stars */}
-                                    <div className="flex items-center justify-center gap-1 mt-2">
-                                      <div className="flex items-center">
-                                        {[...Array(5)].map((_, i) => (
-                                          <span 
-                                            key={i} 
-                                            className={`text-xs ${
-                                              i < Math.floor(product.overallRating) 
-                                                ? 'text-yellow-400' 
-                                                : 'text-slate-600'
-                                            }`}
-                                          >
-                                            ★
-                                          </span>
-                                        ))}
-                                      </div>
-                                      <span className="text-slate-400 text-xs ml-1">
-                                        {product.overallRating}/5.0
-                                      </span>
-                                    </div>
-                                    
-                                    {/* Description */}
-                                    <div className="text-slate-300 text-xs mt-1 max-w-40 truncate" title={product.description}>
-                                      {product.description}
-                                    </div>
-                                    
-                                    {/* Price */}
-                                    {product.price && (
-                                      <div className="text-performance-green text-xs mt-1 font-medium">
-                                        {product.price}
-                                      </div>
-                                    )}
-                                    
-                                    {/* Protection Quality Indicators */}
-                                    <div className="flex gap-1 mt-2 justify-center">
-                                      {product.uvbRating === "excellent" && <div className="w-1.5 h-1.5 bg-green-400 rounded-full" title="UVB Eccellente"></div>}
-                                      {product.uva1Rating === "excellent" && <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" title="UVA1 Eccellente"></div>}
-                                      {product.uva2Rating === "excellent" && <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full" title="UVA2 Eccellente"></div>}
-                                    </div>
-                                  </div>
-                                </td>
-                                <td className="p-2 text-center">
-                                  <div className="font-bold text-scientific-blue text-lg">{product.spf}</div>
-                                </td>
-                                {dynamicChemicalColumns.map((chemical) => {
-                                  const hasFilter = product[chemical.field] === true;
-                                  
-                                  return (
-                                    <td key={chemical.id} className="p-2 text-center">
-                                      {hasFilter ? (
-                                        <div className="text-performance-green text-lg font-bold">✓</div>
-                                      ) : (
-                                        <div className="text-slate-600 text-lg">—</div>
-                                      )}
-                                    </td>
-                                  );
-                                })}
-                                <td className="p-3 text-center">
-                                  <div className="font-bold text-scientific-blue text-lg">
-                                    {(() => {
-                                      const filterFields = [
-                                        'tinosorbS', 'tinosorbM', 'mexorylSX', 'mexorylXL', 'mexoryl400',
-                                        'uvinulAPlus', 'uvinulT150', 'homosalate', 'octocrylene', 'avobenzone',
-                                        'ethylhexylSalicylate', 'octisalate', 'enulizole', 'octinoxate', 'zincOxide', 'titaniumDioxide'
-                                      ] as const;
-                                      return filterFields.filter(field => product[field] === true).length;
-                                    })()}
-                                  </div>
-                                  <div className="text-xs text-slate-400">filtri</div>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                  {/* SPF Efficacy Table - Now standalone at bottom */}
-                  <div className="mt-8">
-                    <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
-                      <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
-                      <div className="space-y-3 text-sm">
-                        {/* Merged SPF Table */}
-                        <div className="grid grid-cols-7 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
-                          <span>SPF</span>
-                          <span>UVB Bloccato</span>
-                          <span className="text-yellow-400">UV 6</span>
-                          <span className="text-orange-400">UV 7</span>
-                          <span className="text-orange-400">UV 8</span>
-                          <span className="text-red-400">UV 9</span>
-                          <span className="text-red-400">UV 10</span>
+            {/* Products Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-steel-blue/20 border-b border-steel-blue/30">
+                  <tr>
+                    <th className="text-left p-3 font-semibold text-scientific-blue min-w-[120px]">Brand</th>
+                    <th className="text-left p-3 font-semibold text-scientific-blue min-w-[150px]">Prodotto</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue">SPF</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue">UVA1</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue">UVA2</th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue">UVB</th>
+                    {dynamicChemicalColumns.map(chemical => (
+                      <th key={chemical.id} className="text-center p-3 font-semibold text-scientific-blue">
+                        <div className="text-xs">{chemical.displayName}</div>
+                      </th>
+                    ))}
+                    <th className="text-center p-3 font-semibold text-scientific-blue">Valutazione</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProducts.map((product, index) => (
+                    <tr key={index} className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors">
+                      <td className="p-3 font-bold text-scientific-blue text-sm">{product.brand}</td>
+                      <td className="p-3 text-slate-300 text-sm">{product.productName}</td>
+                      <td className="p-3 text-center">
+                        <Badge variant="outline" className="border-performance-green text-performance-green">
+                          {product.spf}
+                        </Badge>
+                      </td>
+                      <td className="p-3 text-center">
+                        <span className={`text-xs font-semibold ${productRatings[product.uva1Rating].color}`}>
+                          {productRatings[product.uva1Rating].icon}
+                        </span>
+                      </td>
+                      <td className="p-3 text-center">
+                        <span className={`text-xs font-semibold ${productRatings[product.uva2Rating].color}`}>
+                          {productRatings[product.uva2Rating].icon}
+                        </span>
+                      </td>
+                      <td className="p-3 text-center">
+                        <span className={`text-xs font-semibold ${productRatings[product.uvbRating].color}`}>
+                          {productRatings[product.uvbRating].icon}
+                        </span>
+                      </td>
+                      {dynamicChemicalColumns.map(chemical => (
+                        <td key={chemical.id} className="p-3 text-center">
+                          {product[chemical.field] ? (
+                            <CheckCircle className="w-4 h-4 text-performance-green mx-auto" />
+                          ) : (
+                            <span className="text-slate-600">-</span>
+                          )}
+                        </td>
+                      ))}
+                      <td className="p-3 text-center">
+                        <div className="flex items-center justify-center">
+                          {[...Array(5)].map((_, i) => (
+                            <span 
+                              key={i} 
+                              className={`text-xs ${
+                                i < Math.floor(product.overallRating) 
+                                  ? 'text-yellow-400' 
+                                  : 'text-slate-600'
+                              }`}
+                            >
+                              ★
+                            </span>
+                          ))}
                         </div>
-                        <div className="space-y-1">
-                          <div className="grid grid-cols-7 gap-2 text-slate-300">
-                            <span className="font-semibold">No SPF</span>
-                            <span className="text-red-400">~0%</span>
-                            <span className="text-red-400">9 min</span>
-                            <span className="text-red-400">8 min</span>
-                            <span className="text-red-400">7 min</span>
-                            <span className="text-red-400">6 min</span>
-                            <span className="text-red-400">5 min</span>
-                          </div>
-                          <div className="grid grid-cols-7 gap-2 text-slate-300">
-                            <span className="font-semibold">SPF 20</span>
-                            <span className="text-yellow-400">~95%</span>
-                            <span>200 min</span>
-                            <span>171 min</span>
-                            <span>150 min</span>
-                            <span>133 min</span>
-                            <span>120 min</span>
-                          </div>
-                          <div className="grid grid-cols-7 gap-2 text-slate-300">
-                            <span className="font-semibold">SPF 30</span>
-                            <span className="text-blue-400">~97%</span>
-                            <span>300 min</span>
-                            <span>257 min</span>
-                            <span>225 min</span>
-                            <span>200 min</span>
-                            <span>180 min</span>
-                          </div>
-                          <div className="grid grid-cols-7 gap-2 text-slate-300">
-                            <span className="font-semibold">SPF 50</span>
-                            <span className="text-green-400">~98%</span>
-                            <span className="text-green-400">500 min</span>
-                            <span className="text-green-400">429 min</span>
-                            <span className="text-green-400">375 min</span>
-                            <span className="text-green-400">333 min</span>
-                            <span className="text-green-400">300 min</span>
-                          </div>
-                        </div>
-                        <div className="text-xs text-slate-500 mt-4 pt-4 border-t border-steel-blue/30">
-                          <p><strong>Nota:</strong> Tempi calcolati per Fototipo I (pelle molto chiara). Altri fototipi resistono più a lungo.</p>
-                          <p>I valori sono indicativi e possono variare in base a condizioni ambientali, applicazione e riapplicazione del prodotto.</p>
-                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-400 text-lg mb-4">Nessun prodotto trovato</p>
+                <p className="text-slate-500">Prova a modificare i criteri di filtro</p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Filters Database Tab */}
+      {activeTab === "filters" && (
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Search and Filter Controls */}
+            <div className="bg-steel-blue/10 rounded-lg p-6 mb-8 border border-steel-blue/30">
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
+                  <Input
+                    type="text"
+                    placeholder="Cerca per nome commerciale o INCI..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 bg-navy-charcoal border-steel-blue/30 text-white placeholder-slate-400"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label className="text-scientific-blue mb-2 block">Solubilità</Label>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="oil-soluble"
+                          checked={solubilityFilters.includes("oil")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSolubilityFilters([...solubilityFilters, "oil"]);
+                            } else {
+                              setSolubilityFilters(solubilityFilters.filter(f => f !== "oil"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="oil-soluble" className="text-slate-300 cursor-pointer">Liposolubile</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="water-soluble"
+                          checked={solubilityFilters.includes("water")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSolubilityFilters([...solubilityFilters, "water"]);
+                            } else {
+                              setSolubilityFilters(solubilityFilters.filter(f => f !== "water"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="water-soluble" className="text-slate-300 cursor-pointer">Idrosolubile</Label>
                       </div>
                     </div>
                   </div>
-                </>
-              )}
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
-
-      {/* Skin Type Calculator Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-steel-blue/10">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-12 text-center">
-            Calcolatore <span className="text-scientific-blue">Tempi di Bruciatura</span>
-          </h2>
-          
-          <Card className="bg-navy-charcoal border-steel-blue/30">
-            <CardHeader>
-              <CardTitle className="text-center">Seleziona il tuo Fototipo</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                {skinTypeData.map((skinType) => (
-                  <button
-                    key={skinType.type}
-                    onClick={() => setSelectedSkinType(skinType.type)}
-                    className={`p-4 rounded-lg border-2 transition-colors ${
-                      selectedSkinType === skinType.type
-                        ? 'border-scientific-blue bg-scientific-blue/20'
-                        : 'border-steel-blue/30 hover:border-steel-blue/50'
-                    }`}
-                  >
-                    <div className="font-semibold text-sm">{skinType.type}</div>
-                    <div className="text-xs text-slate-300 mt-1">{skinType.description}</div>
-                  </button>
-                ))}
+                  
+                  <div>
+                    <Label className="text-scientific-blue mb-2 block">Approvazioni</Label>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="eu-approved"
+                          checked={regulatoryFilters.includes("eu")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setRegulatoryFilters([...regulatoryFilters, "eu"]);
+                            } else {
+                              setRegulatoryFilters(regulatoryFilters.filter(f => f !== "eu"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="eu-approved" className="text-slate-300 cursor-pointer">EU Approvato</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="us-approved"
+                          checked={regulatoryFilters.includes("us")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setRegulatoryFilters([...regulatoryFilters, "us"]);
+                            } else {
+                              setRegulatoryFilters(regulatoryFilters.filter(f => f !== "us"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="us-approved" className="text-slate-300 cursor-pointer">FDA Approvato</Label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label className="text-scientific-blue mb-2 block">Spettro UV</Label>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="uvb-strong"
+                          checked={uvRangeFilters.includes("uvb")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setUvRangeFilters([...uvRangeFilters, "uvb"]);
+                            } else {
+                              setUvRangeFilters(uvRangeFilters.filter(f => f !== "uvb"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uvb-strong" className="text-slate-300 cursor-pointer">UVB Forte</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="uva1-strong"
+                          checked={uvRangeFilters.includes("uva1")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setUvRangeFilters([...uvRangeFilters, "uva1"]);
+                            } else {
+                              setUvRangeFilters(uvRangeFilters.filter(f => f !== "uva1"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="uva1-strong" className="text-slate-300 cursor-pointer">UVA1 Forte</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="broad-spectrum"
+                          checked={uvRangeFilters.includes("broad")}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setUvRangeFilters([...uvRangeFilters, "broad"]);
+                            } else {
+                              setUvRangeFilters(uvRangeFilters.filter(f => f !== "broad"));
+                            }
+                          }}
+                        />
+                        <Label htmlFor="broad-spectrum" className="text-slate-300 cursor-pointer">Ampio spettro</Label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              {/* Burn Time Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-steel-blue/30">
-                      <th className="text-left p-3">Indice UV</th>
-                      <th className="text-left p-3">Senza SPF</th>
-                      <th className="text-left p-3">SPF 20</th>
-                      <th className="text-left p-3">SPF 30</th>
-                      <th className="text-left p-3">SPF 50</th>
+            {/* Main Filter Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-steel-blue/20 border-b border-steel-blue/30">
+                  <tr>
+                    <th 
+                      className="text-left p-3 font-semibold text-scientific-blue cursor-pointer hover:bg-steel-blue/30 transition-colors sticky left-0 bg-steel-blue/20 z-10"
+                      onClick={() => handleSort("tradeName")}
+                    >
+                      Nome Commerciale {sortBy === "tradeName" && (sortDirection === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th className="text-left p-3 font-semibold text-scientific-blue min-w-[200px]">
+                      Nome INCI
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">
+                      Spettro UV
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[100px]">
+                      Picco λ
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[150px]">
+                      Fotostabilità
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[200px]">
+                      Solubilità
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[200px]">
+                      Status Regolamentare
+                    </th>
+                    <th 
+                      className="text-center p-3 font-semibold text-scientific-blue min-w-[80px] cursor-pointer hover:bg-steel-blue/30 transition-colors"
+                      onClick={() => handleSort("uvbProtection")}
+                    >
+                      UVB
+                    </th>
+                    <th 
+                      className="text-center p-3 font-semibold text-scientific-blue min-w-[80px] cursor-pointer hover:bg-steel-blue/30 transition-colors"
+                      onClick={() => handleSort("uva2Protection")}
+                    >
+                      UVA2
+                    </th>
+                    <th 
+                      className="text-center p-3 font-semibold text-scientific-blue min-w-[80px] cursor-pointer hover:bg-steel-blue/30 transition-colors"
+                      onClick={() => handleSort("uva1Protection")}
+                    >
+                      UVA1
+                    </th>
+                    <th 
+                      className="text-center p-3 font-semibold text-scientific-blue min-w-[80px] cursor-pointer hover:bg-steel-blue/30 transition-colors"
+                      onClick={() => handleSort("longUva1Protection")}
+                    >
+                      Long UVA1
+                    </th>
+                    <th className="text-center p-3 font-semibold text-scientific-blue min-w-[120px]">Vantaggi Extra</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredFilters.map((filter, index) => (
+                    <tr 
+                      key={index} 
+                      className="border-b border-steel-blue/20 hover:bg-steel-blue/10 transition-colors cursor-pointer"
+                      onClick={() => handleFilterClick(filter.tradeName)}
+                      title="Clicca per vedere quali prodotti contengono questo filtro"
+                    >
+                      {/* Commercial Name */}
+                      <td className="p-3 sticky left-0 bg-navy-charcoal">
+                        <div className="font-bold text-scientific-blue text-sm">
+                          {filter.tradeName}
+                        </div>
+                      </td>
+
+                      {/* INCI Name */}
+                      <td className="p-3">
+                        <div className="text-slate-300 font-medium text-sm">
+                          {filter.inciName}
+                        </div>
+                      </td>
+
+                      {/* UV Range */}
+                      <td className="p-3 text-center text-performance-green font-semibold text-xs">
+                        {filter.uvRange}
+                      </td>
+
+                      {/* Peak Wavelength */}
+                      <td className="p-3 text-center text-slate-300 text-sm">
+                        {filter.peakWavelength}
+                      </td>
+
+                      {/* Photostability */}
+                      <td className="p-3 text-center text-slate-300 text-sm">
+                        {filter.photostability}
+                      </td>
+
+                      {/* Solubility */}
+                      <td className="p-3 text-center text-slate-300 text-xs">
+                        {filter.solubility.split(';').map((sol, idx) => (
+                          <div key={idx} className="mb-1 text-steel-blue">
+                            {sol.trim()}
+                          </div>
+                        ))}
+                      </td>
+
+                      {/* Regulatory Status */}
+                      <td className="p-3 text-center text-slate-300 text-xs">
+                        {filter.regulatoryStatus.split(';').map((status, idx) => (
+                          <div key={idx} className="mb-1 text-scientific-blue">
+                            {status.trim()}
+                          </div>
+                        ))}
+                      </td>
+
+                      {/* UVB Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.uvbProtection].color}`}>
+                          {protectionLevels[filter.uvbProtection].icon}
+                        </div>
+                      </td>
+
+                      {/* UVA2 Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.uva2Protection].color}`}>
+                          {protectionLevels[filter.uva2Protection].icon}
+                        </div>
+                      </td>
+
+                      {/* UVA1 Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.uva1Protection].color}`}>
+                          {protectionLevels[filter.uva1Protection].icon}
+                        </div>
+                      </td>
+
+                      {/* Long UVA1 Protection */}
+                      <td className="p-3 text-center">
+                        <div className={`text-xs font-semibold ${protectionLevels[filter.longUva1Protection].color}`}>
+                          {protectionLevels[filter.longUva1Protection].icon}
+                        </div>
+                      </td>
+
+                      {/* Extra Points */}
+                      <td className="p-3">
+                        <div className="space-y-1">
+                          {filter.extraPoints.slice(0, 3).map((point, idx) => (
+                            <div key={idx} className="text-performance-green text-xs">
+                              <CheckCircle className="w-3 h-3 mr-1 inline" />
+                              {point}
+                            </div>
+                          ))}
+                          {filter.extraPoints.length > 3 && (
+                            <div className="text-slate-400 text-xs">
+                              +{filter.extraPoints.length - 3} altri
+                            </div>
+                          )}
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {[6, 7, 8, 9, 10].map((uvIndex) => {
-                      const selectedSkinData = skinTypeData.find(s => s.type === selectedSkinType);
-                      if (!selectedSkinData) return null;
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-                      const formatTime = (minutes: number) => {
-                        if (minutes < 60) return `${minutes}min`;
-                        const hours = Math.floor(minutes / 60);
-                        const mins = minutes % 60;
-                        return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`;
-                      };
-
-                      return (
-                        <tr key={uvIndex} className="border-b border-steel-blue/20">
-                          <td className="p-3 font-medium">UV {uvIndex}</td>
-                          <td className="p-3 text-red-400">
-                            {formatTime(selectedSkinData.burnTimes[`uv${uvIndex}` as keyof typeof selectedSkinData.burnTimes] as number)}
-                          </td>
-                          <td className="p-3 text-yellow-400">
-                            {formatTime(selectedSkinData.burnTimes[`uv${uvIndex}_spf20` as keyof typeof selectedSkinData.burnTimes] as number)}
-                          </td>
-                          <td className="p-3 text-blue-400">
-                            {formatTime(selectedSkinData.burnTimes[`uv${uvIndex}_spf30` as keyof typeof selectedSkinData.burnTimes] as number)}
-                          </td>
-                          <td className="p-3 text-green-400">
-                            {formatTime(selectedSkinData.burnTimes[`uv${uvIndex}_spf50` as keyof typeof selectedSkinData.burnTimes] as number)}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+            {filteredFilters.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-400 text-lg mb-4">Nessun filtro trovato</p>
+                <p className="text-slate-500">Prova a modificare i criteri di ricerca o i filtri</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+            )}
 
-      {/* Popup for Filter Details */}
+            {/* Bottom Section with Legend and SPF Table */}
+            <div className="mt-8 grid md:grid-cols-4 gap-6">
+              <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                <h3 className="text-lg font-semibold mb-4 text-scientific-blue">Protezione UV</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center">
+                    <span className="text-green-400 mr-2">✅✅✅</span>
+                    <span className="text-slate-300">Eccellente</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-blue-400 mr-2">✅✅</span>
+                    <span className="text-slate-300">Buona</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-yellow-400 mr-2">✅</span>
+                    <span className="text-slate-300">Moderata</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-400 mr-2">❌</span>
+                    <span className="text-slate-300">Insufficiente</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-3">
+                <div className="bg-steel-blue/20 rounded-lg p-6 border border-steel-blue/30">
+                  <h3 className="text-xl font-semibold mb-4 text-scientific-blue">Efficacia SPF</h3>
+                  
+                  {/* Skin Type Filter */}
+                  <div className="mb-6">
+                    <p className="text-slate-400 text-sm mb-3">Seleziona il tuo tipo di pelle per vedere i tempi di protezione personalizzati</p>
+                    <div className="flex flex-wrap gap-2">
+                      {skinTypeData.map((skinType) => (
+                        <button
+                          key={skinType.type}
+                          onClick={() => setSelectedSkinType(skinType.type)}
+                          className={`px-3 py-2 rounded-full text-xs font-medium transition-all ${
+                            selectedSkinType === skinType.type
+                              ? 'bg-scientific-blue text-white border-2 border-scientific-blue'
+                              : 'bg-navy-charcoal border-2 border-steel-blue/30 text-slate-300 hover:border-scientific-blue/50'
+                          }`}
+                        >
+                          {skinType.type.replace('Type ', '')} - {skinType.description}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {(() => {
+                    const selectedData = skinTypeData.find(st => st.type === selectedSkinType);
+                    if (!selectedData) return null;
+
+                    return (
+                      <div className="space-y-4">
+                        {/* Protection Time Cards for Selected Skin Type (UV 9) */}
+                        <div className="bg-navy-charcoal rounded-lg p-4 border border-steel-blue/30">
+                          <h4 className="text-lg font-semibold mb-3 text-performance-green">
+                            Tempi di Protezione - {selectedData.type} ({selectedData.description})
+                          </h4>
+                          
+                          <div className="grid grid-cols-4 gap-3">
+                            <div className="text-center p-3 bg-red-500/20 rounded-lg border border-red-500/30">
+                              <div className="text-xs text-slate-400 mb-1">Senza SPF</div>
+                              <div className="text-red-400 font-bold text-lg">{selectedData.burnTimes.uv9}min</div>
+                            </div>
+                            
+                            <div className="text-center p-3 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
+                              <div className="text-xs text-slate-400 mb-1">SPF 20</div>
+                              <div className="text-yellow-400 font-bold text-lg">{formatTime(selectedData.burnTimes.uv9_spf20)}</div>
+                            </div>
+                            
+                            <div className="text-center p-3 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                              <div className="text-xs text-slate-400 mb-1">SPF 30</div>
+                              <div className="text-blue-400 font-bold text-lg">{formatTime(selectedData.burnTimes.uv9_spf30)}</div>
+                            </div>
+                            
+                            <div className="text-center p-3 bg-green-500/20 rounded-lg border border-green-500/30">
+                              <div className="text-xs text-slate-400 mb-1">SPF 50</div>
+                              <div className="text-green-400 font-bold text-lg">{formatTime(selectedData.burnTimes.uv9_spf50)}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Complete SPF Table with All UV Indices */}
+                        <div className="space-y-3 text-sm">
+                          <div className="grid grid-cols-7 gap-2 text-xs font-semibold text-slate-400 border-b border-steel-blue/30 pb-2">
+                            <span>SPF</span>
+                            <span>UVB Bloccato</span>
+                            <span className="text-yellow-400">UV 6</span>
+                            <span className="text-orange-400">UV 7</span>
+                            <span className="text-orange-400">UV 8</span>
+                            <span className="text-red-400">UV 9</span>
+                            <span className="text-red-400">UV 10</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="grid grid-cols-7 gap-2 text-slate-300">
+                              <span className="font-semibold">No SPF</span>
+                              <span className="text-red-400">~0%</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv6}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv7}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv8}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv9}min</span>
+                              <span className="text-red-400 font-semibold">{selectedData.burnTimes.uv10}min</span>
+                            </div>
+                            <div className="grid grid-cols-7 gap-2 text-slate-300">
+                              <span className="font-semibold">SPF 20</span>
+                              <span className="text-yellow-400">~95%</span>
+                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv6_spf20)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv7_spf20)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv8_spf20)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf20)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv10_spf20)}</span>
+                            </div>
+                            <div className="grid grid-cols-7 gap-2 text-slate-300">
+                              <span className="font-semibold">SPF 30</span>
+                              <span className="text-blue-400">~97%</span>
+                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv6_spf30)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv7_spf30)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv8_spf30)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf30)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv10_spf30)}</span>
+                            </div>
+                            <div className="grid grid-cols-7 gap-2 text-slate-300">
+                              <span className="font-semibold">SPF 50</span>
+                              <span className="text-green-400">~98%</span>
+                              <span className="text-yellow-400 font-semibold">{formatTime(selectedData.burnTimes.uv6_spf50)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv7_spf50)}</span>
+                              <span className="text-orange-400 font-semibold">{formatTime(selectedData.burnTimes.uv8_spf50)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv9_spf50)}</span>
+                              <span className="text-red-400 font-semibold">{formatTime(selectedData.burnTimes.uv10_spf50)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 pt-2 border-t border-steel-blue/30">
+                          <p className="text-xs text-slate-400 italic">
+                            Tempi personalizzati per {selectedData.description} su tutti gli indici UV. I tempi variano in base a fattori individuali e condizioni ambientali.
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Enhanced Popup with Tabs */}
       {popup && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" onClick={() => setPopup(null)}>
-          <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-navy-charcoal border border-steel-blue/30 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-start justify-between mb-6">
                 <div>
@@ -1383,6 +1446,7 @@ export default function SolariPage() {
                   Chiudi
                 </Button>
               </div>
+
               <Tabs defaultValue="products" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6 bg-steel-blue/20">
                   <TabsTrigger value="products" className="data-[state=active]:bg-scientific-blue">
@@ -1392,6 +1456,7 @@ export default function SolariPage() {
                     Dettagli Filtro
                   </TabsTrigger>
                 </TabsList>
+
                 <TabsContent value="products" className="space-y-4">
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-performance-green mb-4">
@@ -1418,7 +1483,6 @@ export default function SolariPage() {
                               {product.productName}
                             </p>
                             
-                            {/* Overall Rating Stars */}
                             <div className="flex items-center gap-2 mb-3">
                               <div className="flex items-center">
                                 {[...Array(5)].map((_, i) => (
@@ -1443,27 +1507,9 @@ export default function SolariPage() {
                               {product.description}
                             </p>
                             
-                            {/* Rating indicators */}
-                            <div className="flex gap-2 mb-2">
-                              <div className={`text-xs px-2 py-1 rounded ${product.uvbRating === 'excellent' ? 'bg-green-900 text-green-300' : product.uvbRating === 'good' ? 'bg-blue-900 text-blue-300' : 'bg-gray-700 text-gray-300'}`}>
-                                UVB: {product.uvbRating}
-                              </div>
-                              <div className={`text-xs px-2 py-1 rounded ${product.uva1Rating === 'excellent' ? 'bg-green-900 text-green-300' : product.uva1Rating === 'good' ? 'bg-blue-900 text-blue-300' : 'bg-gray-700 text-gray-300'}`}>
-                                UVA1: {product.uva1Rating}
-                              </div>
-                            </div>
-                            
                             <div className="border-t border-steel-blue/30 pt-3">
-                              {product.price && (
-                                <div className="mb-2">
-                                  <p className="text-slate-400 text-xs mb-1">Prezzo</p>
-                                  <p className="text-performance-green text-xs font-medium">{product.price}</p>
-                                </div>
-                              )}
-                              <div>
-                                <p className="text-slate-400 text-xs mb-1">Disponibilità</p>
-                                <p className="text-slate-300 text-xs">{product.availability}</p>
-                              </div>
+                              <p className="text-slate-400 text-xs mb-1">Disponibilità</p>
+                              <p className="text-slate-300 text-xs">{product.availability}</p>
                             </div>
                           </div>
                         ))}
@@ -1478,6 +1524,7 @@ export default function SolariPage() {
                     )}
                   </div>
                 </TabsContent>
+
                 <TabsContent value="details" className="space-y-6">
                   {(() => {
                     const filterData = sunscreenFilters.find(f => f.tradeName === popup.filterName);
@@ -1501,66 +1548,110 @@ export default function SolariPage() {
                               <span>Picco di assorbimento:</span>
                               <span className="text-scientific-blue font-semibold">{filterData.peakWavelength}</span>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 mt-4">
-                              <div className="text-center">
-                                <div className="text-xs text-slate-400 mb-1">UVB</div>
-                                <div className={protectionLevels[filterData.uvbProtection].color}>
-                                  {protectionLevels[filterData.uvbProtection].icon}
-                                </div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-xs text-slate-400 mb-1">UVA1</div>
-                                <div className={protectionLevels[filterData.uva1Protection].color}>
-                                  {protectionLevels[filterData.uva1Protection].icon}
-                                </div>
-                              </div>
-                            </div>
                           </CardContent>
                         </Card>
-                        
+
+                        <Card className="bg-steel-blue/20 border-steel-blue/30">
+                          <CardHeader>
+                            <CardTitle className="flex items-center text-scientific-blue">
+                              <Droplets className="mr-2 h-5 w-5" />
+                              Proprietà Fisiche
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-slate-300">{filterData.solubility}</p>
+                          </CardContent>
+                        </Card>
+
                         <Card className="bg-steel-blue/20 border-steel-blue/30">
                           <CardHeader>
                             <CardTitle className="flex items-center text-scientific-blue">
                               <Zap className="mr-2 h-5 w-5" />
-                              Proprietà Tecniche
+                              Fotostabilità
                             </CardTitle>
                           </CardHeader>
-                          <CardContent className="space-y-3">
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">Solubilità</div>
-                              <p className="text-sm text-slate-300">{filterData.solubility}</p>
-                            </div>
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">Fotostabilità</div>
-                              <p className="text-sm text-slate-300">{filterData.photostability}</p>
-                            </div>
-                            <div>
-                              <div className="text-xs text-slate-400 mb-1">Status Regolatorio</div>
-                              <p className="text-sm text-slate-300">{filterData.regulatoryStatus}</p>
-                            </div>
+                          <CardContent>
+                            <p className="text-slate-300">{filterData.photostability}</p>
                           </CardContent>
                         </Card>
-                        
-                        {filterData.extraPoints.length > 0 && (
-                          <Card className="bg-steel-blue/20 border-steel-blue/30 md:col-span-2">
+
+                        <Card className="bg-steel-blue/20 border-steel-blue/30">
+                          <CardHeader>
+                            <CardTitle className="text-scientific-blue">Nome INCI</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-slate-300 font-mono text-sm">{filterData.inciName}</p>
+                          </CardContent>
+                        </Card>
+
+                        <div className="md:col-span-2">
+                          <Card className="bg-steel-blue/20 border-steel-blue/30">
                             <CardHeader>
-                              <CardTitle className="flex items-center text-scientific-blue">
-                                <CheckCircle className="mr-2 h-5 w-5" />
-                                Punti Chiave
-                              </CardTitle>
+                              <CardTitle className="text-scientific-blue">Status Regolamentare</CardTitle>
                             </CardHeader>
                             <CardContent>
-                              <div className="grid md:grid-cols-2 gap-2">
+                              <p className="text-slate-300">{filterData.regulatoryStatus}</p>
+                            </CardContent>
+                          </Card>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <Card className="bg-steel-blue/20 border-steel-blue/30">
+                            <CardHeader>
+                              <CardTitle className="text-scientific-blue">Efficacia di Protezione</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">UVB</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.uvbProtection].color}`}>
+                                    {protectionLevels[filterData.uvbProtection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.uvbProtection}</div>
+                                </div>
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">UVA2</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.uva2Protection].color}`}>
+                                    {protectionLevels[filterData.uva2Protection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.uva2Protection}</div>
+                                </div>
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">UVA1</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.uva1Protection].color}`}>
+                                    {protectionLevels[filterData.uva1Protection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.uva1Protection}</div>
+                                </div>
+                                <div className="text-center p-3 bg-navy-charcoal rounded-lg">
+                                  <div className="text-xs text-slate-400 mb-2">Long UVA1</div>
+                                  <div className={`text-lg ${protectionLevels[filterData.longUva1Protection].color}`}>
+                                    {protectionLevels[filterData.longUva1Protection].icon}
+                                  </div>
+                                  <div className="text-xs text-slate-500 capitalize mt-1">{filterData.longUva1Protection}</div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <Card className="bg-steel-blue/20 border-steel-blue/30">
+                            <CardHeader>
+                              <CardTitle className="text-scientific-blue">Vantaggi Aggiuntivi</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="space-y-2">
                                 {filterData.extraPoints.map((point, idx) => (
-                                  <div key={idx} className="flex items-start space-x-2">
-                                    <div className="w-1.5 h-1.5 bg-performance-green rounded-full mt-2 flex-shrink-0"></div>
-                                    <span className="text-sm text-slate-300">{point}</span>
+                                  <div key={idx} className="flex items-start">
+                                    <CheckCircle className="w-4 h-4 text-performance-green mr-2 flex-shrink-0 mt-0.5" />
+                                    <span className="text-slate-300 text-sm">{point}</span>
                                   </div>
                                 ))}
                               </div>
                             </CardContent>
                           </Card>
-                        )}
+                        </div>
                       </div>
                     );
                   })()}

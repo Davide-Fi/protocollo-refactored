@@ -53,7 +53,10 @@ export default function ContactSection() {
     }
     
     try {
-      const result = await consultationMutation.mutateAsync(consultationData);
+      const result = await consultationMutation.mutateAsync({
+        ...consultationData,
+        interest: consultationData.interest as "nutrizione" | "integrazione" | "prevenzione" | "protocollo" | "altro"
+      });
       if (result.success) {
         alert("Richiesta inviata con successo! Ti contatteremo a breve.");
         setConsultationData({
@@ -105,9 +108,9 @@ export default function ContactSection() {
               <Button 
                 type="submit" 
                 className="w-full bg-scientific-blue hover:bg-scientific-blue/80 font-semibold"
-                disabled={newsletterMutation.isLoading}
+                disabled={newsletterMutation.isPending}
               >
-                {newsletterMutation.isLoading ? "Invio in corso..." : "Iscriviti alla Newsletter"}
+                {newsletterMutation.isPending ? "Invio in corso..." : "Iscriviti alla Newsletter"}
               </Button>
             </form>
             
@@ -178,9 +181,9 @@ export default function ContactSection() {
               <Button 
                 type="submit" 
                 className="w-full bg-performance-green hover:bg-performance-green/80 font-semibold"
-                disabled={consultationMutation.isLoading}
+                disabled={consultationMutation.isPending}
               >
-                {consultationMutation.isLoading ? "Invio in corso..." : "Richiedi Consulenza"}
+                {consultationMutation.isPending ? "Invio in corso..." : "Richiedi Consulenza"}
               </Button>
             </form>
             
