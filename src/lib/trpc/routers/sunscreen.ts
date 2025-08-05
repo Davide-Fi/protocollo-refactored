@@ -8,11 +8,9 @@ export const sunscreenRouter = router({
     .input(sunscreenFilterSchema.optional())
     .query(async ({ input }) => {
       try {
-        let query = db.select().from(sunscreenProducts);
+        const conditions = [];
         
         if (input) {
-          const conditions = [];
-          
           // Brand filter
           if (input.brands.length > 0) {
             conditions.push(inArray(sunscreenProducts.brand, input.brands));
@@ -57,13 +55,14 @@ export const sunscreenRouter = router({
               ilike(sunscreenProducts.productName, `%${input.searchTerm}%`)
             );
           }
-          
-          if (conditions.length > 0) {
-            query = query.where(and(...conditions));
-          }
         }
         
-        const products = await query.orderBy(sunscreenProducts.brand, sunscreenProducts.productName);
+        const products = await db
+          .select()
+          .from(sunscreenProducts)
+          .where(conditions.length > 0 ? and(...conditions) : undefined)
+          .orderBy(sunscreenProducts.brand, sunscreenProducts.productName);
+          
         return products;
       } catch (error) {
         console.error('Sunscreen products fetch error:', error);
