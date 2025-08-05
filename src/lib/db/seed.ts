@@ -1,5 +1,4 @@
-import { db } from './seed-client';
-import { sunscreenProducts } from './schema';
+import { db, sunscreenProducts } from './index';
 
 const seedSunscreenProducts = async () => {
   console.log('🌱 Seeding sunscreen products...');
