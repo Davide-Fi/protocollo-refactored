@@ -41,17 +41,61 @@ export const consultations = pgTable("consultations", {
   emailIdx: index("consultations_email_idx").on(table.email),
 }));
 
-// Admin users
+// Users table for authentication
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   email: text("email").notNull().unique(),
+  emailVerified: timestamp("email_verified"),
   name: text("name").notNull(),
+  password: text("password"), // For credentials provider
+  image: text("image"),
   role: text("role", { 
-    enum: ["admin", "editor", "viewer"] 
-  }).default("viewer"),
+    enum: ["admin", "editor", "viewer", "user"] 
+  }).default("user"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => ({
+  emailIdx: index("users_email_idx").on(table.email),
+}));
+
+// Accounts table for OAuth providers
+export const accounts = pgTable("accounts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  type: text("type").notNull(),
+  provider: text("provider").notNull(),
+  providerAccountId: text("provider_account_id").notNull(),
+  refresh_token: text("refresh_token"),
+  access_token: text("access_token"),
+  expires_at: integer("expires_at"),
+  token_type: text("token_type"),
+  scope: text("scope"),
+  id_token: text("id_token"),
+  session_state: text("session_state"),
+}, (table) => ({
+  userIdIdx: index("accounts_user_id_idx").on(table.userId),
+  providerIdx: index("accounts_provider_idx").on(table.provider, table.providerAccountId),
+}));
+
+// Sessions table
+export const sessions = pgTable("sessions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sessionToken: text("session_token").notNull().unique(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires").notNull(),
+}, (table) => ({
+  userIdIdx: index("sessions_user_id_idx").on(table.userId),
+  sessionTokenIdx: index("sessions_session_token_idx").on(table.sessionToken),
+}));
+
+// Verification tokens for email verification
+export const verificationTokens = pgTable("verification_tokens", {
+  identifier: text("identifier").notNull(),
+  token: text("token").notNull().unique(),
+  expires: timestamp("expires").notNull(),
+}, (table) => ({
+  identifierTokenIdx: index("verification_identifier_token_idx").on(table.identifier, table.token),
+}));
 
 // Sunscreen products database
 export const sunscreenProducts = pgTable("sunscreen_products", {

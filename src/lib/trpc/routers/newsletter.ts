@@ -1,10 +1,10 @@
 import { eq } from 'drizzle-orm';
 import { db, newsletters } from '@/lib/db';
 import { newsletterSchema } from '@/lib/validations';
-import { publicProcedure, router } from '../server';
+import { newsletterProcedure, router } from '../server';
 
 export const newsletterRouter = router({
-  subscribe: publicProcedure
+  subscribe: newsletterProcedure
     .input(newsletterSchema)
     .mutation(async ({ input }) => {
       try {
@@ -48,7 +48,7 @@ export const newsletterRouter = router({
       }
     }),
 
-  unsubscribe: publicProcedure
+  unsubscribe: newsletterProcedure
     .input(newsletterSchema.pick({ email: true }))
     .mutation(async ({ input }) => {
       try {

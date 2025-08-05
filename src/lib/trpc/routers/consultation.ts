@@ -1,9 +1,9 @@
 import { db, consultations } from '@/lib/db';
 import { consultationSchema } from '@/lib/validations';
-import { publicProcedure, router } from '../server';
+import { consultationProcedure, router } from '../server';
 
 export const consultationRouter = router({
-  create: publicProcedure
+  create: consultationProcedure
     .input(consultationSchema)
     .mutation(async ({ input }) => {
       try {
