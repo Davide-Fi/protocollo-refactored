@@ -1,6 +1,5 @@
 import { db } from "./index";
 import { protocolTabs } from "./schema";
-import { eq } from "drizzle-orm";
 
 const protocolData = [
   {
