@@ -2582,6 +2582,37 @@ export default function IlProtocolloPage() {
           </div>
         </div>
       </section>
+
+      {/* Protocol Tabs Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">Esplora il Protocollo Completo</h2>
+            <p className="text-xl text-slate-400">16 aree fondamentali per ottimizzare la tua longevità</p>
+          </div>
+          
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="flex flex-wrap gap-2 bg-navy-dark/50 backdrop-blur-md p-3 h-auto mb-8 rounded-xl border border-steel-blue/20 justify-center">
+              {protocolSections.map((section) => (
+                <TabsTrigger 
+                  key={section.id} 
+                  value={section.id}
+                  className="data-[state=active]:bg-scientific-blue data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-scientific-blue/20 flex flex-col items-center py-3 px-3 rounded-lg transition-all hover:bg-steel-blue/20 min-w-[80px]"
+                >
+                  <span className="text-2xl mb-1">{section.emoji}</span>
+                  <span className="text-xs font-medium">{section.title}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {protocolSections.map((section) => (
+              <TabsContent key={section.id} value={section.id} className="mt-8 animate-in fade-in-50 duration-500">
+                {section.content}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </div>
+      </section>
     </div>
   );
 }
