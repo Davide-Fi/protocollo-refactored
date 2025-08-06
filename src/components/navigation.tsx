@@ -30,10 +30,16 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link 
-              href="/protocollo"
+              href="/il-protocollo"
               className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
             >
-              Protocollo
+              Il Protocollo
+            </Link>
+            <Link 
+              href="/protocollo-old"
+              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
+            >
+              Protocollo (Old)
             </Link>
             <Link 
               href="/solari"
@@ -94,11 +100,18 @@ export default function Navigation() {
           <div className="md:hidden border-t border-steel-blue/30 py-4">
             <div className="flex flex-col space-y-4">
               <Link 
-                href="/protocollo"
+                href="/il-protocollo"
                 className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Protocollo
+                Il Protocollo
+              </Link>
+              <Link 
+                href="/protocollo-old"
+                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Protocollo (Old)
               </Link>
               <Link 
                 href="/solari"
