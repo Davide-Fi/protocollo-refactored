@@ -2441,12 +2441,12 @@ export default function IlProtocolloPage() {
           </h2>
           
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 bg-navy-dark/50 backdrop-blur-md p-3 h-auto mb-8 rounded-xl border border-steel-blue/20">
+            <TabsList className="flex flex-wrap gap-2 bg-navy-dark/50 backdrop-blur-md p-3 h-auto mb-8 rounded-xl border border-steel-blue/20 justify-center">
               {protocolSections.map((section) => (
                 <TabsTrigger 
                   key={section.id} 
                   value={section.id}
-                  className="data-[state=active]:bg-scientific-blue data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-scientific-blue/20 flex flex-col items-center py-3 px-2 rounded-lg transition-all hover:bg-steel-blue/20"
+                  className="data-[state=active]:bg-scientific-blue data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-scientific-blue/20 flex flex-col items-center py-3 px-3 rounded-lg transition-all hover:bg-steel-blue/20 min-w-[80px]"
                 >
                   <span className="text-2xl mb-1">{section.emoji}</span>
                   <span className="text-xs font-medium">{section.title}</span>
