@@ -637,7 +637,7 @@ export default function IntegratoriPage() {
                 <table className="min-w-full divide-y divide-steel-blue/30">
                   <thead className="bg-navy-dark/50">
                     <tr>
-                      <th className="sticky left-0 z-10 bg-navy-dark px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+                      <th className="sticky left-0 z-10 bg-navy-dark px-3 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider min-w-[150px] max-w-[200px]">
                         Prodotto
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
@@ -667,13 +667,10 @@ export default function IntegratoriPage() {
                   <tbody className="bg-navy-charcoal/50 divide-y divide-steel-blue/20">
                     {filteredProducts.map((product) => (
                       <tr key={product.id} className="hover:bg-navy-dark/50 transition-colors">
-                        <td className="sticky left-0 z-10 bg-navy-charcoal px-4 py-4 whitespace-nowrap">
+                        <td className="sticky left-0 z-10 bg-navy-charcoal px-3 py-3 min-w-[150px] max-w-[200px]">
                           <div>
-                            <div className="text-sm font-medium text-white">{product.name}</div>
-                            <div className="text-xs text-slate-400 mt-1">{product.description}</div>
-                            {product.additionalNotes && (
-                              <div className="text-xs text-slate-500 mt-1 italic">{product.additionalNotes}</div>
-                            )}
+                            <div className="text-xs font-semibold text-white truncate">{product.name}</div>
+                            <div className="text-xs text-slate-400 mt-0.5 line-clamp-2">{product.description}</div>
                           </div>
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap">
