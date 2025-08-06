@@ -18,7 +18,10 @@ interface IngredientItem {
 // Define the complete ingredient matrix data
 const ingredientData: IngredientItem[] = [
   // Product Info Rows
-  { ingredient: "Daily Pills/Servings", category: "Info", data: { "Essential Capsules": "2 capsules", "Longevity Mix": "1 scoop", "Advanced Antioxidants": "1 capsule", "NAC + Ginger + Curcumin": "3 capsules", "Ashwagandha + Rhodiola": "1 capsule", "Red Yeast Rice + Garlic": "varies", "Metabolic Protein": "1-2 servings", "Longevity Protein": "1-2 servings", "Collagen Peptides": "1 serving", "Creatine": "1 scoop", "Blueberry Nut Mix": "1 serving", "Extra Virgin Olive Oil": "2-4 tbsp", "Nutty Butter": "as desired", "Macadamia Nut Puree": "as desired", "Non-Dairy Cocoa": "as desired", "Macadamia Protein Bar": "1-2 bars" }},
+  { ingredient: "Daily Pills/Servings", category: "Info", data: { "Essential Capsules": "2 capsules", "Longevity Mix": "1 scoop (14.6g)", "Advanced Antioxidants": "1 capsule", "NAC + Ginger + Curcumin": "3 capsules", "Ashwagandha + Rhodiola": "1 capsule", "Red Yeast Rice + Garlic": "varies", "Metabolic Protein": "1-2 servings", "Longevity Protein": "1-2 servings", "Collagen Peptides": "1 serving", "Creatine": "1 scoop", "Blueberry Nut Mix": "1 serving", "Extra Virgin Olive Oil": "2-4 tbsp", "Nutty Butter": "as desired", "Macadamia Nut Puree": "as desired", "Non-Dairy Cocoa": "as desired", "Macadamia Protein Bar": "1-2 bars" }},
+  { ingredient: "OCR Data Available", category: "Info", data: { "Longevity Mix": "✓ See /Integratori Research/" }},
+  { ingredient: "Calories per Serving", category: "Info", data: { "Longevity Mix": "10 kcal", "Metabolic Protein": "varies", "Longevity Protein": "varies", "Macadamia Protein Bar": "varies" }},
+  { ingredient: "Total Carbohydrate", category: "Info", data: { "Longevity Mix": "3g", "Metabolic Protein": "varies", "Longevity Protein": "varies", "Macadamia Protein Bar": "varies" }},
   { ingredient: "Product Purpose", category: "Info", data: { "Essential Capsules": "Complete daily vitamins and minerals", "Longevity Mix": "Comprehensive longevity support", "Advanced Antioxidants": "Fat-soluble antioxidants", "NAC + Ginger + Curcumin": "Detox and anti-inflammatory", "Ashwagandha + Rhodiola": "Stress and energy management", "Red Yeast Rice + Garlic": "Heart health support", "Metabolic Protein": "Muscle building", "Longevity Protein": "Muscle recovery", "Collagen Peptides": "Joint and skin health", "Creatine": "Athletic performance", "Blueberry Nut Mix": "Antioxidant snack", "Extra Virgin Olive Oil": "Polyphenol cooking oil", "Nutty Butter": "Healthy fat spread", "Macadamia Nut Puree": "Pure macadamia snack", "Non-Dairy Cocoa": "Flavanol beverage", "Macadamia Protein Bar": "Protein snack" }},
   { ingredient: "Vegan", category: "Info", data: { "Essential Capsules": "Yes", "Longevity Mix": "Yes", "Advanced Antioxidants": "Yes", "NAC + Ginger + Curcumin": "Yes", "Ashwagandha + Rhodiola": "Yes", "Red Yeast Rice + Garlic": "Yes", "Metabolic Protein": "Yes", "Longevity Protein": "Yes", "Collagen Peptides": "No", "Creatine": "Yes", "Blueberry Nut Mix": "Yes", "Extra Virgin Olive Oil": "Yes", "Nutty Butter": "Yes", "Macadamia Nut Puree": "Yes", "Non-Dairy Cocoa": "Yes", "Macadamia Protein Bar": "Yes" }},
   
@@ -33,7 +36,7 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Vitamin B12 (Methylcobalamin)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
   
   // Other Vitamins
-  { ingredient: "Vitamin C (Ascorbic Acid)", category: "Vitamins", data: { "Essential Capsules": "✓" }},
+  { ingredient: "Vitamin C (Ascorbic Acid)", category: "Vitamins", data: { "Essential Capsules": "✓", "Longevity Mix": "250mg" }},
   { ingredient: "Vitamin D (Veg D3)", category: "Vitamins", data: { "Longevity Mix": "1000 IU", "Advanced Antioxidants": "✓" }},
   { ingredient: "Vitamin E (d-alpha tocopherol)", category: "Vitamins", data: { "Essential Capsules": "✓", "Advanced Antioxidants": "✓" }},
   { ingredient: "Vitamin K1", category: "Vitamins", data: { "Essential Capsules": "✓", "Advanced Antioxidants": "600mcg" }},
@@ -41,8 +44,8 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Vitamin K2 (MK-7)", category: "Vitamins", data: { "Longevity Mix": "300mcg" }},
   
   // Minerals
-  { ingredient: "Calcium", category: "Minerals", data: { "Essential Capsules": "✓", "Longevity Mix": "100mg" }},
-  { ingredient: "Magnesium Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
+  { ingredient: "Calcium (from CaAKG)", category: "Minerals", data: { "Essential Capsules": "✓", "Longevity Mix": "400mg" }},
+  { ingredient: "Magnesium (as Magnesium Citrate)", category: "Minerals", data: { "Essential Capsules": "✓", "Longevity Mix": "150mg" }},
   { ingredient: "Zinc Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
   { ingredient: "Manganese Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
   { ingredient: "Selenium", category: "Minerals", data: { "Essential Capsules": "✓" }},
@@ -59,11 +62,11 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Collagen Type III", category: "Proteins", data: { "Collagen Peptides": "20g total" }},
   
   // Amino Acids
-  { ingredient: "Glycine", category: "Amino Acids", data: { "Essential Capsules": "✓" }},
-  { ingredient: "L-Theanine", category: "Amino Acids", data: { "Essential Capsules": "✓" }},
-  { ingredient: "L-Lysine", category: "Amino Acids", data: { "Longevity Mix": "125mg" }},
-  { ingredient: "Taurine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "200mg" }},
-  { ingredient: "Creatine Monohydrate", category: "Amino Acids", data: { "Creatine": "5g" }},
+  { ingredient: "Glycine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "1200mg" }},
+  { ingredient: "L-Theanine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "200mg" }},
+  { ingredient: "L-Lysine (as HCI)", category: "Amino Acids", data: { "Longevity Mix": "1000mg" }},
+  { ingredient: "Taurine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "1500mg" }},
+  { ingredient: "Creatine (as Monohydrate)", category: "Amino Acids", data: { "Longevity Mix": "2500mg", "Creatine": "5g" }},
   
   // Antioxidants & Extracts
   { ingredient: "NAC (N-Acetyl Cysteine)", category: "Antioxidants", data: { "NAC + Ginger + Curcumin": "500mg" }},
@@ -82,13 +85,13 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Lycopene", category: "Advanced", data: { "Longevity Mix": "10mg", "Advanced Antioxidants": "2mg" }},
   { ingredient: "Zeaxanthin", category: "Advanced", data: { "Longevity Mix": "2mg" }},
   { ingredient: "Lutein", category: "Advanced", data: { "Longevity Mix": "10mg" }},
-  { ingredient: "Glutathione", category: "Advanced", data: { "Essential Capsules": "✓" }},
+  { ingredient: "L-Glutathione Reduced", category: "Advanced", data: { "Essential Capsules": "✓", "Longevity Mix": "250mg" }},
   { ingredient: "Grape Seed Extract", category: "Advanced", data: { "Longevity Mix": "50mg" }},
   { ingredient: "Pomegranate Extract", category: "Advanced", data: { "Longevity Mix": "60mg" }},
   { ingredient: "Sodium Hyaluronate", category: "Advanced", data: { "Longevity Mix": "120mg" }},
-  { ingredient: "Glucosamine Sulfate", category: "Advanced", data: { "Longevity Mix": "1500mg" }},
+  { ingredient: "Glucosamine Sulfate (as KCI)", category: "Advanced", data: { "Longevity Mix": "750mg" }},
   { ingredient: "Spermidine", category: "Advanced", data: { "Essential Capsules": "✓" }},
-  { ingredient: "CaAKG", category: "Advanced", data: { "Longevity Mix": "1g" }},
+  { ingredient: "Calcium Alpha-Keto Glutarate (CaAKG)", category: "Advanced", data: { "Longevity Mix": "2000mg" }},
   { ingredient: "Glucoraphanin", category: "Advanced", data: { "Longevity Mix": "17.5mg" }},
   { ingredient: "Lithium Orotate", category: "Advanced", data: { "Essential Capsules": "✓" }},
   { ingredient: "Lactobacillus Acidophilus", category: "Probiotics", data: { "Essential Capsules": "✓" }},
@@ -212,6 +215,7 @@ export default function IntegratoriPage() {
           <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-3xl mx-auto">
             Il protocollo completo di supplementazione per ottimizzare ogni aspetto della tua salute e longevità.
             16 prodotti scientificamente formulati con oltre 70 ingredienti attivi.
+            Il Longevity Mix contiene 13 principi attivi clinicamente dosati.
           </p>
 
           {/* Stats Cards */}
