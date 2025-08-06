@@ -654,8 +654,8 @@ export default function IntegratoriPage() {
                           key={ingredient}
                           className="px-2 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider min-w-[80px]"
                         >
-                          <div className="writing-mode-vertical-rl transform rotate-180 whitespace-nowrap">
-                            {ingredient}
+                          <div className="text-xs">
+                            {ingredient.length > 20 ? ingredient.substring(0, 20) + '...' : ingredient}
                           </div>
                         </th>
                       ))}
