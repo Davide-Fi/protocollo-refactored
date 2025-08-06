@@ -4,14 +4,19 @@ import { useState, useMemo } from "react";
 import Navigation from "@/components/navigation";
 import { 
   Pill, Search, Filter, Info, CheckCircle, X, ChevronDown, ChevronUp,
-  Heart, Brain, Dumbbell, Shield, Sparkles, Zap, Eye, Leaf,
-  Coffee, Apple, Star, Package, FlaskConical, Activity
+  FlaskConical
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
+// Type definition for ingredient data
+interface IngredientItem {
+  ingredient: string;
+  category: string;
+  data: { [key: string]: string };
+}
 
 // Define the complete ingredient matrix data
-const ingredientData = [
+const ingredientData: IngredientItem[] = [
   // Product Info Rows
   { ingredient: "Daily Pills/Servings", category: "Info", data: { "Essential Capsules": "2 capsules", "Longevity Mix": "1 scoop", "Advanced Antioxidants": "1 capsule", "NAC + Ginger + Curcumin": "3 capsules", "Ashwagandha + Rhodiola": "1 capsule", "Red Yeast Rice + Garlic": "varies", "Metabolic Protein": "1-2 servings", "Longevity Protein": "1-2 servings", "Collagen Peptides": "1 serving", "Creatine": "1 scoop", "Blueberry Nut Mix": "1 serving", "Extra Virgin Olive Oil": "2-4 tbsp", "Nutty Butter": "as desired", "Macadamia Nut Puree": "as desired", "Non-Dairy Cocoa": "as desired", "Macadamia Protein Bar": "1-2 bars" }},
   { ingredient: "Product Purpose", category: "Info", data: { "Essential Capsules": "Complete daily vitamins and minerals", "Longevity Mix": "Comprehensive longevity support", "Advanced Antioxidants": "Fat-soluble antioxidants", "NAC + Ginger + Curcumin": "Detox and anti-inflammatory", "Ashwagandha + Rhodiola": "Stress and energy management", "Red Yeast Rice + Garlic": "Heart health support", "Metabolic Protein": "Muscle building", "Longevity Protein": "Muscle recovery", "Collagen Peptides": "Joint and skin health", "Creatine": "Athletic performance", "Blueberry Nut Mix": "Antioxidant snack", "Extra Virgin Olive Oil": "Polyphenol cooking oil", "Nutty Butter": "Healthy fat spread", "Macadamia Nut Puree": "Pure macadamia snack", "Non-Dairy Cocoa": "Flavanol beverage", "Macadamia Protein Bar": "Protein snack" }},
