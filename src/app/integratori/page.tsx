@@ -19,58 +19,56 @@ interface IngredientItem {
 // Longevity Mix amounts verified via OCR extraction on 2025-08-06
 const ingredientData: IngredientItem[] = [
   // Product Info Rows
-  { ingredient: "Daily Pills/Servings", category: "Info", data: { "Essential Capsules": "2 capsules", "Longevity Mix": "1 scoop (14.6g)", "Advanced Antioxidants": "1 capsule", "NAC + Ginger + Curcumin": "3 capsules", "Ashwagandha + Rhodiola": "1 capsule", "Red Yeast Rice + Garlic": "varies", "Metabolic Protein": "1-2 servings", "Longevity Protein": "1-2 servings", "Collagen Peptides": "1 serving", "Creatine": "1 scoop", "Blueberry Nut Mix": "1 serving", "Extra Virgin Olive Oil": "2-4 tbsp", "Nutty Butter": "as desired", "Macadamia Nut Puree": "as desired", "Non-Dairy Cocoa": "as desired", "Macadamia Protein Bar": "1-2 bars" }},
+  { ingredient: "Daily Pills/Servings", category: "Info", data: { "Essential Capsules": "2 capsules", "Longevity Mix": "1 scoop (14.6g)", "Advanced Antioxidants": "1 capsule", "NAC + Ginger + Curcumin": "3 capsules", "Ashwagandha + Rhodiola": "1 capsule", "Red Yeast Rice + Garlic": "varies", "Metabolic Protein": "1-2 servings", "Longevity Protein": "1-2 servings", "Collagen Peptides": "1 serving", "Collagen": "1 capsule", "Creatine": "1 scoop", "Blueberry Nut Mix": "1 serving", "Extra Virgin Olive Oil": "2-4 tbsp", "Nutty Butter": "as desired", "Macadamia Nut Puree": "as desired", "Non-Dairy Cocoa": "as desired", "Macadamia Protein Bar": "1-2 bars" }},
   { ingredient: "OCR Data Available", category: "Info", data: { "Longevity Mix": "✓ See /Integratori Research/" }},
   { ingredient: "Calories per Serving", category: "Info", data: { "Longevity Mix": "10 kcal", "Metabolic Protein": "varies", "Longevity Protein": "varies", "Macadamia Protein Bar": "varies" }},
   { ingredient: "Total Carbohydrate", category: "Info", data: { "Longevity Mix": "3g", "Metabolic Protein": "varies", "Longevity Protein": "varies", "Macadamia Protein Bar": "varies" }},
   { ingredient: "Product Purpose", category: "Info", data: { "Essential Capsules": "Complete daily vitamins and minerals", "Longevity Mix": "Comprehensive longevity support", "Advanced Antioxidants": "Fat-soluble antioxidants", "NAC + Ginger + Curcumin": "Detox and anti-inflammatory", "Ashwagandha + Rhodiola": "Stress and energy management", "Red Yeast Rice + Garlic": "Heart health support", "Metabolic Protein": "Muscle building", "Longevity Protein": "Muscle recovery", "Collagen Peptides": "Joint and skin health", "Creatine": "Athletic performance", "Blueberry Nut Mix": "Antioxidant snack", "Extra Virgin Olive Oil": "Polyphenol cooking oil", "Nutty Butter": "Healthy fat spread", "Macadamia Nut Puree": "Pure macadamia snack", "Non-Dairy Cocoa": "Flavanol beverage", "Macadamia Protein Bar": "Protein snack" }},
   { ingredient: "Vegan", category: "Info", data: { "Essential Capsules": "Yes", "Longevity Mix": "Yes", "Advanced Antioxidants": "Yes", "NAC + Ginger + Curcumin": "Yes", "Ashwagandha + Rhodiola": "Yes", "Red Yeast Rice + Garlic": "Yes", "Metabolic Protein": "Yes", "Longevity Protein": "Yes", "Collagen Peptides": "No", "Creatine": "Yes", "Blueberry Nut Mix": "Yes", "Extra Virgin Olive Oil": "Yes", "Nutty Butter": "Yes", "Macadamia Nut Puree": "Yes", "Non-Dairy Cocoa": "Yes", "Macadamia Protein Bar": "Yes" }},
   
-  // B Vitamins
+  // B Vitamins (OCR verified)
   { ingredient: "Vitamin B1 (Thiamine)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
   { ingredient: "Vitamin B2 (Riboflavin)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Vitamin B3 (Niacinamide)", category: "B Vitamins", data: { "Essential Capsules": "15mg" }},
-  { ingredient: "Vitamin B5 (Pantothenate)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
+  { ingredient: "Niacin (as Niacinamide)", category: "B Vitamins", data: { "Essential Capsules": "15mg" }},
+  { ingredient: "Pantothenic Acid (as D-Calcium Pantothenate)", category: "B Vitamins", data: { "Essential Capsules": "6mg" }},
   { ingredient: "Vitamin B6 (P5P)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Vitamin B7 (Biotin)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
+  { ingredient: "Biotin", category: "B Vitamins", data: { "Essential Capsules": "50mcg" }},
   { ingredient: "Vitamin B9 (L-5-MTHF)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Vitamin B12 (Methylcobalamin)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
+  { ingredient: "Vitamin B12 (as Methylcobalamin)", category: "B Vitamins", data: { "Essential Capsules": "125mcg" }},
   
-  // Other Vitamins
-  { ingredient: "Vitamin C", category: "Vitamins", data: { "Essential Capsules": "✓", "Longevity Mix": "250mg" }},
+  // Other Vitamins (OCR verified for Essential Capsules)
+  { ingredient: "Vitamin C", category: "Vitamins", data: { "Longevity Mix": "250mg" }},
   { ingredient: "Vitamin D (Veg D3)", category: "Vitamins", data: { "Longevity Mix": "1000 IU", "Advanced Antioxidants": "✓" }},
-  { ingredient: "Vitamin E (d-alpha tocopherol)", category: "Vitamins", data: { "Essential Capsules": "✓", "Advanced Antioxidants": "✓" }},
-  { ingredient: "Vitamin K1", category: "Vitamins", data: { "Essential Capsules": "✓", "Advanced Antioxidants": "600mcg" }},
+  { ingredient: "Vitamin E (d-alpha-Tocopherol)", category: "Vitamins", data: { "Essential Capsules": "67mg", "Advanced Antioxidants": "✓" }},
+  { ingredient: "Vitamin K1 (as Phytonadione)", category: "Vitamins", data: { "Advanced Antioxidants": "1500mcg" }},
   { ingredient: "Vitamin K2 (MK-4)", category: "Vitamins", data: { "Longevity Mix": "150mg", "Advanced Antioxidants": "5mg" }},
   { ingredient: "Vitamin K2 (MK-7)", category: "Vitamins", data: { "Longevity Mix": "300mcg" }},
   
-  // Minerals (OCR verified amounts)
-  { ingredient: "Magnesium (as Magnesium Citrate)", category: "Minerals", data: { "Essential Capsules": "✓", "Longevity Mix": "150mg" }},
-  { ingredient: "Zinc Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Manganese Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Selenium", category: "Minerals", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Potassium Iodate", category: "Minerals", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Phosphorus", category: "Minerals", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Copper", category: "Minerals", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Iron", category: "Minerals", data: { "Essential Capsules": "✓" }},
+  // Minerals (OCR verified for Essential Capsules)
+  { ingredient: "Calcium (from Carbonate and Dicalcium Phosphate)", category: "Minerals", data: { "Essential Capsules": "50mg" }},
+  { ingredient: "Iodine (as Potassium Iodide)", category: "Minerals", data: { "Essential Capsules": "200mcg" }},
+  { ingredient: "Magnesium (as Magnesium Citrate)", category: "Minerals", data: { "Longevity Mix": "150mg" }},
+  { ingredient: "Zinc (as Bisglycinate)", category: "Minerals", data: { "Essential Capsules": "15mg" }},
+  { ingredient: "Selenium (as L-Selenomethionine)", category: "Minerals", data: { "Essential Capsules": "28mcg" }},
+  { ingredient: "Manganese (as Citrate)", category: "Minerals", data: { "Essential Capsules": "1mg" }},
   
   // Proteins
   { ingredient: "Hemp Protein", category: "Proteins", data: { "Metabolic Protein": "27g", "Longevity Protein": "26g", "Macadamia Protein Bar": "✓" }},
   { ingredient: "Pea Protein", category: "Proteins", data: { "Metabolic Protein": "27g", "Longevity Protein": "26g", "Macadamia Protein Bar": "✓" }},
   { ingredient: "Collagen Type I", category: "Proteins", data: { "Collagen Peptides": "20g total" }},
-  { ingredient: "Collagen Type II", category: "Proteins", data: { "Collagen Peptides": "20g total" }},
+  { ingredient: "Undenatured Type II Collagen", category: "Proteins", data: { "Collagen": "10mg" }},
   { ingredient: "Collagen Type III", category: "Proteins", data: { "Collagen Peptides": "20g total" }},
   
   // Amino Acids (OCR verified amounts)
-  { ingredient: "Glycine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "1200mg" }},
-  { ingredient: "L-Theanine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "200mg" }},
+  { ingredient: "Glycine", category: "Amino Acids", data: { "Longevity Mix": "1200mg" }},
+  { ingredient: "L-Theanine", category: "Amino Acids", data: { "Longevity Mix": "200mg" }},
   { ingredient: "L-Lysine (as HCI)", category: "Amino Acids", data: { "Longevity Mix": "1000mg" }},
-  { ingredient: "Taurine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "1500mg" }},
+  { ingredient: "Taurine", category: "Amino Acids", data: { "Longevity Mix": "1500mg" }},
   { ingredient: "Creatine", category: "Amino Acids", data: { "Longevity Mix": "2500mg", "Creatine": "5g" }},
   
   // Antioxidants & Extracts
   { ingredient: "NAC (N-Acetyl Cysteine)", category: "Antioxidants", data: { "NAC + Ginger + Curcumin": "500mg" }},
-  { ingredient: "Ginger Extract", category: "Antioxidants", data: { "NAC + Ginger + Curcumin": "500mg" }},
+  { ingredient: "Ginger Extract (std. 26% Gingeroids)", category: "Antioxidants", data: { "NAC + Ginger + Curcumin": "400mg" }},
   { ingredient: "Curcuminoids", category: "Antioxidants", data: { "NAC + Ginger + Curcumin": "500mg" }},
   { ingredient: "Ashwagandha Extract", category: "Adaptogens", data: { "Ashwagandha + Rhodiola": "600mg" }},
   { ingredient: "Rhodiola Extract", category: "Adaptogens", data: { "Ashwagandha + Rhodiola": "100mg" }},
@@ -78,23 +76,18 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Odor-free Garlic", category: "Heart Health", data: { "Red Yeast Rice + Garlic": "✓" }},
   
   // Advanced Compounds
-  { ingredient: "Ubiquinol", category: "Advanced", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Fisetin", category: "Advanced", data: { "Essential Capsules": "✓" }},
   { ingredient: "Luteolin", category: "Advanced", data: { "Longevity Mix": "15mg", "Advanced Antioxidants": "10mg" }},
   { ingredient: "Astaxanthin", category: "Advanced", data: { "Longevity Mix": "12mg", "Advanced Antioxidants": "5mg" }},
   { ingredient: "Lycopene", category: "Advanced", data: { "Longevity Mix": "10mg", "Advanced Antioxidants": "2mg" }},
   { ingredient: "Zeaxanthin", category: "Advanced", data: { "Longevity Mix": "2mg" }},
   { ingredient: "Lutein", category: "Advanced", data: { "Longevity Mix": "10mg" }},
-  { ingredient: "L-Glutathione Reduced", category: "Advanced", data: { "Essential Capsules": "✓", "Longevity Mix": "250mg" }},
+  { ingredient: "L-Glutathione Reduced", category: "Advanced", data: { "Longevity Mix": "250mg" }},
   { ingredient: "Grape Seed Extract", category: "Advanced", data: { "Longevity Mix": "50mg" }},
   { ingredient: "Pomegranate Extract", category: "Advanced", data: { "Longevity Mix": "60mg" }},
   { ingredient: "Sodium Hyaluronate", category: "Advanced", data: { "Longevity Mix": "120mg" }},
   { ingredient: "Glucosamine Sulfate (as KCI)", category: "Advanced", data: { "Longevity Mix": "750mg" }},
-  { ingredient: "Spermidine", category: "Advanced", data: { "Essential Capsules": "✓" }},
   { ingredient: "Calcium Alpha-Keto Glutarate (CaAKG)", category: "Advanced", data: { "Longevity Mix": "20-40mg (calcium portion)" }},
   { ingredient: "Glucoraphanin", category: "Advanced", data: { "Longevity Mix": "17.5mg" }},
-  { ingredient: "Lithium Orotate", category: "Advanced", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Lactobacillus Acidophilus", category: "Probiotics", data: { "Essential Capsules": "✓" }},
   
   // Fats & Oils
   { ingredient: "MCT Oil", category: "Fats", data: { "Advanced Antioxidants": "✓" }},
@@ -112,7 +105,14 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Flavanols (Cocoa)", category: "Food", data: { "Non-Dairy Cocoa": "7.5%" }},
   { ingredient: "Macadamia Nuts", category: "Food", data: { "Blueberry Nut Mix": "✓", "Nutty Butter": "✓", "Macadamia Nut Puree": "100%", "Macadamia Protein Bar": "✓" }},
   { ingredient: "Walnuts", category: "Food", data: { "Blueberry Nut Mix": "✓" }},
-  { ingredient: "Natural Flavors", category: "Food", data: { "Metabolic Protein": "✓", "Longevity Protein": "✓" }}
+  { ingredient: "Natural Flavors", category: "Food", data: { "Metabolic Protein": "✓", "Longevity Protein": "✓" }},
+  
+  // Macadamia Protein Bar Nutrition (OCR verified)
+  { ingredient: "Saturated Fat", category: "Macadamia Bar", data: { "Extra Virgin Olive Oil": "2g", "Macadamia Protein Bar": "3-4g" }},
+  { ingredient: "Monounsaturated Fat", category: "Macadamia Bar", data: { "Macadamia Protein Bar": "8g" }},
+  { ingredient: "Sodium", category: "Macadamia Bar", data: { "Macadamia Protein Bar": "190mg" }},
+  { ingredient: "Dietary Fiber", category: "Macadamia Bar", data: { "Macadamia Protein Bar": "1g" }},
+  { ingredient: "Protein (per bar)", category: "Macadamia Bar", data: { "Macadamia Protein Bar": "9g" }}
 ];
 
 // Product columns in order
@@ -126,6 +126,7 @@ const productColumns = [
   "Metabolic Protein",
   "Longevity Protein",
   "Collagen Peptides",
+  "Collagen",
   "Creatine",
   "Blueberry Nut Mix",
   "Extra Virgin Olive Oil",
