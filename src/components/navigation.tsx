@@ -42,6 +42,12 @@ export default function Navigation() {
               Protocollo (Old)
             </Link>
             <Link 
+              href="/integratori"
+              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
+            >
+              Integratori
+            </Link>
+            <Link 
               href="/solari"
               className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
             >
@@ -112,6 +118,13 @@ export default function Navigation() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Protocollo (Old)
+              </Link>
+              <Link 
+                href="/integratori"
+                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Integratori
               </Link>
               <Link 
                 href="/solari"
