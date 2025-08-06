@@ -16,6 +16,7 @@ interface IngredientItem {
 }
 
 // Define the complete ingredient matrix data
+// Longevity Mix amounts verified via OCR extraction on 2025-08-06
 const ingredientData: IngredientItem[] = [
   // Product Info Rows
   { ingredient: "Daily Pills/Servings", category: "Info", data: { "Essential Capsules": "2 capsules", "Longevity Mix": "1 scoop (14.6g)", "Advanced Antioxidants": "1 capsule", "NAC + Ginger + Curcumin": "3 capsules", "Ashwagandha + Rhodiola": "1 capsule", "Red Yeast Rice + Garlic": "varies", "Metabolic Protein": "1-2 servings", "Longevity Protein": "1-2 servings", "Collagen Peptides": "1 serving", "Creatine": "1 scoop", "Blueberry Nut Mix": "1 serving", "Extra Virgin Olive Oil": "2-4 tbsp", "Nutty Butter": "as desired", "Macadamia Nut Puree": "as desired", "Non-Dairy Cocoa": "as desired", "Macadamia Protein Bar": "1-2 bars" }},
@@ -36,15 +37,14 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Vitamin B12 (Methylcobalamin)", category: "B Vitamins", data: { "Essential Capsules": "✓" }},
   
   // Other Vitamins
-  { ingredient: "Vitamin C (Ascorbic Acid)", category: "Vitamins", data: { "Essential Capsules": "✓", "Longevity Mix": "250mg" }},
+  { ingredient: "Vitamin C", category: "Vitamins", data: { "Essential Capsules": "✓", "Longevity Mix": "250mg" }},
   { ingredient: "Vitamin D (Veg D3)", category: "Vitamins", data: { "Longevity Mix": "1000 IU", "Advanced Antioxidants": "✓" }},
   { ingredient: "Vitamin E (d-alpha tocopherol)", category: "Vitamins", data: { "Essential Capsules": "✓", "Advanced Antioxidants": "✓" }},
   { ingredient: "Vitamin K1", category: "Vitamins", data: { "Essential Capsules": "✓", "Advanced Antioxidants": "600mcg" }},
   { ingredient: "Vitamin K2 (MK-4)", category: "Vitamins", data: { "Longevity Mix": "150mg", "Advanced Antioxidants": "5mg" }},
   { ingredient: "Vitamin K2 (MK-7)", category: "Vitamins", data: { "Longevity Mix": "300mcg" }},
   
-  // Minerals
-  { ingredient: "Calcium (from CaAKG)", category: "Minerals", data: { "Essential Capsules": "✓", "Longevity Mix": "400mg" }},
+  // Minerals (OCR verified amounts)
   { ingredient: "Magnesium (as Magnesium Citrate)", category: "Minerals", data: { "Essential Capsules": "✓", "Longevity Mix": "150mg" }},
   { ingredient: "Zinc Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
   { ingredient: "Manganese Citrate", category: "Minerals", data: { "Essential Capsules": "✓" }},
@@ -61,12 +61,12 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Collagen Type II", category: "Proteins", data: { "Collagen Peptides": "20g total" }},
   { ingredient: "Collagen Type III", category: "Proteins", data: { "Collagen Peptides": "20g total" }},
   
-  // Amino Acids
+  // Amino Acids (OCR verified amounts)
   { ingredient: "Glycine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "1200mg" }},
   { ingredient: "L-Theanine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "200mg" }},
   { ingredient: "L-Lysine (as HCI)", category: "Amino Acids", data: { "Longevity Mix": "1000mg" }},
   { ingredient: "Taurine", category: "Amino Acids", data: { "Essential Capsules": "✓", "Longevity Mix": "1500mg" }},
-  { ingredient: "Creatine (as Monohydrate)", category: "Amino Acids", data: { "Longevity Mix": "2500mg", "Creatine": "5g" }},
+  { ingredient: "Creatine", category: "Amino Acids", data: { "Longevity Mix": "2500mg", "Creatine": "5g" }},
   
   // Antioxidants & Extracts
   { ingredient: "NAC (N-Acetyl Cysteine)", category: "Antioxidants", data: { "NAC + Ginger + Curcumin": "500mg" }},
@@ -91,7 +91,7 @@ const ingredientData: IngredientItem[] = [
   { ingredient: "Sodium Hyaluronate", category: "Advanced", data: { "Longevity Mix": "120mg" }},
   { ingredient: "Glucosamine Sulfate (as KCI)", category: "Advanced", data: { "Longevity Mix": "750mg" }},
   { ingredient: "Spermidine", category: "Advanced", data: { "Essential Capsules": "✓" }},
-  { ingredient: "Calcium Alpha-Keto Glutarate (CaAKG)", category: "Advanced", data: { "Longevity Mix": "2000mg" }},
+  { ingredient: "Calcium Alpha-Keto Glutarate (CaAKG)", category: "Advanced", data: { "Longevity Mix": "20-40mg (calcium portion)" }},
   { ingredient: "Glucoraphanin", category: "Advanced", data: { "Longevity Mix": "17.5mg" }},
   { ingredient: "Lithium Orotate", category: "Advanced", data: { "Essential Capsules": "✓" }},
   { ingredient: "Lactobacillus Acidophilus", category: "Probiotics", data: { "Essential Capsules": "✓" }},
