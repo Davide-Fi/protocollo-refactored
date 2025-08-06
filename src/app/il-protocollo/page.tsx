@@ -2,22 +2,18 @@
 
 import { useState } from "react";
 import { 
-  Award, Target, Activity, CheckCircle, ChevronDown, ChevronUp,
+  Award, Target, Activity, CheckCircle,
   Clock, Sun, Moon, Heart, Brain, Dumbbell, Apple, Timer, Shield,
   Beaker, Coffee, Pill, Salad, ChefHat, Bed, BarChart3, FlaskConical,
   BookOpen, Sparkles, Zap, TrendingUp, Users, Baby, Calendar,
   Ban, Droplets, ShoppingBag, Scissors, Smile, Stethoscope, Microscope,
   Package, AlertCircle, CheckCircle2, Info, Star, ArrowRight,
-  Flame, Waves, Wind, Leaf, Eye, Ear, Hand, Footprints, BrainCircuit,
-  BarChart, LineChart, PieChart, Activity as ActivityIcon
+  Flame, Waves, Wind, Leaf, Eye, Ear, BrainCircuit
 } from "lucide-react";
 import Navigation from "@/components/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 const protocolSections = [
   {
@@ -117,7 +113,7 @@ const protocolSections = [
                 </Card>
                 <Card className="bg-navy-dark/50 border-green-500/10 p-4">
                   <h5 className="font-semibold mb-2 text-lime-400">🫒 Olio EVO</h5>
-                  <p className="text-sm text-slate-400 mb-3">1 cucchiaio di olio extra vergine d'oliva di alta qualità</p>
+                  <p className="text-sm text-slate-400 mb-3">1 cucchiaio di olio extra vergine d&apos;oliva di alta qualità</p>
                   <Badge className="bg-lime-500/20 text-lime-300">120 cal</Badge>
                 </Card>
               </div>
@@ -226,7 +222,7 @@ const protocolSections = [
                 <Badge className="bg-red-500/20 text-red-400 px-3 py-1">🍬 Liquirizia Panda</Badge>
               </div>
               <p className="text-sm text-slate-400 mt-4">
-                <strong>Regola d'oro:</strong> Fermarsi prima di sentirsi completamente sazi
+                  <p className="text-sm text-slate-400 mb-3">Olio d&apos;oliva, finocchio, avocado, erbe aromatiche, barbabietole</p>
               </p>
             </div>
           </Card>
@@ -338,7 +334,9 @@ const protocolSections = [
                 <Card className="flex-1 border-indigo-500/20 p-4 hover:shadow-lg hover:shadow-indigo-500/10 transition-all">
                   <h4 className="font-bold text-lg mb-2">Forza e Cardio</h4>
                   <p className="text-slate-400 mb-3">Rotazione tra pesi (3x/settimana) e cardio</p>
-                  <Progress value={75} className="h-2 mb-3" />
+                  <div className="w-full bg-navy-charcoal/50 rounded-full h-2 mb-3">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{width: '75%'}}></div>
+                  </div>
                   <p className="text-sm text-slate-400">Intensità: 75-85% del massimale</p>
                 </Card>
               </div>
@@ -490,7 +488,7 @@ const protocolSections = [
             <Card className="border-indigo-500/20 p-6 hover:shadow-lg hover:shadow-indigo-500/10 transition-all">
               <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <Shield className="h-5 w-5 text-indigo-400" />
-                Regole d'Oro
+                <span>C&apos;è riduzione del rischio cardiovascolare rispetto ai coetanei</span>
               </h4>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
@@ -589,7 +587,7 @@ const protocolSections = [
           </div>
           <div className="mt-4 p-4 bg-blue-500/10 rounded-lg">
             <p className="text-sm flex items-center gap-2">
-              <ActivityIcon className="h-4 w-4 text-blue-400" />
+              <Activity className="h-4 w-4 text-blue-400" />
               <span><strong>Tracking:</strong> Oura Ring per feedback giornaliero e ottimizzazione</span>
             </p>
           </div>
@@ -723,7 +721,7 @@ const protocolSections = [
         <Card className="border-purple-500/20 p-6">
           <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
             <Dumbbell className="h-6 w-6 text-purple-400" />
-            Modifiche all'Esercizio
+                <span>Un&apos;organizzazione più efficiente dell&apos;attenzione e della memoria</span>
           </h3>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
@@ -744,7 +742,7 @@ const protocolSections = [
               <div className="w-2 h-2 bg-indigo-400 rounded-full mt-2"></div>
               <div>
                 <p className="font-medium">Attività dolci</p>
-                <p className="text-sm text-slate-400">Durante le mestruazioni se c'è disagio</p>
+                <span>c&apos;è disagio</span>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -876,7 +874,7 @@ const protocolSections = [
                 <ul className="space-y-1 text-sm text-slate-400">
                   <li>• Continua vitamine prenatali</li>
                   <li>• Pasti piccoli e frequenti per nausea</li>
-                  <li>• 8-10 bicchieri d'acqua al giorno</li>
+                <span>L&apos;impegno nell&apos;allenamento varia con il ciclo</span>
                 </ul>
               </div>
               <div>
@@ -1037,7 +1035,7 @@ const protocolSections = [
             <div>
               <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
                 <BookOpen className="h-8 w-8 text-cyan-500" />
-                Cos'è il Protocollo Blueprint?
+            Cos&apos;è il Protocollo?
               </h2>
               <p className="text-slate-400">Sistema completo di ottimizzazione della salute basato su ricerca scientifica</p>
             </div>
@@ -1179,9 +1177,10 @@ const protocolSections = [
         <Card className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-cyan-500/20 p-6">
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-4">Filosofia</h3>
-            <p className="text-xl text-cyan-400 mb-2">"Don't die"</p>
             <p className="text-slate-400">
-              L'obiettivo semplice è evitare le cose che ti uccideranno prematuramente 
+              &quot;Don&apos;t Die&quot; è l&apos;audace missione di invertire
+              il processo di invecchiamento e ottimizzare la longevità. Il protocollo Blueprint
+              ti offre un approccio scientifico basato sui dati per raggiungere la salute ottimale
               mentre ottimizzi le cose che ti manterranno sano e vibrante il più a lungo possibile.
             </p>
           </div>
@@ -1349,7 +1348,7 @@ const protocolSections = [
                   </div>
                   Eliminare le Cattive Abitudini
                 </h2>
-                <p className="text-slate-400 text-lg font-medium">Comportamenti che accelerano l'invecchiamento</p>
+                <p className="text-slate-400 text-lg font-medium">Comportamenti che accelerano l&apos;invecchiamento</p>
               </div>
             </div>
           </div>
@@ -1378,7 +1377,7 @@ const protocolSections = [
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-red-400">•</span>
-                  <span>Accelera l'invecchiamento</span>
+                  <span>Accelera l&apos;invecchiamento</span>
                 </li>
               </ul>
             </div>
@@ -1460,9 +1459,11 @@ const protocolSections = [
                   <div className="p-3 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl shadow-lg shadow-cyan-500/20">
                     <Droplets className="h-8 w-8 text-cyan-400" />
                   </div>
-                  Sistema di Filtrazione dell'Acqua
+                <p className="text-slate-400 text-lg font-medium">L&apos;acqua pulita è essenziale per la salute ottimale</p>
                 </h2>
-                <p className="text-slate-400 text-lg font-medium">L'acqua pulita è essenziale per la salute ottimale</p>
+              <Badge className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 border-cyan-400/50 text-lg px-5 py-2 font-semibold shadow-lg shadow-cyan-500/20">
+                3-4L/giorno
+              </Badge>
               </div>
               <Badge className="bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 border-cyan-400/50 text-lg px-5 py-2 font-semibold shadow-lg shadow-cyan-500/20">
                 3-4L/giorno
@@ -1667,7 +1668,7 @@ const protocolSections = [
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
-                  <span>Olio extra vergine d'oliva</span>
+                  <span>Olio extra vergine d&apos;oliva</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-400" />
@@ -2161,7 +2162,7 @@ const protocolSections = [
                   </div>
                   Terapie Avanzate
                 </h2>
-                <p className="text-slate-400 text-lg font-medium">Interventi di longevità all'avanguardia</p>
+                <p className="text-slate-400 text-lg font-medium">Interventi di longevità all&apos;avanguardia</p>
               </div>
             </div>
           </div>
