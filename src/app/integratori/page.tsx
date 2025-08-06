@@ -137,11 +137,11 @@ const categories = Array.from(new Set(ingredientData.map(item => item.category))
 
 export default function IntegratoriPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [expandedView, setExpandedView] = useState(false);
   const [showInfoRows, setShowInfoRows] = useState(true);
 
-  // Filter ingredients based on search and category
+  // Filter ingredients based on search and categories
   const filteredIngredients = useMemo(() => {
     return ingredientData.filter(item => {
       // Filter out info rows if not showing them
@@ -154,14 +154,14 @@ export default function IntegratoriPage() {
         return false;
       }
 
-      // Category filter
-      if (selectedCategory && item.category !== selectedCategory) {
+      // Category filter - if categories are selected, only show those
+      if (selectedCategories.length > 0 && !selectedCategories.includes(item.category)) {
         return false;
       }
 
       return true;
     });
-  }, [searchTerm, selectedCategory, showInfoRows]);
+  }, [searchTerm, selectedCategories, showInfoRows]);
 
   // Get which products are visible based on having any ingredients
   const visibleProducts = useMemo(() => {
@@ -176,12 +176,20 @@ export default function IntegratoriPage() {
     return productColumns.filter(product => productSet.has(product));
   }, [filteredIngredients]);
 
-  const clearFilters = () => {
-    setSearchTerm("");
-    setSelectedCategory(null);
+  const toggleCategory = (category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
   };
 
-  const hasActiveFilters = searchTerm || selectedCategory;
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategories([]);
+  };
+
+  const hasActiveFilters = searchTerm || selectedCategories.length > 0;
 
   return (
     <div className="min-h-screen bg-navy-charcoal text-white">
@@ -303,20 +311,20 @@ export default function IntegratoriPage() {
 
           {/* Filter Options */}
           <div className="flex flex-wrap gap-4 items-center">
-            {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
+            {/* Category Filter with Checkboxes */}
+            <div className="flex flex-wrap gap-3">
               {categories.filter(cat => cat !== "Info").map(category => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    selectedCategory === category
-                      ? 'bg-scientific-blue text-white'
-                      : 'bg-navy-charcoal border border-steel-blue/30 text-slate-300 hover:border-scientific-blue/50'
-                  }`}
-                >
-                  {category}
-                </button>
+                <label key={category} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => toggleCategory(category)}
+                    className="w-4 h-4 rounded border-steel-blue/30 bg-navy-charcoal text-scientific-blue focus:ring-scientific-blue focus:ring-offset-0"
+                  />
+                  <span className="text-sm text-slate-300 hover:text-white transition-colors">
+                    {category}
+                  </span>
+                </label>
               ))}
             </div>
 
