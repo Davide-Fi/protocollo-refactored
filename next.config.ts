@@ -37,7 +37,7 @@ const securityHeaders = [
       style-src 'self' 'unsafe-inline';
       img-src 'self' blob: data: https:;
       font-src 'self' data:;
-      connect-src 'self' https://api.neon.tech wss://api.neon.tech;
+      connect-src 'self';
       frame-ancestors 'none';
       base-uri 'self';
       form-action 'self';
@@ -46,28 +46,20 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  output: 'export',
   poweredByHeader: false,
   reactStrictMode: true,
-  
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ];
-  },
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
 
-  // Image optimization for generated images
+  // Static image optimization for export
   images: {
-    formats: ['image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    unoptimized: true,
   },
 
   // Experimental features for performance
   experimental: {
-    optimizePackageImports: ['lucide-react', 'react-icons', '@radix-ui'],
+    optimizePackageImports: ['lucide-react', '@radix-ui'],
   },
 };
 
