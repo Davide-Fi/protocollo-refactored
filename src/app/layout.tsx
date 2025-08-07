@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Protocollo - Ottimizzazione della Longevità Maschile",
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="it" className="dark">
       <body className="antialiased bg-background text-foreground">
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

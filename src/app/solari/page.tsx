@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import Navigation from "@/components/navigation";
-import { api } from "@/lib/trpc/client";
+import sunscreenProductsData from "@/data/sunscreen-products.json";
 
 interface SunscreenFilter {
   tradeName: string;
@@ -354,14 +354,10 @@ export default function SolariPage() {
   const [productChemicalFilters, setProductChemicalFilters] = useState<string[]>([]);
   const [selectedSkinType, setSelectedSkinType] = useState<string>('Type III');
 
-  // Fetch products from database using tRPC
-  const { data: dbProducts = [] } = api.sunscreen.getAll.useQuery();
-
-  // Transform database products to match our interface
+  // Use static product data
   const sunscreenProducts: SunscreenProduct[] = useMemo(() => {
-    return dbProducts.map(product => {
-      // Parse the filters JSON field to extract boolean values
-      const filters = (product.filters as Record<string, unknown>) || {};
+    return sunscreenProductsData.map(product => {
+      const filters = product.filters;
       
       return {
         brand: product.brand,
@@ -390,12 +386,12 @@ export default function SolariPage() {
         uvbRating: product.uvbRating as "excellent" | "good" | "moderate" | "poor",
         overallRating: Number(filters.overallRating) || 4.0,
         description: product.notes || "",
-        price: filters.price as string | undefined,
+        price: undefined,
         availability: product.availability === "widely_available" ? "EU, disponibile in Italia" : 
                      product.availability === "limited" ? "Disponibilità limitata" : "Non disponibile"
       };
     });
-  }, [dbProducts]);
+  }, []);
   
   // Get unique SPF values from products data (sorted descending)
   const availableSpfValues = useMemo(() => {

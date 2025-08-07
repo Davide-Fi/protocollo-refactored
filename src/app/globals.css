@@ -1,94 +1,393 @@
 @import "tailwindcss";
 
-:root {
-  --background: hsl(210, 40%, 8%);
-  --foreground: hsl(210, 40%, 96%);
-  --muted: hsl(210, 40%, 18%);
-  --muted-foreground: hsl(210, 40%, 64%);
-  --popover: hsl(210, 40%, 8%);
-  --popover-foreground: hsl(210, 40%, 96%);
-  --card: hsl(210, 40%, 8%);
-  --card-foreground: hsl(210, 40%, 96%);
-  --border: hsl(210, 40%, 18%);
-  --input: hsl(210, 40%, 18%);
-  --primary: hsl(200, 80%, 54%);
-  --primary-foreground: hsl(210, 40%, 96%);
-  --secondary: hsl(210, 40%, 18%);
-  --secondary-foreground: hsl(210, 40%, 96%);
-  --accent: hsl(210, 40%, 18%);
-  --accent-foreground: hsl(210, 40%, 96%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(210, 40%, 96%);
-  --ring: hsl(200, 80%, 54%);
-  --radius: 0.5rem;
+/* ============================================
+   Tailwind CSS v4.1 Native Configuration
+   Optimized for performance and modern features
+   ============================================ */
+
+@theme {
+  /* =========================
+     Typography System
+     ========================= */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
   
-  /* Custom colors for Protocollo */
-  --navy-charcoal: hsl(210, 40%, 8%);
-  --steel-blue: hsl(210, 20%, 25%);
-  --scientific-blue: hsl(200, 80%, 54%);
-  --performance-green: hsl(158, 64%, 52%);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-navy-charcoal: var(--navy-charcoal);
-  --color-steel-blue: var(--steel-blue);
-  --color-scientific-blue: var(--scientific-blue);
-  --color-performance-green: var(--performance-green);
-  --default-transition-duration: 200ms;
+  /* Font Sizes with fluid scaling */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem);
+  --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);
+  
+  /* =========================
+     Spacing & Layout
+     ========================= */
   --radius: 0.5rem;
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  /* Responsive breakpoints */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+  
+  /* =========================
+     Color System - OKLCH for v4.1
+     Using OKLCH for perceptually uniform colors
+     ========================= */
+  
+  /* Original exact colors restored - hex for v4.1 opacity support */
+  --color-background: #0c141d;
+  --color-foreground: #f1f5f9;
+  
+  --color-muted: #1c2e40;
+  --color-muted-foreground: #94a3b8;
+  
+  --color-card: #0c141d;
+  --color-card-foreground: #f1f5f9;
+  
+  --color-popover: #0c141d;
+  --color-popover-foreground: #f1f5f9;
+  
+  --color-border: #1c2e40;
+  --color-input: #1c2e40;
+  
+  /* Primary colors */
+  --color-primary: #2ca9e8;
+  --color-primary-foreground: #f1f5f9;
+  
+  --color-secondary: #1c2e40;
+  --color-secondary-foreground: #f1f5f9;
+  
+  --color-accent: #1c2e40;
+  --color-accent-foreground: #f1f5f9;
+  
+  --color-destructive: #7f1d1d;
+  --color-destructive-foreground: #f1f5f9;
+  
+  --color-ring: #2ca9e8;
+  
+  /* Custom Protocollo colors - exact original values */
+  --color-navy-charcoal: #0c141d;
+  --color-navy-dark: #0c141d;
+  --color-steel-blue: #33404d;
+  --color-scientific-blue: #2ca9e8;
+  --color-performance-green: #36d399;
+  
+  /* Slate/gray colors for UI elements */
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-gray-400: #9ca3af;
+  
+  /* =========================
+     Shadows - v4.1 optimized
+     ========================= */
+  --shadow-xs: 0 1px 2px 0 color-mix(in oklch, var(--color-background) 95%, black);
+  --shadow-sm: 0 1px 3px 0 color-mix(in oklch, var(--color-background) 90%, black);
+  --shadow-md: 0 4px 6px -1px color-mix(in oklch, var(--color-background) 85%, black);
+  --shadow-lg: 0 10px 15px -3px color-mix(in oklch, var(--color-background) 80%, black);
+  --shadow-xl: 0 20px 25px -5px color-mix(in oklch, var(--color-background) 75%, black);
+  
+  /* Text shadows - new in v4.1 */
+  --text-shadow-sm: 0 1px 2px color-mix(in oklch, var(--color-background) 80%, black);
+  --text-shadow-md: 0 2px 4px color-mix(in oklch, var(--color-background) 70%, black);
+  --text-shadow-lg: 0 4px 8px color-mix(in oklch, var(--color-background) 60%, black);
+  
+  /* =========================
+     Animation & Transitions
+     ========================= */
+  --duration-75: 75ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.dark {
-  --background: hsl(210, 40%, 8%);
-  --foreground: hsl(210, 40%, 96%);
-  --muted: hsl(210, 40%, 18%);
-  --muted-foreground: hsl(210, 40%, 64%);
-  --popover: hsl(210, 40%, 8%);
-  --popover-foreground: hsl(210, 40%, 96%);
-  --card: hsl(210, 40%, 8%);
-  --card-foreground: hsl(210, 40%, 96%);
-  --border: hsl(210, 40%, 18%);
-  --input: hsl(210, 40%, 18%);
-  --primary: hsl(200, 80%, 54%);
-  --primary-foreground: hsl(210, 40%, 96%);
-  --secondary: hsl(210, 40%, 18%);
-  --secondary-foreground: hsl(210, 40%, 96%);
-  --accent: hsl(210, 40%, 18%);
-  --accent-foreground: hsl(210, 40%, 96%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(210, 40%, 96%);
-  --ring: hsl(200, 80%, 54%);
+/* ============================================
+   CSS Layers for better cascade control
+   ============================================ */
+
+@layer base {
+  /* Reset and base styles */
+  :root {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    
+    /* Modern CSS features */
+    hanging-punctuation: first last;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Focus visible improvements for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  
+  /* Native smooth scrolling with reduced motion support */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 4rem;
+    }
+  }
+  
+  /* Base element styles */
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    font-variant-ligatures: common-ligatures;
+  }
+  
+  /* Typography improvements */
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+  
+  p {
+    text-wrap: pretty;
+    hyphenate-limit-chars: 6 3 3;
+  }
 }
 
-* {
-  border-color: var(--border);
+@layer components {
+  /* Component patterns using v4.1 features */
+  
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium 
+           transition-all duration-200 ease-out
+           transform-gpu active:scale-95;
+  }
+  
+  .btn-primary {
+    @apply px-4 py-2 rounded-md font-medium bg-primary text-primary-foreground 
+           hover:bg-primary/90 transition-all duration-200 ease-out
+           transform-gpu active:scale-95 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 rounded-md font-medium bg-secondary text-secondary-foreground 
+           hover:bg-secondary/80 transition-all duration-200 ease-out
+           transform-gpu active:scale-95;
+  }
+  
+  .btn-destructive {
+    @apply px-4 py-2 rounded-md font-medium bg-destructive text-destructive-foreground 
+           hover:bg-destructive/90 transition-all duration-200 ease-out
+           transform-gpu active:scale-95;
+  }
+  
+  .btn-ghost {
+    @apply px-4 py-2 rounded-md font-medium hover:bg-accent hover:text-accent-foreground
+           transition-all duration-200 ease-out transform-gpu active:scale-95;
+  }
+  
+  /* Card component with modern features */
+  .card {
+    @apply bg-card text-card-foreground 
+           rounded-lg border p-6
+           shadow-sm backdrop-blur-sm;
+  }
+  
+  .card-hover {
+    @apply bg-card text-card-foreground rounded-lg border p-6
+           shadow-sm backdrop-blur-sm transition-all duration-300
+           hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Input styles */
+  .input {
+    @apply bg-input border rounded-md px-3 py-2 text-sm
+           transition-colors duration-200
+           placeholder:text-muted-foreground
+           focus:outline-none focus:ring-2 focus:ring-ring
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  
+  /* Badge component */
+  .badge {
+    @apply inline-flex items-center rounded-full
+           px-2.5 py-0.5 text-xs font-semibold
+           transition-colors duration-200;
+  }
 }
 
-body {
-  background-color: var(--background);
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  color: var(--foreground);
-  font-feature-settings: "rlig" 1, "calt" 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer utilities {
+  /* Custom utilities leveraging v4.1 features */
+  
+  /* Text balancing */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  
+  /* Modern gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r bg-clip-text text-transparent;
+  }
+  
+  /* Glass morphism effect */
+  .glass {
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    background-color: color-mix(in oklch, var(--color-background) 70%, transparent);
+  }
+  
+  /* Smooth animations */
+  .animate-in {
+    animation: enter var(--duration-200) var(--ease-out);
+  }
+  
+  .animate-out {
+    animation: exit var(--duration-200) var(--ease-in);
+  }
+  
+  /* Container queries - v4.1 feature */
+  @container (min-width: 40rem) {
+    .container\:text-lg {
+      font-size: var(--text-lg);
+    }
+    
+    .container\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @container (min-width: 64rem) {
+    .container\:grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  
+  /* Logical properties for better RTL support */
+  .ms-auto {
+    margin-inline-start: auto;
+  }
+  
+  .me-auto {
+    margin-inline-end: auto;
+  }
+  
+  .ps-4 {
+    padding-inline-start: 1rem;
+  }
+  
+  .pe-4 {
+    padding-inline-end: 1rem;
+  }
+}
+
+/* ============================================
+   Animations using registered custom properties
+   ============================================ */
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+}
+
+@keyframes gradient-rotate {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
+}
+
+/* ============================================
+   Dark mode variant customization
+   ============================================ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light mode overrides - keeping dark as default */
+@media (prefers-color-scheme: light) {
+  @theme {
+    --color-background: #ffffff;
+    --color-foreground: #0c141d;
+    --color-muted: #f1f5f9;
+    --color-muted-foreground: #64748b;
+    --color-card: #ffffff;
+    --color-card-foreground: #0c141d;
+    --color-border: #e2e8f0;
+    --color-input: #f1f5f9;
+    --color-primary: #2ca9e8;
+    --color-primary-foreground: #ffffff;
+  }
+}
+
+/* ============================================
+   Performance optimizations
+   ============================================ */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* GPU acceleration hints */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Content visibility for performance */
+.content-auto {
+  content-visibility: auto;
 }
