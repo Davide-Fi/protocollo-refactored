@@ -53,45 +53,16 @@ export default function Navigation() {
             >
               Filtri Solari
             </Link>
-            <button 
-              onClick={() => scrollToSection('nutrizione')}
-              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
-            >
-              Nutrizione
-            </button>
-            <button 
-              onClick={() => scrollToSection('integrazione')}
-              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
-            >
-              Integrazione
-            </button>
-            <button 
-              onClick={() => scrollToSection('prevenzione')}
-              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
-            >
-              Prevenzione
-            </button>
-            <button 
-              onClick={() => scrollToSection('ricerca')}
-              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
-            >
-              Ricerca
-            </button>
-            <button 
-              onClick={() => scrollToSection('dashboard')}
-              className="text-slate-300 hover:text-scientific-blue font-medium transition-colors"
-            >
-              Dashboard
-            </button>
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button 
-              onClick={() => scrollToSection('nutrizione')}
-              className="bg-scientific-blue hover:bg-scientific-blue/80 text-white font-semibold"
-            >
-              Inizia Ora
-            </Button>
+            <Link href="/il-protocollo">
+              <Button 
+                className="bg-scientific-blue hover:bg-scientific-blue/80 text-white font-semibold"
+              >
+                Inizia Ora
+              </Button>
+            </Link>
             <button 
               className="md:hidden text-slate-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -133,36 +104,6 @@ export default function Navigation() {
               >
                 Filtri Solari
               </Link>
-              <button 
-                onClick={() => scrollToSection('nutrizione')}
-                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
-              >
-                Nutrizione
-              </button>
-              <button 
-                onClick={() => scrollToSection('integrazione')}
-                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
-              >
-                Integrazione
-              </button>
-              <button 
-                onClick={() => scrollToSection('prevenzione')}
-                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
-              >
-                Prevenzione
-              </button>
-              <button 
-                onClick={() => scrollToSection('ricerca')}
-                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
-              >
-                Ricerca
-              </button>
-              <button 
-                onClick={() => scrollToSection('dashboard')}
-                className="text-slate-300 hover:text-scientific-blue font-medium transition-colors text-left"
-              >
-                Dashboard
-              </button>
             </div>
           </div>
         )}
