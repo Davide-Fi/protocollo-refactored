@@ -11,7 +11,7 @@ import Footer from '@/components/sections/footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-navy-charcoal text-slate-100">
       <HeroSection />
       <ProtocolloSection />
       <ResearchSection />
